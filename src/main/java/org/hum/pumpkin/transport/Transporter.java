@@ -5,7 +5,7 @@ import org.hum.pumpkin.transport.bean.RpcResult;
 
 public interface Transporter {
 
-	void open();
+	void open(int port);
 	
 	/**
 	 * 发布服务 

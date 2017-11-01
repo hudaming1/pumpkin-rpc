@@ -19,13 +19,13 @@ public class RpcServer {
 	
 	private GlobalConfig globalConfig;
 	
-	private RpcProxy rpcProxy = ServiceLoaderHolder.load(RpcProxy.class);
+	private RpcProxy rpcProxy = ServiceLoaderHolder.loadByCache(RpcProxy.class);
 	
-	private Transporter transport = ServiceLoaderHolder.load(Transporter.class);
+	private Transporter transport = ServiceLoaderHolder.loadByCache(Transporter.class);
 	
-	private InstancesMap instancesMap = ServiceLoaderHolder.load(InstancesMap.class);
+	private InstancesMap instancesMap = ServiceLoaderHolder.loadByCache(InstancesMap.class);
 	
-	private Registry registry = ServiceLoaderHolder.load(Registry.class);
+	private Registry registry = ServiceLoaderHolder.loadByCache(Registry.class);
 	
 	public RpcServer(GlobalConfig globalConfig) {
 		this.globalConfig = globalConfig;
@@ -45,7 +45,9 @@ public class RpcServer {
 		
 		// 2.registry service
 		try {
-			registry.registry(serverConfig.getInterfaceType().getName(), InetAddress.getLocalHost().getHostAddress(), globalConfig.getPort());
+			if (registry != null) {
+				registry.registry(serverConfig.getInterfaceType().getName(), InetAddress.getLocalHost().getHostAddress(), globalConfig.getPort());
+			}
 		} catch (UnknownHostException e) {
 			logger.error("regist node fail, unnkown host", e);
 		}
