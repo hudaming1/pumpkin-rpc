@@ -1,25 +1,15 @@
 package org.hum.pumpkin.transport.jdk;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.io.OutputStream;
+import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
 
-import org.hum.pumpkin.invoker.Invoker;
 import org.hum.pumpkin.serialize.Serialization;
 import org.hum.pumpkin.serviceloader.ServiceLoaderHolder;
-import org.hum.pumpkin.threadpool.ThreadPoolFactory;
 import org.hum.pumpkin.transport.AbstractTransporter;
-import org.hum.pumpkin.transport.ServiceKey;
 import org.hum.pumpkin.transport.bean.RpcInvocation;
 import org.hum.pumpkin.transport.bean.RpcResult;
 import org.slf4j.Logger;
@@ -36,10 +26,15 @@ public class JdkTransport extends AbstractTransporter {
 	public void doOpen(int port) {
 		try {
 			server = new ServerSocket(port);
-			listenning(server);
+			isRun = true;
+		} catch (BindException e) {
+			logger.error("server port [" + port + "] already in used. ", e);
+			return ;
 		} catch (IOException e) {
 			logger.error("server start occured excepiton", e);
+			return;
 		}
+		listenning(server);
 	}
 	
 	private void listenning(final ServerSocket server) {
@@ -47,50 +42,29 @@ public class JdkTransport extends AbstractTransporter {
 			@Override
 			public void run() {
 				while (isRun) {
+					Socket socket = null;
+					InputStream inputStream = null;
+					OutputStream outputStream = null;
 					try {
-						Socket socket = server.accept();
-						final RpcInvocation invocation = parse2Invocation(socket.getInputStream());
+						socket = server.accept();
+						inputStream = socket.getInputStream();
+						outputStream = socket.getOutputStream();
+						
+						RpcInvocation invocation = serialization.deserialize(inputStream);
 
 						RpcResult result = handler(invocation);
+						
+						outputStream.write(serialization.serialize(result));
+						outputStream.flush();
 
 					} catch (Exception e) {
 						logger.error("server listening exception", e);
+					} finally {
+						// TODO keepalive
+						JdkSocketUtils.closeSocket(inputStream, outputStream, socket);
 					}
 				}
 			}
 		}).start();
-	}
-	
-	private RpcInvocation parse2Invocation(InputStream inputStream) {
-		
-		
-		
-		Class clazz = null;
-		String method = "";
-		Class[] paramTypes = null;
-		Object[] params = null;
-		
-		return new RpcInvocation(clazz, method, paramTypes, params);
-	}
-
-	public RpcResult invoke(RpcInvocation invocation) {
-		return null;
-	}
-	
-	static class A implements Serializable {
-	}
-	
-	public static void main(String[] args) throws Exception {
-		A a = new A();
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		ObjectOutputStream oos = new ObjectOutputStream(bos);
-		oos.writeObject(a);
-		
-		byte[] byteArray = bos.toByteArray();
-		
-		ByteArrayInputStream bis = new ByteArrayInputStream();
-		ObjectInputStream ois = new ObjectInputStream(bis);
-		
-		System.out.println(ois.readObject());
 	}
 }

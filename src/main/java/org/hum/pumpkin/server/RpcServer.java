@@ -3,10 +3,8 @@ package org.hum.pumpkin.server;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-import org.hum.pumpkin.beanmap.InstancesMap;
 import org.hum.pumpkin.config.GlobalConfig;
 import org.hum.pumpkin.config.ServerConfig;
-import org.hum.pumpkin.proxy.RpcProxy;
 import org.hum.pumpkin.registry.Registry;
 import org.hum.pumpkin.serviceloader.ServiceLoaderHolder;
 import org.hum.pumpkin.transport.Transporter;
@@ -19,11 +17,7 @@ public class RpcServer {
 	
 	private GlobalConfig globalConfig;
 	
-	private RpcProxy rpcProxy = ServiceLoaderHolder.loadByCache(RpcProxy.class);
-	
 	private Transporter transport = ServiceLoaderHolder.loadByCache(Transporter.class);
-	
-	private InstancesMap instancesMap = ServiceLoaderHolder.loadByCache(InstancesMap.class);
 	
 	private Registry registry = ServiceLoaderHolder.loadByCache(Registry.class);
 	
@@ -41,7 +35,7 @@ public class RpcServer {
 	
 	public void export(ServerConfig serverConfig) {
 		// 1.export service
-		transport.export(serverConfig.getInterfaceType().getName(), serverConfig.getInstances());
+		transport.export(serverConfig.getInterfaceType(), serverConfig.getInstances());
 		
 		// 2.registry service
 		try {
