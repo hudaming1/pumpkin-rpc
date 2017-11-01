@@ -9,6 +9,7 @@ import org.hum.pumpkin.test._service.IHelloService;
 public class ServerTest {
 
 	public static void main(String[] args) {
+		// TODO 这个port应该放在哪？
 		GlobalConfig globalConfig = GlobalConfig.getInstances().setPort(9080);
 		
 		RpcServer rpcServer = new RpcServer(globalConfig);

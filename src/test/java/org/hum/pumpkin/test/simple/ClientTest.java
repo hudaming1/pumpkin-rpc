@@ -8,7 +8,7 @@ public class ClientTest {
 
 	public static void main(String[] args) {
 		RpcClient client = new RpcClient();
-		
-		client.proxy(new ClientConfig(IHelloService.class));
+		IHelloService helloService = client.proxy(new ClientConfig<IHelloService>(IHelloService.class).buildUrl("127.0.0.1", 9080));
+		System.out.println(helloService.sayHello("huming"));
 	}
 }

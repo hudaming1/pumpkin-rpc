@@ -1,11 +1,28 @@
 package org.hum.pumpkin.config;
 
-public class ClientConfig {
+public class ClientConfig<T> {
 
-	private Class<?> interfaceType;
+	private Class<T> interfaceType;
 	
-	public ClientConfig(Class<?> interfaceType) {
+	public ClientConfig(Class<T> interfaceType) {
 		this.interfaceType = interfaceType;
+	}
+	
+	private String address;
+	private int port;
+	
+	public ClientConfig<T> buildUrl(String address, int port) {
+		this.address = address;
+		this.port = port;
+		return this;
+	}
+	
+	public String getAddress() {
+		return this.address;
+	}
+	
+	public int getPort() {
+		return this.port;
 	}
 	
 	// TODO timeout

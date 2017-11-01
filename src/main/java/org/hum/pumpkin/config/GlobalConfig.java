@@ -2,6 +2,7 @@ package org.hum.pumpkin.config;
 
 /**
  * 全局配置
+ * TODO 看看有没有可能将GlobalConfig与 ServerConfig/ClientConfig 合并
  */
 public class GlobalConfig {
 	
@@ -22,17 +23,6 @@ public class GlobalConfig {
 			instances = new GlobalConfig();
 		}
 		return instances;
-	}
-	
-	private int port;
-	
-	public GlobalConfig setPort(int port) {
-		this.port = port;
-		return this;
-	}
-	
-	public int getPort() {
-		return port;
 	}
 
 	// how to transport

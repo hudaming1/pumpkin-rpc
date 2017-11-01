@@ -4,7 +4,8 @@ import org.hum.pumpkin.config.ClientConfig;
 
 public class RpcClient {
 
-	public void proxy(ClientConfig clientConfig) {
+	public <T> T proxy(ClientConfig<T> clientConfig) {
 		
+		return null;
 	}
 }
