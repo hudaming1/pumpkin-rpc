@@ -1,7 +1,12 @@
 package org.hum.pumpkin.transport.jdk;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.Callable;
@@ -48,12 +53,8 @@ public class JdkTransport extends AbstractTransporter {
 
 						RpcResult result = handler(invocation);
 
-					} catch (IOException e) {
+					} catch (Exception e) {
 						logger.error("server listening exception", e);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					} catch (ExecutionException e) {
-						e.printStackTrace();
 					}
 				}
 			}
@@ -61,12 +62,35 @@ public class JdkTransport extends AbstractTransporter {
 	}
 	
 	private RpcInvocation parse2Invocation(InputStream inputStream) {
-		// RpcInvocation invocation = new RpcInvocation();
 		
-		return null;
+		
+		
+		Class clazz = null;
+		String method = "";
+		Class[] paramTypes = null;
+		Object[] params = null;
+		
+		return new RpcInvocation(clazz, method, paramTypes, params);
 	}
 
 	public RpcResult invoke(RpcInvocation invocation) {
 		return null;
+	}
+	
+	static class A implements Serializable {
+	}
+	
+	public static void main(String[] args) throws Exception {
+		A a = new A();
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		ObjectOutputStream oos = new ObjectOutputStream(bos);
+		oos.writeObject(a);
+		
+		byte[] byteArray = bos.toByteArray();
+		
+		ByteArrayInputStream bis = new ByteArrayInputStream();
+		ObjectInputStream ois = new ObjectInputStream(bis);
+		
+		System.out.println(ois.readObject());
 	}
 }
