@@ -27,6 +27,8 @@ public class RpcServer {
 		// 1.check global config
 		this.globalConfig.validate();
 		
+		this.transport.open(globalConfig.getPort());
+		
 		// TODO 
 		if (globalConfig.getRegistryConfig() != null) {
 			registry.connect(globalConfig.getRegistryConfig().getAddress(), globalConfig.getRegistryConfig().getPort());

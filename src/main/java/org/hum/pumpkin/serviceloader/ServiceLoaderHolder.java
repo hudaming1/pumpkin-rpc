@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @SuppressWarnings("unchecked")
 public class ServiceLoaderHolder {
 	
-	private static ServiceLoader serviceLoader;
+	private static ServiceLoader serviceLoader = new TestServiceLoader();
 	
 	private static final Map<Class<?>, Object> instancesMap = new ConcurrentHashMap<>();
 	
