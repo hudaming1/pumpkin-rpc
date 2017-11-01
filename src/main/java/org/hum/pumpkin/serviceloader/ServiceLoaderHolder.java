@@ -21,6 +21,9 @@ public class ServiceLoaderHolder {
 			instances = instancesMap.get(interfaceType);
 			if (instances == null) {
 				instances = serviceLoader.load(interfaceType);
+				if (instances == null) {
+					return (T) instances;
+				}
 				instancesMap.put(interfaceType, instances);
 			}
 		}

@@ -26,6 +26,11 @@ public class GlobalConfig {
 	
 	private int port;
 	
+	public GlobalConfig setPort(int port) {
+		this.port = port;
+		return this;
+	}
+	
 	public int getPort() {
 		return port;
 	}

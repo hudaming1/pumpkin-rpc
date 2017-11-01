@@ -27,6 +27,7 @@ public class JdkTransport extends AbstractTransporter {
 		try {
 			server = new ServerSocket(port);
 			isRun = true;
+			logger.info("Jdk Tcp Server start, listening port on:" + port);
 		} catch (BindException e) {
 			logger.error("server port [" + port + "] already in used. ", e);
 			return ;
