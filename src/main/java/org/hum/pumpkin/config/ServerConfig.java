@@ -4,6 +4,14 @@ public class ServerConfig {
 
 	private Class<?> interfaceType;
 	private Object instances;
+	
+	// TODO timeout
+	
+	// TODO retry times
+	
+	// TODO group
+	
+	// TODO version
 
 	public ServerConfig(Class<?> interfaceType, Object instances) {
 		this.interfaceType = interfaceType;
