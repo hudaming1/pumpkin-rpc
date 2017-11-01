@@ -4,14 +4,15 @@ import org.hum.pumpkin.config.GlobalConfig;
 import org.hum.pumpkin.config.ServerConfig;
 import org.hum.pumpkin.server.RpcServer;
 import org.hum.pumpkin.test._service.HelloServiceImpl;
+import org.hum.pumpkin.test._service.IHelloService;
 
 public class ServerTest {
 
 	public static void main(String[] args) {
-		GlobalConfig globalConfig = new GlobalConfig();
+		GlobalConfig globalConfig = GlobalConfig.getInstances();
 		
 		RpcServer rpcServer = new RpcServer(globalConfig);
 		
-		rpcServer.export(new ServerConfig(new HelloServiceImpl()));
+		rpcServer.export(new ServerConfig(IHelloService.class, new HelloServiceImpl()));
 	}
 }

@@ -4,7 +4,7 @@ public class ServiceLoaderHolder {
 	
 	private static ServiceLoader serviceLoader;
 
-	public static Object load(Class<?> interfaceType) {
+	public static <T> T load(Class<T> interfaceType) {
 		return serviceLoader.load(interfaceType);
 	}
 }
