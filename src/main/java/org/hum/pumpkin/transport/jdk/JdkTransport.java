@@ -68,4 +68,9 @@ public class JdkTransport extends AbstractTransporter {
 			}
 		}).start();
 	}
+
+	@Override
+	public RpcResult invoke(RpcInvocation invocation) {
+		return null;
+	}
 }

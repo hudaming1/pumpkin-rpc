@@ -35,7 +35,7 @@ public class ReferenceBean<T> extends ReferenceConfig {
 	
 	// TODO version
 	
-	public Class<?> getInterfaceType() {
+	public Class<T> getInterfaceType() {
 		return interfaceType;
 	}
 }

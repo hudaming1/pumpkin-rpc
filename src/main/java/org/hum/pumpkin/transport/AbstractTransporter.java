@@ -12,7 +12,7 @@ import org.hum.pumpkin.threadpool.ThreadPoolFactory;
 import org.hum.pumpkin.transport.bean.RpcInvocation;
 import org.hum.pumpkin.transport.bean.RpcResult;
 
-public abstract class AbstractTransporter implements Transporter {
+public abstract class AbstractTransporter implements Transporter2 {
 
 	private ExecutorService executorService = ServiceLoaderHolder.loadByCache(ThreadPoolFactory.class).create();
 	

@@ -7,7 +7,7 @@ import org.hum.pumpkin.config.server.ServiceBean;
 import org.hum.pumpkin.config.server.ServiceConfig;
 import org.hum.pumpkin.registry.Registry;
 import org.hum.pumpkin.serviceloader.ServiceLoaderHolder;
-import org.hum.pumpkin.transport.Transporter;
+import org.hum.pumpkin.transport.Transporter2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +15,7 @@ public class RpcServer {
 	
 	private static final Logger logger = LoggerFactory.getLogger(RpcServer.class);
 	
-	private Transporter transport = ServiceLoaderHolder.loadByCache(Transporter.class);
+	private Transporter2 transport = ServiceLoaderHolder.loadByCache(Transporter2.class);
 	
 	private ServiceConfig serviceConfig;
 	

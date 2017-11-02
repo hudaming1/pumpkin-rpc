@@ -9,7 +9,7 @@ import org.hum.pumpkin.serialize.ObjectStreamSerialization;
 import org.hum.pumpkin.serialize.Serialization;
 import org.hum.pumpkin.threadpool.DefaultThreadPoolFactory;
 import org.hum.pumpkin.threadpool.ThreadPoolFactory;
-import org.hum.pumpkin.transport.Transporter;
+import org.hum.pumpkin.transport.Transporter2;
 import org.hum.pumpkin.transport.jdk.JdkTransport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +25,7 @@ public class TestServiceLoader implements ServiceLoader {
 		classTypeMap.put(ThreadPoolFactory.class, DefaultThreadPoolFactory.class);
 		classTypeMap.put(Serialization.class, ObjectStreamSerialization.class);
 		classTypeMap.put(InvokerHolder.class, DefaultInvokerHolder.class);
-		classTypeMap.put(Transporter.class, JdkTransport.class);
+		classTypeMap.put(Transporter2.class, JdkTransport.class);
 	}
 	
 	@Override
