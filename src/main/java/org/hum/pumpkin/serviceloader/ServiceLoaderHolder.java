@@ -3,6 +3,9 @@ package org.hum.pumpkin.serviceloader;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * TODO 目前没能解决循环依赖的问题
+ */
 @SuppressWarnings("unchecked")
 public class ServiceLoaderHolder {
 	

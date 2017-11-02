@@ -1,17 +1,17 @@
-package org.hum.pumpkin.config;
+package org.hum.pumpkin.config.client;
 
-public class ReferenceConfig<T> {
+public class ReferenceBean<T> extends ReferenceConfig {
 
 	private Class<T> interfaceType;
 	
-	public ReferenceConfig(Class<T> interfaceType) {
+	public ReferenceBean(Class<T> interfaceType) {
 		this.interfaceType = interfaceType;
 	}
 	
 	private String address;
 	private int port;
 	
-	public ReferenceConfig<T> buildUrl(String address, int port) {
+	public ReferenceBean<T> buildUrl(String address, int port) {
 		this.address = address;
 		this.port = port;
 		return this;

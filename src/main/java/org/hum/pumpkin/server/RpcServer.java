@@ -15,11 +15,11 @@ public class RpcServer {
 	
 	private static final Logger logger = LoggerFactory.getLogger(RpcServer.class);
 	
-	private Transporter transport;
+	private Transporter transport = ServiceLoaderHolder.loadByCache(Transporter.class);
 	
 	private ServiceConfig serviceConfig;
 	
-	private Registry registry;
+	private Registry registry = ServiceLoaderHolder.loadByCache(Registry.class);
 	
 	public RpcServer(ServiceConfig serverConfig) {
 		this.serviceConfig = serverConfig;
@@ -28,12 +28,10 @@ public class RpcServer {
 		this.serviceConfig.validate();
 		
 		// 2.load transport (if null default jdk transporter TODO)
-		this.transport = ServiceLoaderHolder.loadByCache(serverConfig.getTransportConfig().getType());
 		this.transport.open(serverConfig.getPort());
 		
 		// TODO 
 		if (serverConfig.getRegistryConfig() != null) {
-			registry = ServiceLoaderHolder.loadByCache(serverConfig.getRegistryConfig().getType());
 			registry.connect(serverConfig.getRegistryConfig().getAddress(), serverConfig.getRegistryConfig().getPort());
 		}
 	}

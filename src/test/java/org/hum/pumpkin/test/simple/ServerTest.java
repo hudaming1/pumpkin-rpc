@@ -11,7 +11,6 @@ public class ServerTest {
 	public static void main(String[] args) {
 		
 		ServiceConfig serviceConfig = new ServiceConfig();
-		// serviceConfig.setTransport("jdk/netty");
 		serviceConfig.setPort(9080);
 		
 		RpcServer rpcServer = new RpcServer(serviceConfig);

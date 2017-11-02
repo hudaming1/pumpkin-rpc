@@ -1,7 +1,6 @@
 package org.hum.pumpkin.config.server;
 
 import org.hum.pumpkin.config.ApplicationConfig;
-import org.hum.pumpkin.config.plugin.RegistryConfig;
 
 public class ServiceConfig extends ApplicationConfig {
 
