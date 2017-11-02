@@ -1,6 +1,9 @@
-package org.hum.pumpkin.config;
+package org.hum.pumpkin.config.plugin;
 
-public class RegistryConfig {
+import org.hum.pumpkin.registry.Registry;
+import org.hum.pumpkin.serviceloader.ServiceLoadable;
+
+public class RegistryConfig implements ServiceLoadable<Registry> {
 
 	private String name;
 	private String address;
@@ -22,5 +25,10 @@ public class RegistryConfig {
 
 	public int getPort() {
 		return port;
+	}
+
+	@Override
+	public Class<Registry> getType() {
+		return Registry.class;
 	}
 }

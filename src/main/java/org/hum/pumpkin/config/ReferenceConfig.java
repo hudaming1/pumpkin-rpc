@@ -1,17 +1,17 @@
 package org.hum.pumpkin.config;
 
-public class ClientConfig<T> {
+public class ReferenceConfig<T> {
 
 	private Class<T> interfaceType;
 	
-	public ClientConfig(Class<T> interfaceType) {
+	public ReferenceConfig(Class<T> interfaceType) {
 		this.interfaceType = interfaceType;
 	}
 	
 	private String address;
 	private int port;
 	
-	public ClientConfig<T> buildUrl(String address, int port) {
+	public ReferenceConfig<T> buildUrl(String address, int port) {
 		this.address = address;
 		this.port = port;
 		return this;

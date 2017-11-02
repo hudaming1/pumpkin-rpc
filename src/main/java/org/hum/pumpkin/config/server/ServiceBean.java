@@ -1,6 +1,6 @@
-package org.hum.pumpkin.config;
+package org.hum.pumpkin.config.server;
 
-public class ServerConfig {
+public class ServiceBean extends ServiceConfig {
 
 	private Class<?> interfaceType;
 	private Object instances;
@@ -13,7 +13,7 @@ public class ServerConfig {
 	
 	// TODO version
 
-	public ServerConfig(Class<?> interfaceType, Object instances) {
+	public ServiceBean(Class<?> interfaceType, Object instances) {
 		this.interfaceType = interfaceType;
 		this.instances = instances;
 	}
