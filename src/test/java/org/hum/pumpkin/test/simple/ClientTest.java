@@ -1,9 +1,9 @@
 package org.hum.pumpkin.test.simple;
 
-import org.hum.pumpkin.client.RpcClient;
-import org.hum.pumpkin.config.client.ReferenceBean;
-import org.hum.pumpkin.config.client.ReferenceConfig;
 import org.hum.pumpkin.test._service.IHelloService;
+import org.hum.pumpkin_version1.client.RpcClient;
+import org.hum.pumpkin_version1.config.client.ReferenceBean;
+import org.hum.pumpkin_version1.config.client.ReferenceConfig;
 
 public class ClientTest {
 
