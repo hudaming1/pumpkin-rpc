@@ -2,7 +2,7 @@ package org.hum.pumpkin.protocol;
 
 public enum ProtocolEnum {
 
-	Pumpkin("pumpkin", "默认信息"), Registry("registry", "注册中心");
+	Direct("direct", "直连"), Registry("registry", "注册中心");
 
 	private String name;
 	private String desc;

@@ -8,15 +8,16 @@ import org.hum.pumpkin.transport.Request;
 import org.hum.pumpkin.transport.Response;
 import org.hum.pumpkin.transport.TransporterHolder;
 
-public class DirectInvoker<T> extends AbstractDirectInvoker<T>{
-	
+public class DirectInvoker<T> extends AbstractDirectInvoker<T> {
+
 	private final TransporterHolder transporterHolder = ServiceLoaderHolder.loadByCache(TransporterHolder.class);
 	private Class<T> classType;
 	private URL url;
-	
+
 	public DirectInvoker(Class<T> classType, URL url) {
 		this.classType = classType;
 		this.url = url;
+		transporterHolder.join(url.getAddress(), url.getPort());
 	}
 
 	@Override
@@ -26,8 +27,12 @@ public class DirectInvoker<T> extends AbstractDirectInvoker<T>{
 
 	@Override
 	public RpcResult invoke(RpcInvocation invocation) {
-		Request request = new Request(url.getAddress(), url.getPort(), invocation);
-		Response response = transporterHolder.send(request);
-		return new RpcResult(response, null);
+		try {
+			Request request = new Request(url.getAddress(), url.getPort(), invocation);
+			Response response = transporterHolder.send(request);
+			return new RpcResult(response, null);
+		} catch (Exception ce) {
+			return new RpcResult(null, ce);
+		}
 	}
 }

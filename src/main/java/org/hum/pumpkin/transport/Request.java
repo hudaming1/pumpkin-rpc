@@ -5,6 +5,7 @@ public class Request {
 	private String url;
 	private int port;
 	private Object data;
+	private boolean isAsyn;
 	private int timeout;
 	private int retryTimes;
 
@@ -32,6 +33,10 @@ public class Request {
 
 	public int getRetryTimes() {
 		return retryTimes;
+	}
+	
+	public boolean isAsyn() {
+		return isAsyn;
 	}
 
 	@Override
