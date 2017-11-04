@@ -51,18 +51,15 @@ public class ReferenceConfig<T> {
 		return address;
 	}
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
 	public int getPort() {
 		return port;
 	}
 
-	public void setPort(int port) {
+	public void setUrl(String address, int port) {
+		this.address = address;
 		this.port = port;
 	}
-
+	
 	public void setClassName(String className) {
 		this.className = className;
 	}

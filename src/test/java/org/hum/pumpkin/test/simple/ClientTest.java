@@ -8,8 +8,7 @@ public class ClientTest {
 
 	public static void main(String[] args) {
 		ReferenceConfig<IHelloService> referenceBean = new ReferenceConfig<>(IHelloService.class);
-		referenceBean.setAddress("127.0.0.1");
-		referenceBean.setPort(9080);
+		referenceBean.setUrl("127.0.0.1", 9080);
 		referenceBean.setProtocol(ProtocolEnum.Direct.getName());
 		IHelloService helloService = referenceBean.get();
 		System.out.println(helloService.sayHello("huming"));
