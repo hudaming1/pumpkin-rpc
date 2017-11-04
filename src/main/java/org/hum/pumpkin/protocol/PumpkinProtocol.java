@@ -1,5 +1,6 @@
 package org.hum.pumpkin.protocol;
 
+import org.hum.pumpkin.exporter.Exporter;
 import org.hum.pumpkin.invoker.Invoker;
 import org.hum.pumpkin.invoker.cluster.FailoverClusterInvoker;
 import org.hum.pumpkin.invoker.direct.DirectInvoker;
@@ -17,6 +18,11 @@ public class PumpkinProtocol implements Protocol {
 		} else {
 			
 		}
+		return null;
+	}
+
+	@Override
+	public <T> Exporter<T> export(Class<T> classType) {
 		return null;
 	}
 }
