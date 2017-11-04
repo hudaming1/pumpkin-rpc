@@ -22,7 +22,7 @@ public class PumpkinProtocol implements Protocol {
 	}
 
 	@Override
-	public <T> Exporter<T> export(Class<T> classType) {
+	public <T> Exporter<T> export(Class<T> classType, T instances) {
 		return null;
 	}
 }

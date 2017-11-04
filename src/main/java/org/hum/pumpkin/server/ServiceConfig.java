@@ -1,10 +1,14 @@
 package org.hum.pumpkin.server;
 
+import org.hum.pumpkin.protocol.Protocol;
+import org.hum.pumpkin.serviceloader.ServiceLoaderHolder;
+
 public class ServiceConfig<T> {
 
 	private int port;
 	private Class<T> interfaceType;
 	private T ref;
+	private static final Protocol PROTOCOL = ServiceLoaderHolder.loadByCache(Protocol.class);
 
 	public Class<T> getInterfaceType() {
 		return interfaceType;
@@ -32,5 +36,10 @@ public class ServiceConfig<T> {
 
 	public void export() {
 		
+		// 1.
+		
+		// 2.
+		
+		PROTOCOL.export(this);
 	}
 }
