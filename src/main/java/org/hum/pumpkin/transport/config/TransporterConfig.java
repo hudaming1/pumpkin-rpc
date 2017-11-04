@@ -1,5 +1,8 @@
 package org.hum.pumpkin.transport.config;
 
+/**
+ * TransporterConfig是传输层URL的实现
+ */
 public class TransporterConfig {
 
 	private String address;

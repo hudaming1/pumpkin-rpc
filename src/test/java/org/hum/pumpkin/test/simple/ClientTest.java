@@ -1,12 +1,16 @@
 package org.hum.pumpkin.test.simple;
 
-import org.hum.pumpkin.client.ReferneceConfig;
+import org.hum.pumpkin.client.ReferenceConfig;
+import org.hum.pumpkin.protocol.ProtocolEnum;
 import org.hum.pumpkin.test._service.IHelloService;
 
 public class ClientTest {
 
 	public static void main(String[] args) {
-		ReferneceConfig<IHelloService> referenceBean = new ReferneceConfig<>(IHelloService.class);
+		ReferenceConfig<IHelloService> referenceBean = new ReferenceConfig<>(IHelloService.class);
+		referenceBean.setAddress("127.0.0.1");
+		referenceBean.setPort(9080);
+		referenceBean.setProtocol(ProtocolEnum.Direct.getName());
 		IHelloService helloService = referenceBean.get();
 		System.out.println(helloService.sayHello("huming"));
 	}
