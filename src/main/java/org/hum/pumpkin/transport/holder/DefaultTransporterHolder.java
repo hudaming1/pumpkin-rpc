@@ -34,7 +34,7 @@ public class DefaultTransporterHolder implements TransporterHolder {
 	@Override
 	public Response send(final Request request) {
 
-		Transporter transporter = getTransporter(request);
+		final Transporter transporter = getTransporter(request);
 
 		if (!request.isAsyn()) {
 			Object result = transporter.invoke(request.getData());

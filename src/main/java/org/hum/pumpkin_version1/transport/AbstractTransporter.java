@@ -30,7 +30,7 @@ public abstract class AbstractTransporter implements Transporter {
 		invokerHolder.create(classType, instances);
 	}
 	
-	public RpcResult handler(RpcInvocation invocation) throws InterruptedException, ExecutionException {
+	public RpcResult handler(final RpcInvocation invocation) throws InterruptedException, ExecutionException {
 		final Invoker invoker = getInvoker(new ServiceKey(invocation.getClazz()));
 		
 		Future<RpcResult> future = executorService.submit(new Callable<RpcResult>() {
