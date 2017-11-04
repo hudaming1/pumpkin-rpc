@@ -1,2 +1,11 @@
 /target
 target/
+*.class
+/target/*
+.settings/
+*.classpath
+.settings/org.eclipse.wst.common.project.facet.core.xml
+.settings/org.eclipse.jdt.core.prefs
+target/classes/META-INF/MANIFEST.MF
+target/test-classes/org/hum/pumpkin/test/simple/ServerTest.class
+.classpath
