@@ -10,6 +10,7 @@ import org.hum.pumpkin.exchange.client.DefaultExchangeClient;
 import org.hum.pumpkin.exchange.server.DefaultExchangeServer;
 import org.hum.pumpkin.exchange.server.ExchangeServer;
 import org.hum.pumpkin.protocol.URL;
+import org.hum.pumpkin.transport.ServerHandler;
 import org.hum.pumpkin.transport.Transporter;
 import org.hum.pumpkin.transport.TransporterServer;
 
@@ -19,13 +20,13 @@ public abstract class AbstractExchanger implements Exchanger {
 	private static final Object createLock = new Object();
 	
 	@Override
-	public ExchangeServer bind(URL url) {
+	public ExchangeServer bind(URL url, ServerHandler serverHandler) {
 		// TODO test版本 待完善
-		TransporterServer transporterServer = doBind(url);
+		TransporterServer transporterServer = doBind(url, serverHandler);
 		return new DefaultExchangeServer(transporterServer);
 	}
 
-	protected abstract TransporterServer doBind(URL url);
+	protected abstract TransporterServer doBind(URL url, ServerHandler serverHandler);
 
 	@Override
 	public ExchangeClient connect(URL url) {
