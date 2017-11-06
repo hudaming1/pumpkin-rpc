@@ -1,5 +1,9 @@
 package org.hum.pumpkin.server;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hum.pumpkin.exporter.Exporter;
 import org.hum.pumpkin.protocol.Protocol;
 import org.hum.pumpkin.registry.conf.RegistryConfig;
 import org.hum.pumpkin.serviceloader.ServiceLoaderHolder;
@@ -11,6 +15,8 @@ public class ServiceConfig<T> {
 	private Class<T> interfaceType;
 	private T ref;
 	private static final Protocol PROTOCOL = ServiceLoaderHolder.loadByCache(Protocol.class);
+	// 记录发布的服务，当server.close时需要知道销毁哪些对象
+	private static final List<Exporter<?>> EXPORTER_LIST = new ArrayList<>();
 
 	public Class<T> getInterfaceType() {
 		return interfaceType;
@@ -46,6 +52,7 @@ public class ServiceConfig<T> {
 
 	public void export() {
 		
-		PROTOCOL.export(this);
+		Exporter<T> exporter = PROTOCOL.export(this);
+		EXPORTER_LIST.add(exporter);
 	}
 }

@@ -1,6 +1,5 @@
 package org.hum.pumpkin.invoker.direct;
 
-import org.hum.pumpkin.exchange.ExchangeClient;
 import org.hum.pumpkin.invoker.RpcInvocation;
 import org.hum.pumpkin.invoker.RpcResult;
 import org.hum.pumpkin.protocol.URL;
@@ -15,8 +14,6 @@ public class DirectInvoker<T> extends AbstractDirectInvoker<T> {
 	private final TransporterHolder transporterHolder = ServiceLoaderHolder.loadByCache(TransporterHolder.class);
 	private Class<T> classType;
 	private URL url;
-	
-	private ExchangeClient exchangeClient;
 
 	public DirectInvoker(Class<T> classType, URL url) {
 		this.classType = classType;
