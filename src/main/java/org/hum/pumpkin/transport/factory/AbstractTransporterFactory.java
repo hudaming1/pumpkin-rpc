@@ -11,7 +11,7 @@ public abstract class AbstractTransporterFactory implements TransporterFactory {
 	private final static Map<String, Transporter> transpoterCache = new ConcurrentHashMap<>();
 
 	@Override
-	public Transporter create(URL url) {
+	public Transporter createTransporter(URL url) {
 		String tranportKey = url.getProtocol() + "://" + url.getHost() + ":" + url.getPort() + "/" + url.getPath();
 		Transporter transporter = transpoterCache.get(tranportKey);
 		if (transporter != null) {

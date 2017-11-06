@@ -7,9 +7,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.hum.pumpkin.common.UrlConstant;
 import org.hum.pumpkin.exchange.client.DefaultExchangeClient;
+import org.hum.pumpkin.exchange.server.DefaultExchangeServer;
 import org.hum.pumpkin.exchange.server.ExchangeServer;
 import org.hum.pumpkin.protocol.URL;
 import org.hum.pumpkin.transport.Transporter;
+import org.hum.pumpkin.transport.TransporterServer;
 
 public abstract class AbstractExchanger implements Exchanger {
 
@@ -18,11 +20,12 @@ public abstract class AbstractExchanger implements Exchanger {
 	
 	@Override
 	public ExchangeServer bind(URL url) {
-		// TODO Auto-generated method stub
-		return null;
+		// TODO test版本 待完善
+		TransporterServer transporterServer = doBind(url);
+		return new DefaultExchangeServer(transporterServer);
 	}
 
-	protected abstract ExchangeServer doBind(URL url);
+	protected abstract TransporterServer doBind(URL url);
 
 	@Override
 	public ExchangeClient connect(URL url) {

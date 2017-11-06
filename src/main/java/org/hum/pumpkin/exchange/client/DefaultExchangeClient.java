@@ -29,7 +29,7 @@ public class DefaultExchangeClient implements ExchangeClient {
 			Future<Response> future = executorService.submit(new Callable<Response>() {
 				@Override
 				public Response call() throws Exception {
-					return new Response(transpoter.send(request.getData()), null);
+					return new Response(transpoter.send(request), null);
 				}
 			});
 			

@@ -67,7 +67,6 @@ public class ServiceConfig<T> {
 			throw new NullPointerException("export interfaceType mustn't be null!");
 		}
 		try {
-			
 			URL url = new URL(protocol, InetUtils.getLocalAddress(), port, interfaceType.getName());
 
 			Exporter<T> exporter = PROTOCOL.export(interfaceType, ref, url);

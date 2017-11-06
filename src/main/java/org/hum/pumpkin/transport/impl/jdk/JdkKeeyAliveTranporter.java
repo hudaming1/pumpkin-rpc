@@ -7,6 +7,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import org.hum.pumpkin.common.RpcException;
+import org.hum.pumpkin.exchange.Request;
+import org.hum.pumpkin.exchange.Response;
 import org.hum.pumpkin.protocol.URL;
 import org.hum.pumpkin.serviceloader.ServiceLoaderHolder;
 import org.hum.pumpkin.transport.Transporter;
@@ -36,9 +38,9 @@ public class JdkKeeyAliveTranporter implements Transporter {
 	}
 
 	@Override
-	public Object send(Object invocation) {
+	public Response send(Request request) {
 		try {
-			outputStream.write(serialization.serialize(invocation));
+			outputStream.write(serialization.serialize(request));
 			outputStream.flush();
 			
 			inputStream = socket.getInputStream();

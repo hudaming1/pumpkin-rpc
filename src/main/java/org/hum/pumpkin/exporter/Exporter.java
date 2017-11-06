@@ -1,5 +1,6 @@
 package org.hum.pumpkin.exporter;
 
-public class Exporter<T> {
+public interface Exporter<T> {
 
+    void unexport();
 }

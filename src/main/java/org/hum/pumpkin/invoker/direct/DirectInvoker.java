@@ -1,5 +1,6 @@
 package org.hum.pumpkin.invoker.direct;
 
+import org.hum.pumpkin.common.UrlConstant;
 import org.hum.pumpkin.exchange.Exchanger;
 import org.hum.pumpkin.exchange.Request;
 import org.hum.pumpkin.exchange.Response;
@@ -12,14 +13,14 @@ import org.hum.pumpkin.serviceloader.ServiceLoaderHolder;
 public class DirectInvoker<T> extends AbstractDirectInvoker<T> {
 
 	private final Exchanger exchanger = ServiceLoaderHolder.loadByCache(Exchanger.class);
-	private ExchangeClient client;
+	private ExchangeClient exchangeClient;
 	private Class<T> classType;
 	private URL url;
 
 	public DirectInvoker(Class<T> classType, URL url) {
 		this.classType = classType;
 		this.url = url;
-		client = exchanger.connect(url);
+		exchangeClient = exchanger.connect(url);
 	}
 
 	@Override
@@ -31,7 +32,9 @@ public class DirectInvoker<T> extends AbstractDirectInvoker<T> {
 	public RpcResult invoke(RpcInvocation invocation) {
 		try {
 			Request request = new Request(url.getHost(), url.getPort(), invocation);
-			Response response = client.send(request);
+			// TODO 日后完善
+			request.setRetryTimes(url.getInteger(UrlConstant.RETRY_TIMES));
+			Response response = exchangeClient.send(request);
 			return new RpcResult(response.getData(), null);
 		} catch (Exception ce) {
 			return new RpcResult(null, ce);

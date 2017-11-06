@@ -39,6 +39,18 @@ public class Request {
 		return isAsyn;
 	}
 
+	public void setAsyn(boolean isAsyn) {
+		this.isAsyn = isAsyn;
+	}
+
+	public void setTimeout(int timeout) {
+		this.timeout = timeout;
+	}
+
+	public void setRetryTimes(int retryTimes) {
+		this.retryTimes = retryTimes;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();

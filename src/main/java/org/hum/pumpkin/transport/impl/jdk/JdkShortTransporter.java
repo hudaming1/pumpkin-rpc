@@ -7,6 +7,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import org.hum.pumpkin.common.RpcException;
+import org.hum.pumpkin.exchange.Request;
+import org.hum.pumpkin.exchange.Response;
 import org.hum.pumpkin.protocol.URL;
 import org.hum.pumpkin.serviceloader.ServiceLoaderHolder;
 import org.hum.pumpkin.transport.Transporter;
@@ -28,7 +30,7 @@ public class JdkShortTransporter implements Transporter {
 	}
 
 	@Override
-	public Object send(Object invocation) {
+	public Response send(Request request) {
 		Socket socket = null;
 		InputStream inputStream = null;
 		OutputStream outputStream = null;
@@ -36,7 +38,7 @@ public class JdkShortTransporter implements Transporter {
 			socket = new Socket(url, port);
 			outputStream = socket.getOutputStream();
 			
-			outputStream.write(serialization.serialize(invocation));
+			outputStream.write(serialization.serialize(request));
 			outputStream.flush();
 
 			inputStream = socket.getInputStream();
