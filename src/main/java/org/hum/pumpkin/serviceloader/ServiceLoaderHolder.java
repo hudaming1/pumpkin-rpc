@@ -4,6 +4,10 @@ import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * TODO 考虑如何将若干个实现构建个一个调用链
+ * 例如Protocol下的RegsitryProtocol -> PumpkinProtocol
+ */
 public class ServiceLoaderHolder {
 	
 	private final static Map<Class<?>, Object> INSTANCE_MAP = new ConcurrentHashMap<>();

@@ -1,11 +1,13 @@
 package org.hum.pumpkin.server;
 
 import org.hum.pumpkin.protocol.Protocol;
+import org.hum.pumpkin.registry.conf.RegistryConfig;
 import org.hum.pumpkin.serviceloader.ServiceLoaderHolder;
 
 public class ServiceConfig<T> {
 
 	private int port;
+	private RegistryConfig registryConfig;
 	private Class<T> interfaceType;
 	private T ref;
 	private static final Protocol PROTOCOL = ServiceLoaderHolder.loadByCache(Protocol.class);
@@ -34,11 +36,15 @@ public class ServiceConfig<T> {
 		this.port = port;
 	}
 
+	public RegistryConfig getRegistryConfig() {
+		return registryConfig;
+	}
+
+	public void setRegistryConfig(RegistryConfig registryConfig) {
+		this.registryConfig = registryConfig;
+	}
+
 	public void export() {
-		
-		// 1.
-		
-		// 2.
 		
 		PROTOCOL.export(this);
 	}
