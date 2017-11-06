@@ -6,6 +6,7 @@ import org.hum.pumpkin.common.RpcException;
 import org.hum.pumpkin.common.UrlConstant;
 import org.hum.pumpkin.protocol.URL;
 import org.hum.pumpkin.transport.TransporterServer;
+import org.hum.pumpkin.transport.ServerHandler;
 import org.hum.pumpkin.transport.Transporter;
 import org.hum.pumpkin.transport.factory.AbstractTransporterFactory;
 
@@ -27,7 +28,7 @@ public class JdkTranspoterFactory extends AbstractTransporterFactory {
 	}
 
 	@Override
-	public TransporterServer createServer(URL url) {
-		return null;
+	public TransporterServer createServer(URL url, ServerHandler serverHandler) {
+		return new JdkTransporterServer(url, serverHandler);
 	}
 }
