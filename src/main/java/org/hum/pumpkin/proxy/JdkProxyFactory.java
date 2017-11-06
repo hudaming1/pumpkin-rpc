@@ -10,7 +10,7 @@ public class JdkProxyFactory implements ProxyFactory {
 	@Override
 	@SuppressWarnings("unchecked")
 	public <T> T getProxy(Invoker<T> invoker) {
-		return (T) Proxy.newProxyInstance(invoker.getClass().getClassLoader(), new Class[] { invoker.getClass() }, new InvokerInvocationHandler<>(invoker));
+		return (T) Proxy.newProxyInstance(invoker.getClass().getClassLoader(), new Class[] { invoker.getType() }, new InvokerInvocationHandler<>(invoker));
 	}
 
 	@Override

@@ -11,6 +11,8 @@ public class ClientTest {
 		referenceBean.setUrl("127.0.0.1", 9080);
 		referenceBean.setProtocol(ProtocolEnum.Direct.getName());
 		IHelloService helloService = referenceBean.get();
-		System.out.println(helloService.sayHello("huming"));
+		System.out.println(helloService.sayHello("huming1"));
+		System.out.println(helloService.sayHello("huming2"));
+		System.out.println(helloService.sayHello("huming3"));
 	}
 }

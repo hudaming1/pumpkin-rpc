@@ -35,6 +35,7 @@ public class JdkKeeyAliveTranporter implements Transporter {
 		logger.info("socket " + host + ":" + port + " build connection success.");
 		socket.setKeepAlive(true);
 		outputStream = socket.getOutputStream();
+		inputStream = socket.getInputStream();
 	}
 
 	@Override
@@ -43,7 +44,6 @@ public class JdkKeeyAliveTranporter implements Transporter {
 			outputStream.write(serialization.serialize(request));
 			outputStream.flush();
 			
-			inputStream = socket.getInputStream();
 			return serialization.deserialize(inputStream);
 		} catch (IOException e) {
 			throw new RpcException("invoke" + host + ":" + port + " exception", e);

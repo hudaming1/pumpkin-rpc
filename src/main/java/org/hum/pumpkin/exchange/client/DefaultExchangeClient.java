@@ -30,7 +30,7 @@ public class DefaultExchangeClient implements ExchangeClient {
 			Future<Response> future = executorService.submit(new Callable<Response>() {
 				@Override
 				public Response call() throws Exception {
-					return new Response(transpoter.send(request), null);
+					return transpoter.send(request);
 				}
 			});
 			

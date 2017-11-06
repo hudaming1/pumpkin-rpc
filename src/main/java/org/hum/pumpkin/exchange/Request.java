@@ -1,7 +1,10 @@
 package org.hum.pumpkin.exchange;
 
-public class Request {
+import java.io.Serializable;
 
+public class Request implements Serializable {
+
+	private static final long serialVersionUID = -3873786891041538794L;
 	private String url;
 	private int port;
 	private Object data;

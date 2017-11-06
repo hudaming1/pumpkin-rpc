@@ -31,7 +31,7 @@ public abstract class AbstractExchanger implements Exchanger {
 	@Override
 	public ExchangeClient connect(URL url) {
 		Boolean isShare = url.getBoolean(UrlConstant.IS_SHARE_CONNECTION);
-		if (isShare) {
+		if (isShare == null || isShare) {
 			String serviceKey = getServiceKey(url);
 			ExchangeClient exchangeClient = EXCHANGE_CLIENTS.get(serviceKey);
 			if (exchangeClient != null) {

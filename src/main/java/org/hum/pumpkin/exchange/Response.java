@@ -1,7 +1,10 @@
 package org.hum.pumpkin.exchange;
 
-public class Response {
+import java.io.Serializable;
 
+public class Response implements Serializable {
+
+	private static final long serialVersionUID = 8783577974211954621L;
 	private Object data;
 	private Throwable error;
 	

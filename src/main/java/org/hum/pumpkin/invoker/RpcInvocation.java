@@ -1,8 +1,11 @@
 package org.hum.pumpkin.invoker;
 
-@SuppressWarnings("rawtypes")
-public class RpcInvocation {
+import java.io.Serializable;
 
+@SuppressWarnings("rawtypes")
+public class RpcInvocation implements Serializable {
+
+	private static final long serialVersionUID = 6668787664662887722L;
 	private String method;
 	private Class[] paramTypes;
 	private Object[] params;

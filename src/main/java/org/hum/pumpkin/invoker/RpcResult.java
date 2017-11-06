@@ -1,7 +1,10 @@
 package org.hum.pumpkin.invoker;
 
-public class RpcResult {
+import java.io.Serializable;
 
+public class RpcResult implements Serializable {
+
+	private static final long serialVersionUID = -7639259023819054096L;
 	private Object data;
 	private Throwable error;
 

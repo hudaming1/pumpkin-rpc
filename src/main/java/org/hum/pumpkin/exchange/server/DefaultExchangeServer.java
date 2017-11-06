@@ -8,6 +8,7 @@ public class DefaultExchangeServer implements ExchangeServer {
 
 	public DefaultExchangeServer(TransporterServer transpoterServer) {
 		this.transpoterServer = transpoterServer;
+		this.transpoterServer.open();
 	}
 	
 	@Override
