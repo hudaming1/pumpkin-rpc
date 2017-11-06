@@ -1,4 +1,4 @@
-package org.hum.pumpkin.client;
+package org.hum.pumpkin.config;
 
 import org.hum.pumpkin.invoker.Invoker;
 import org.hum.pumpkin.protocol.Protocol;

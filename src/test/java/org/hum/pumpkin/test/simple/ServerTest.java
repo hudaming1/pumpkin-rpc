@@ -1,6 +1,6 @@
 package org.hum.pumpkin.test.simple;
 
-import org.hum.pumpkin.server.ServiceConfig;
+import org.hum.pumpkin.config.ServiceConfig;
 import org.hum.pumpkin.test._service.HelloServiceImpl;
 import org.hum.pumpkin.test._service.IHelloService;
 

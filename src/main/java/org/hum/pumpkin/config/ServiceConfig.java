@@ -1,15 +1,19 @@
-package org.hum.pumpkin.server;
+package org.hum.pumpkin.config;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hum.pumpkin.common.RpcException;
 import org.hum.pumpkin.exporter.Exporter;
 import org.hum.pumpkin.protocol.Protocol;
+import org.hum.pumpkin.protocol.URL;
 import org.hum.pumpkin.registry.conf.RegistryConfig;
 import org.hum.pumpkin.serviceloader.ServiceLoaderHolder;
+import org.hum.pumpkin.util.InetUtils;
 
 public class ServiceConfig<T> {
 
+	private String protocol;
 	private int port;
 	private RegistryConfig registryConfig;
 	private Class<T> interfaceType;
@@ -24,6 +28,14 @@ public class ServiceConfig<T> {
 
 	public void setInterfaceType(Class<T> interfaceType) {
 		this.interfaceType = interfaceType;
+	}
+
+	public String getProtocol() {
+		return protocol;
+	}
+
+	public void setProtocol(String protocol) {
+		this.protocol = protocol;
 	}
 
 	public T getRef() {
@@ -51,8 +63,18 @@ public class ServiceConfig<T> {
 	}
 
 	public void export() {
-		
-		Exporter<T> exporter = PROTOCOL.export(this);
-		EXPORTER_LIST.add(exporter);
+		if (interfaceType == null) {
+			throw new NullPointerException("export interfaceType mustn't be null!");
+		}
+		try {
+			
+			URL url = new URL(protocol, InetUtils.getLocalAddress(), port, interfaceType.getName());
+
+			Exporter<T> exporter = PROTOCOL.export(interfaceType, ref, url);
+
+			EXPORTER_LIST.add(exporter);
+		} catch (Exception e) {
+			throw new RpcException("export service[" + interfaceType.getName() + "] fail.", e);
+		}
 	}
 }

@@ -1,6 +1,6 @@
 package org.hum.pumpkin.test.simple;
 
-import org.hum.pumpkin.client.ReferenceConfig;
+import org.hum.pumpkin.config.ReferenceConfig;
 import org.hum.pumpkin.protocol.ProtocolEnum;
 import org.hum.pumpkin.test._service.IHelloService;
 
