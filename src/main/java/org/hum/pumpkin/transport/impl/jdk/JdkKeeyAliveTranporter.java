@@ -7,36 +7,36 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import org.hum.pumpkin.common.RpcException;
+import org.hum.pumpkin.protocol.URL;
 import org.hum.pumpkin.serviceloader.ServiceLoaderHolder;
 import org.hum.pumpkin.transport.Transporter;
-import org.hum.pumpkin.transport.config.TransporterConfig;
 import org.hum.pumpkin.transport.serialization.Serialization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class JdkKeeyAliveTranporter implements Transporter {
 
-	private static final Logger logger = LoggerFactory.getLogger(JdkTransporterFactory.class);
+	private static final Logger logger = LoggerFactory.getLogger(JdkKeeyAliveTranporter.class);
 
 	private final Serialization serialization = ServiceLoaderHolder.loadByCache(Serialization.class);
 	
 	private Socket socket;
 	private InputStream inputStream;
 	private OutputStream outputStream;
-	private String address;
+	private String host;
 	private int port;
 
-	public JdkKeeyAliveTranporter(TransporterConfig config) throws UnknownHostException, IOException {
-		this.address = config.getAddress();
-		this.port = config.getPort();
-		socket = new Socket(address, port);
-		logger.info("socket " + address + ":" + port + " build connection success.");
+	public JdkKeeyAliveTranporter(URL url) throws UnknownHostException, IOException {
+		this.host = url.getHost();
+		this.port = url.getPort();
+		socket = new Socket(host, port);
+		logger.info("socket " + host + ":" + port + " build connection success.");
 		socket.setKeepAlive(true);
 		outputStream = socket.getOutputStream();
 	}
 
 	@Override
-	public Object invoke(Object invocation) {
+	public Object send(Object invocation) {
 		try {
 			outputStream.write(serialization.serialize(invocation));
 			outputStream.flush();
@@ -44,7 +44,7 @@ public class JdkKeeyAliveTranporter implements Transporter {
 			inputStream = socket.getInputStream();
 			return serialization.deserialize(inputStream);
 		} catch (IOException e) {
-			throw new RpcException("invoke" + address + ":" + port + " exception", e);
+			throw new RpcException("invoke" + host + ":" + port + " exception", e);
 		}
 	}
 
@@ -55,7 +55,7 @@ public class JdkKeeyAliveTranporter implements Transporter {
 				inputStream.close();
 				inputStream = null;
 			} catch (IOException e) {
-				logger.error("close tcp [" + address + ":" + port + "] inputstream error", e);
+				logger.error("close tcp [" + host + ":" + port + "] inputstream error", e);
 			}
 		}
 		if (outputStream != null) {
@@ -63,7 +63,7 @@ public class JdkKeeyAliveTranporter implements Transporter {
 				outputStream.close();
 				outputStream = null;
 			} catch (IOException e) {
-				logger.error("close tcp [" + address + ":" + port + "] outputstream error", e);
+				logger.error("close tcp [" + host + ":" + port + "] outputstream error", e);
 			}
 		}
 		if (socket != null) {
@@ -71,7 +71,7 @@ public class JdkKeeyAliveTranporter implements Transporter {
 				socket.close();
 				socket = null;
 			} catch (IOException e) {
-				logger.error("close tcp [" + address + ":" + port + "] socket connection error", e);
+				logger.error("close tcp [" + host + ":" + port + "] socket connection error", e);
 			}
 		}
 	}

@@ -1,4 +1,4 @@
-package org.hum.pumpkin.transport;
+package org.hum.pumpkin.exchange;
 
 public class Response {
 

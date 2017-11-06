@@ -3,16 +3,16 @@ package org.hum.pumpkin.transport.factory;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.hum.pumpkin.protocol.URL;
 import org.hum.pumpkin.transport.Transporter;
-import org.hum.pumpkin.transport.config.TransporterConfig;
 
 public abstract class AbstractTransporterFactory implements TransporterFactory {
 
 	private final static Map<String, Transporter> transpoterCache = new ConcurrentHashMap<>();
 
 	@Override
-	public Transporter create(TransporterConfig config) {
-		String tranportKey = config.getAddress() + ":" + config.getPort();
+	public Transporter create(URL url) {
+		String tranportKey = url.getProtocol() + "://" + url.getHost() + ":" + url.getPort() + "/" + url.getPath();
 		Transporter transporter = transpoterCache.get(tranportKey);
 		if (transporter != null) {
 			return transporter;
@@ -23,11 +23,11 @@ public abstract class AbstractTransporterFactory implements TransporterFactory {
 			if (transporter != null) {
 				return transporter;
 			}
-			transporter = doCreate(config);
+			transporter = doCreate(url);
 			transpoterCache.put(tranportKey, transporter);
 		}
 		return transporter;
 	}
 	
-	protected abstract Transporter doCreate(TransporterConfig config);
+	protected abstract Transporter doCreate(URL url);
 }
