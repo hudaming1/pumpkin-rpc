@@ -1,4 +1,5 @@
 ## pumpkin-rpc Version 1.0.0
+1.0.0版本目前仅支持点对点通信，但RPC模型基本完成
 #### 目前完成功能
   1.Transporter层支持Jdk-Socket、Netty <br />
   2.Serialization支持Jdk-ObjectStream、Kryo <br />
