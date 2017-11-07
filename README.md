@@ -1,5 +1,8 @@
-## pumpkin-rpc Version 1.0.0
-1.0.0版本目前仅支持点对点通信，但RPC模型基本完成
+## Pumpkin-rpc
+是作者在学习RPC框架中，仿照Dubbo的设计思想，自己动手开发的一个RPC框架。
+
+#### Version 1.0.0
+  当前版本目前仅支持点对点通信，但RPC模型基本完成
 #### 目前完成功能
   1.Transporter层支持Jdk-Socket、Netty <br />
   2.Serialization支持Jdk-ObjectStream、Kryo <br />
