@@ -1,6 +1,8 @@
 package org.hum.pumpkin.transport.impl.netty;
 
-import org.hum.pumpkin.transport.serialization.Serialization;
+import java.io.ByteArrayOutputStream;
+
+import org.hum.pumpkin.serialization.Serialization;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -17,6 +19,8 @@ public class NettyEncoder extends MessageToByteEncoder {
 
 	@Override
 	protected void encode(ChannelHandlerContext ctx, Object msg, ByteBuf out) throws Exception {
-		out.writeBytes(serialization.serialize(msg));
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		serialization.serialize(bos, msg);
+		out.writeBytes(bos.toByteArray());
 	}
 }

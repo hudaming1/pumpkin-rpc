@@ -10,9 +10,9 @@ import org.hum.pumpkin.common.RpcException;
 import org.hum.pumpkin.exchange.Request;
 import org.hum.pumpkin.exchange.Response;
 import org.hum.pumpkin.protocol.URL;
+import org.hum.pumpkin.serialization.Serialization;
 import org.hum.pumpkin.serviceloader.ServiceLoaderHolder;
 import org.hum.pumpkin.transport.Client;
-import org.hum.pumpkin.transport.serialization.Serialization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,11 +38,9 @@ public class JdkShortClient implements Client {
 			socket = new Socket(url, port);
 			outputStream = socket.getOutputStream();
 			
-			outputStream.write(serialization.serialize(request));
-			outputStream.flush();
-
+			serialization.serialize(outputStream, request);
 			inputStream = socket.getInputStream();
-			return serialization.deserialize(inputStream);
+			return serialization.deserialize(inputStream, Response.class);
 		} catch (IOException e) {
 			throw new RpcException("invoke" + url + ":" + port + " exception", e);
 		} finally {

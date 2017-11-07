@@ -1,12 +1,13 @@
-package org.hum.pumpkin.transport.serialization;
+package org.hum.pumpkin.serialization.jdknative;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 
+import org.hum.pumpkin.serialization.Serialization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,32 +17,20 @@ public class ObjectStreamSerialization implements Serialization {
 	private static final Logger logger = LoggerFactory.getLogger(ObjectStreamSerialization.class);
 
 	@Override
-	public byte[] serialize(Object object) {
+	public void serialize(OutputStream outputStream, Object object) {
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			ObjectOutputStream oos = new ObjectOutputStream(baos);
 			oos.writeObject(object);
-			return baos.toByteArray();
+			outputStream.write(baos.toByteArray());
+			outputStream.flush();
 		} catch (IOException e) {
 			logger.error("serialize occured exception", e);
-			return null;
 		}
 	}
 
 	@Override
-	public <T> T deserialize(byte[] bytes) {
-		try {
-			ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
-			ObjectInputStream ois = new ObjectInputStream(bais);
-			return (T) ois.readObject();
-		} catch (Exception e) {
-			logger.error("deserialize occured exception", e);
-			return null;
-		}
-	}
-
-	@Override
-	public <T> T deserialize(InputStream inputStream) {
+	public <T> T deserialize(InputStream inputStream, Class<T> clazz) {
 		try {
 			ObjectInputStream ois = new ObjectInputStream(inputStream);
 			return (T) ois.readObject();
@@ -49,10 +38,5 @@ public class ObjectStreamSerialization implements Serialization {
 			logger.error("deserialize occured exception", e);
 			return null;
 		}
-	}
-
-	@Override
-	public <T> T deserialize(byte[] bytes, Class<T> clazz) {
-		return deserialize(bytes);
 	}
 }

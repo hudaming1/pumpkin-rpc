@@ -1,8 +1,9 @@
 package org.hum.pumpkin.transport.impl.netty;
 
+import java.io.ByteArrayInputStream;
 import java.util.List;
 
-import org.hum.pumpkin.transport.serialization.Serialization;
+import org.hum.pumpkin.serialization.Serialization;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -22,6 +23,6 @@ public class NettyDecoder<T> extends ByteToMessageDecoder {
 	protected void decode(ChannelHandlerContext ctx, ByteBuf buf, List<Object> list) throws Exception {
 		byte[] bytes = new byte[buf.readableBytes()];
 		buf.readBytes(bytes);
-		list.add(serialization.deserialize(bytes, clazz));
+		list.add(serialization.deserialize(new ByteArrayInputStream(bytes), clazz));
 	}
 }

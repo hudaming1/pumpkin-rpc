@@ -10,10 +10,10 @@ import org.hum.pumpkin.common.RpcException;
 import org.hum.pumpkin.exchange.Request;
 import org.hum.pumpkin.exchange.Response;
 import org.hum.pumpkin.protocol.URL;
+import org.hum.pumpkin.serialization.Serialization;
 import org.hum.pumpkin.serviceloader.ServiceLoaderHolder;
 import org.hum.pumpkin.transport.ServerHandler;
 import org.hum.pumpkin.transport.Server;
-import org.hum.pumpkin.transport.serialization.Serialization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,12 +72,10 @@ public class JdkServer implements Server {
 				while (true) {
 					try {
 						InputStream inputStream = socket.getInputStream();
-						Request request = serialization.deserialize(inputStream);
-						Response response = serverHandler.received(request);
-						byte[] bytes = serialization.serialize(response);
 						OutputStream outputStream = socket.getOutputStream();
-						outputStream.write(bytes);
-						outputStream.flush();
+						Request request = serialization.deserialize(inputStream, Request.class);
+						Response response = serverHandler.received(request);
+						serialization.serialize(outputStream, response);
 					} catch (Exception ce) {
 						logger.error("process client[" + socket.getInetAddress().getHostAddress() + ":" + socket.getPort() + "] exception", ce);
 					}
@@ -96,8 +94,7 @@ public class JdkServer implements Server {
 			try {
 				server.close();
 			} catch (IOException e) {
-				logger.error("close tcp server [" + url.getHost() + ":" + url.getPort() + "] socket connection error",
-						e);
+				logger.error("close tcp server [" + url.getHost() + ":" + url.getPort() + "] socket connection error", e);
 			}
 		}
 	}

@@ -13,6 +13,11 @@ public class Request implements Serializable {
 	private int timeout;
 	private int retryTimes;
 
+	@Deprecated
+	public Request() {
+		// 空构造方法：不推荐使用，这个是为Kryo序列化准备的
+	}
+	
 	public Request(String url, int port, Object data) {
 		id = System.currentTimeMillis();
 		this.url = url;

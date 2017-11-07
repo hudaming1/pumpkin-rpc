@@ -3,9 +3,9 @@ package org.hum.pumpkin.transport.impl.netty;
 import org.hum.pumpkin.exchange.Request;
 import org.hum.pumpkin.exchange.Response;
 import org.hum.pumpkin.protocol.URL;
+import org.hum.pumpkin.serialization.Serialization;
 import org.hum.pumpkin.serviceloader.ServiceLoaderHolder;
 import org.hum.pumpkin.transport.Client;
-import org.hum.pumpkin.transport.serialization.Serialization;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;

@@ -9,6 +9,9 @@ public class RpcInvocation implements Serializable {
 	private String method;
 	private Class[] paramTypes;
 	private Object[] params;
+	
+	public RpcInvocation() {
+	}
 
 	public RpcInvocation(String method, Class[] paramTypes, Object[] params) {
 		this.method = method;

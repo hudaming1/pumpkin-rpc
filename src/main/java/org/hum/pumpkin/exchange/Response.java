@@ -9,6 +9,11 @@ public class Response implements Serializable {
 	private Object data;
 	private Throwable error;
 	
+	@Deprecated
+	public Response() {
+		// 空构造方法：不推荐使用，这个是为Kryo序列化准备的
+	}
+	
 	public Response(long requestId, Object data, Throwable error) {
 		this.requestId = requestId;
 		this.data = data;
