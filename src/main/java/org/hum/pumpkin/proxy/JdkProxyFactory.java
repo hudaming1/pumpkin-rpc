@@ -1,9 +1,10 @@
 package org.hum.pumpkin.proxy;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Proxy;
 
+import org.hum.pumpkin.common.RpcException;
 import org.hum.pumpkin.invoker.Invoker;
-import org.hum.pumpkin.protocol.URL;
 
 public class JdkProxyFactory implements ProxyFactory {
 
@@ -14,8 +15,12 @@ public class JdkProxyFactory implements ProxyFactory {
 	}
 
 	@Override
-	public <T> Invoker<T> getInvoker(T proxy, Class<T> type, URL url) {
-		// TODO Auto-generated method stub
-		return null;
+	public Object invoke(Object instances, String methodName, Class<?>[] paramTypes, Object[] params) {
+		try {
+			return instances.getClass().getMethod(methodName, paramTypes).invoke(instances, params);
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
+				| SecurityException e) {
+			throw new RpcException("reflect invoke [" + instances.getClass().getName() + "." + methodName + "] exception", e);
+		}
 	}
 }
