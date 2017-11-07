@@ -1,5 +1,6 @@
 package org.hum.pumpkin.transport.serialization;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,7 +12,7 @@ import org.slf4j.LoggerFactory;
 
 @SuppressWarnings("unchecked")
 public class ObjectStreamSerialization implements Serialization {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(ObjectStreamSerialization.class);
 
 	@Override
@@ -29,8 +30,14 @@ public class ObjectStreamSerialization implements Serialization {
 
 	@Override
 	public <T> T deserialize(byte[] bytes) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
+			ObjectInputStream ois = new ObjectInputStream(bais);
+			return (T) ois.readObject();
+		} catch (Exception e) {
+			logger.error("deserialize occured exception", e);
+			return null;
+		}
 	}
 
 	@Override
@@ -42,5 +49,10 @@ public class ObjectStreamSerialization implements Serialization {
 			logger.error("deserialize occured exception", e);
 			return null;
 		}
+	}
+
+	@Override
+	public <T> T deserialize(byte[] bytes, Class<T> clazz) {
+		return deserialize(bytes);
 	}
 }

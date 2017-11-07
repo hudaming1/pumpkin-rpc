@@ -10,8 +10,7 @@ public class NettyTransporterFactory extends AbstractTransporterFactory {
 
 	@Override
 	public Server createServer(URL url, ServerHandler serverHandler) {
-		// TODO Auto-generated method stub
-		return null;
+		return new NettyServer(url, serverHandler);
 	}
 
 	@Override

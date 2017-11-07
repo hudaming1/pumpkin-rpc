@@ -10,6 +10,8 @@ public interface Serialization {
 	byte[] serialize(Object object);
 
 	<T> T deserialize(byte[] bytes);
+
+	<T> T deserialize(byte[] bytes, Class<T> clazz);
 	
 	<T> T deserialize(InputStream inputStream);
 }
