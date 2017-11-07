@@ -34,8 +34,12 @@ public class DirectInvoker<T> extends AbstractDirectInvoker<T> {
 			// TODO 日后完善
 			// request.setRetryTimes(url.getInteger(UrlConstant.RETRY_TIMES));
 			Response response = exchangeClient.send(request);
-			return new RpcResult(response.getData(), null);
-		} catch (Exception ce) {ce.printStackTrace();
+			if (response.getData() instanceof RpcResult) {
+				return (RpcResult) response.getData();
+			} else {
+				throw new ClassCastException("response data cann't parse, type is " + response.getData().getClass().getName());
+			}
+		} catch (Exception ce) {
 			return new RpcResult(null, ce);
 		}
 	}
