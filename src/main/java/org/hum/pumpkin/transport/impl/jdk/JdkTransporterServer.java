@@ -20,9 +20,9 @@ import org.slf4j.LoggerFactory;
 public class JdkTransporterServer implements TransporterServer {
 
 	private static final Logger logger = LoggerFactory.getLogger(JdkTransporterServer.class);
-	
+
 	private final Serialization serialization = ServiceLoaderHolder.loadByCache(Serialization.class);
-	
+
 	private ServerHandler serverHandler;
 	private volatile boolean isRun;
 	private URL url;
@@ -47,7 +47,7 @@ public class JdkTransporterServer implements TransporterServer {
 			throw new RpcException("server[" + url.getPort() + "] start failed", e);
 		}
 	}
-	
+
 	private void listenning() {
 		// TODO 这里新建线程好吗？
 		new Thread(new Runnable() {
@@ -64,17 +64,28 @@ public class JdkTransporterServer implements TransporterServer {
 			}
 		}).start();
 	}
-	
-	private void handler(Socket socket) throws IOException {
-		InputStream inputStream = socket.getInputStream();
-		Request request = serialization.deserialize(inputStream);
-		Response response = serverHandler.received(request);
-		byte[] bytes = serialization.serialize(response);
-		OutputStream outputStream = socket.getOutputStream();
-		outputStream.write(bytes);
-		outputStream.flush();
+
+	private void handler(final Socket socket) {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				while (true) {
+					try {
+						InputStream inputStream = socket.getInputStream();
+						Request request = serialization.deserialize(inputStream);
+						Response response = serverHandler.received(request);
+						byte[] bytes = serialization.serialize(response);
+						OutputStream outputStream = socket.getOutputStream();
+						outputStream.write(bytes);
+						outputStream.flush();
+					} catch (Exception ce) {
+						logger.error("process client[" + socket.getInetAddress().getHostAddress() + ":" + socket.getPort() + "] exception", ce);
+					}
+				}
+			}
+		}).start();
 	}
-	
+
 	@Override
 	public void close() {
 		if (!isRun) {
@@ -85,7 +96,8 @@ public class JdkTransporterServer implements TransporterServer {
 			try {
 				server.close();
 			} catch (IOException e) {
-				logger.error("close tcp server [" + url.getHost() + ":" + url.getPort() + "] socket connection error", e);
+				logger.error("close tcp server [" + url.getHost() + ":" + url.getPort() + "] socket connection error",
+						e);
 			}
 		}
 	}

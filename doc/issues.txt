@@ -1,5 +1,6 @@
-我现在该如何初始化invokerHolder中的连接呢？并且如何保障holder中的连接和注册中心的同步呢？
+我现在该如何初始化invokerHolder中的连接呢？并且如何保障holder中的连接和注册中心的同步呢？考虑采用责任链模式，初始化Invoker
 
 丰富ServiceLoader的功能，SPI不太好用，考虑改用其他实现。
 进行压力测试
 扩展其他实现
+TcpSocket长短连接目前都没有close
