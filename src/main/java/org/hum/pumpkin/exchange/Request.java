@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class Request implements Serializable {
 
 	private static final long serialVersionUID = -3873786891041538794L;
+	private long id;
 	private String url;
 	private int port;
 	private Object data;
@@ -13,9 +14,14 @@ public class Request implements Serializable {
 	private int retryTimes;
 
 	public Request(String url, int port, Object data) {
+		id = System.currentTimeMillis();
 		this.url = url;
 		this.port = port;
 		this.data = data;
+	}
+	
+	public long getId() {
+		return this.id;
 	}
 
 	public String getUrl() {

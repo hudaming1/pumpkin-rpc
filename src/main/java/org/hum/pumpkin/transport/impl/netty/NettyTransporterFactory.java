@@ -15,7 +15,6 @@ public class NettyTransporterFactory extends AbstractTransporterFactory {
 
 	@Override
 	protected Client doCreate(URL url) {
-		// TODO Auto-generated method stub
-		return null;
+		return new NettyClient(url);
 	}
 }

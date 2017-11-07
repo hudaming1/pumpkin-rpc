@@ -36,7 +36,7 @@ public class DefaultExchangeClient implements ExchangeClient {
 			
 			return future.get();
 		} catch (Exception ce) {
-			return new Response(null, ce);
+			return new Response(request.getId(), null, ce);
 		}
 	}
 }

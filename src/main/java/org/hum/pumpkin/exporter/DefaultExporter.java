@@ -30,23 +30,23 @@ public class DefaultExporter<T> implements Exporter<T>{
 				public Response call() throws Exception {
 					if (!(request.getData() instanceof RpcInvocation)) {
 						// TODO 思考异常怎么处理，是否要增加caughtException方法
-						return new Response(null, null);
+						return new Response(request.getId(), null, null);
 					}
 					RpcInvocation invocation = (RpcInvocation) request.getData();
 					try {
 						Object result = ref.getClass().getMethod(invocation.getMethod(), invocation.getParamTypes()).invoke(ref, invocation.getParams());
-						return new Response(result, null);
+						return new Response(request.getId(), result, null);
 					} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-						return new Response(null, e);
+						return new Response(request.getId(), null, e);
 					} catch (Exception ce) {
-						return new Response(null, ce);
+						return new Response(request.getId(), null, ce);
 					}
 				}
 			});
 			try {
 				return future.get();
 			} catch (InterruptedException | ExecutionException e) {
-				return new Response(null, e);
+				return new Response(request.getId(), null, e);
 			}
 		}
 	};
