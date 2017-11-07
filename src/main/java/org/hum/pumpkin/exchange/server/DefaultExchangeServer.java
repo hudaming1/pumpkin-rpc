@@ -1,18 +1,18 @@
 package org.hum.pumpkin.exchange.server;
 
-import org.hum.pumpkin.transport.TransporterServer;
+import org.hum.pumpkin.transport.Server;
 
 public class DefaultExchangeServer implements ExchangeServer {
 
-	private TransporterServer transpoterServer;
+	private Server server;
 
-	public DefaultExchangeServer(TransporterServer transpoterServer) {
-		this.transpoterServer = transpoterServer;
-		this.transpoterServer.open();
+	public DefaultExchangeServer(Server server) {
+		this.server = server;
+		this.server.open();
 	}
 	
 	@Override
 	public void close() {
-		transpoterServer.close();
+		server.close();
 	}
 }

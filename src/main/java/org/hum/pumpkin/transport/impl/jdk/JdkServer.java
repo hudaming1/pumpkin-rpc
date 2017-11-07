@@ -12,14 +12,14 @@ import org.hum.pumpkin.exchange.Response;
 import org.hum.pumpkin.protocol.URL;
 import org.hum.pumpkin.serviceloader.ServiceLoaderHolder;
 import org.hum.pumpkin.transport.ServerHandler;
-import org.hum.pumpkin.transport.TransporterServer;
+import org.hum.pumpkin.transport.Server;
 import org.hum.pumpkin.transport.serialization.Serialization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class JdkTransporterServer implements TransporterServer {
+public class JdkServer implements Server {
 
-	private static final Logger logger = LoggerFactory.getLogger(JdkTransporterServer.class);
+	private static final Logger logger = LoggerFactory.getLogger(JdkServer.class);
 
 	private final Serialization serialization = ServiceLoaderHolder.loadByCache(Serialization.class);
 
@@ -28,7 +28,7 @@ public class JdkTransporterServer implements TransporterServer {
 	private URL url;
 	private ServerSocket server;
 
-	public JdkTransporterServer(URL url, ServerHandler serverHandler) {
+	public JdkServer(URL url, ServerHandler serverHandler) {
 		this.url = url;
 		this.serverHandler = serverHandler;
 	}

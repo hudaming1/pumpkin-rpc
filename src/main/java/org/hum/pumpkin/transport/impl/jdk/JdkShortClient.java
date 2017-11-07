@@ -11,20 +11,20 @@ import org.hum.pumpkin.exchange.Request;
 import org.hum.pumpkin.exchange.Response;
 import org.hum.pumpkin.protocol.URL;
 import org.hum.pumpkin.serviceloader.ServiceLoaderHolder;
-import org.hum.pumpkin.transport.Transporter;
+import org.hum.pumpkin.transport.Client;
 import org.hum.pumpkin.transport.serialization.Serialization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class JdkShortTransporter implements Transporter {
+public class JdkShortClient implements Client {
 
-	private static final Logger logger = LoggerFactory.getLogger(JdkShortTransporter.class);
+	private static final Logger logger = LoggerFactory.getLogger(JdkShortClient.class);
 
 	private final Serialization serialization = ServiceLoaderHolder.loadByCache(Serialization.class);
 	private String url;
 	private int port;
 
-	public JdkShortTransporter(URL url) throws UnknownHostException, IOException {
+	public JdkShortClient(URL url) throws UnknownHostException, IOException {
 		this.url = url.getHost();
 		this.port = url.getPort();
 	}

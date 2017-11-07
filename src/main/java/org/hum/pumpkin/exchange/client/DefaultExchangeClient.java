@@ -8,15 +8,15 @@ import org.hum.pumpkin.exchange.Request;
 import org.hum.pumpkin.exchange.Response;
 import org.hum.pumpkin.serviceloader.ServiceLoaderHolder;
 import org.hum.pumpkin.threadpool.ThreadPoolFactory;
-import org.hum.pumpkin.transport.Transporter;
+import org.hum.pumpkin.transport.Client;
 
 public class DefaultExchangeClient implements ExchangeClient {
 
-	private Transporter transpoter;
+	private Client client;
 	private static final ExecutorService executorService = ServiceLoaderHolder.loadByCache(ThreadPoolFactory.class).create();
 
-	public DefaultExchangeClient(Transporter transpoter) {
-		this.transpoter = transpoter;
+	public DefaultExchangeClient(Client client) {
+		this.client = client;
 	}
 
 	@Override
@@ -30,7 +30,7 @@ public class DefaultExchangeClient implements ExchangeClient {
 			Future<Response> future = executorService.submit(new Callable<Response>() {
 				@Override
 				public Response call() throws Exception {
-					return transpoter.send(request);
+					return client.send(request);
 				}
 			});
 			

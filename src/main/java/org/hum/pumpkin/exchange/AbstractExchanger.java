@@ -11,8 +11,8 @@ import org.hum.pumpkin.exchange.server.DefaultExchangeServer;
 import org.hum.pumpkin.exchange.server.ExchangeServer;
 import org.hum.pumpkin.protocol.URL;
 import org.hum.pumpkin.transport.ServerHandler;
-import org.hum.pumpkin.transport.Transporter;
-import org.hum.pumpkin.transport.TransporterServer;
+import org.hum.pumpkin.transport.Client;
+import org.hum.pumpkin.transport.Server;
 
 public abstract class AbstractExchanger implements Exchanger {
 
@@ -22,11 +22,11 @@ public abstract class AbstractExchanger implements Exchanger {
 	@Override
 	public ExchangeServer bind(URL url, ServerHandler serverHandler) {
 		// TODO test版本 待完善
-		TransporterServer transporterServer = doBind(url, serverHandler);
+		Server transporterServer = doBind(url, serverHandler);
 		return new DefaultExchangeServer(transporterServer);
 	}
 
-	protected abstract TransporterServer doBind(URL url, ServerHandler serverHandler);
+	protected abstract Server doBind(URL url, ServerHandler serverHandler);
 
 	@Override
 	public ExchangeClient connect(URL url) {
@@ -50,7 +50,7 @@ public abstract class AbstractExchanger implements Exchanger {
 		}
 	}
 
-	protected abstract Transporter doConnect(URL url);
+	protected abstract Client doConnect(URL url);
 	
 	private String getServiceKey(URL url) {
 		return url.getHost() + ":" + url.getPort(); 

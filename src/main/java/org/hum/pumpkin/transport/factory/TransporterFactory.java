@@ -1,13 +1,13 @@
 package org.hum.pumpkin.transport.factory;
 
 import org.hum.pumpkin.protocol.URL;
-import org.hum.pumpkin.transport.TransporterServer;
+import org.hum.pumpkin.transport.Server;
 import org.hum.pumpkin.transport.ServerHandler;
-import org.hum.pumpkin.transport.Transporter;
+import org.hum.pumpkin.transport.Client;
 
 public interface TransporterFactory {
 
-	Transporter createTransporter(URL url);
+	Client createClient(URL url);
 	
-	TransporterServer createServer(URL url, ServerHandler serverHandler);
+	Server createServer(URL url, ServerHandler serverHandler);
 }

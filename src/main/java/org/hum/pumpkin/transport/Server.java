@@ -1,6 +1,6 @@
 package org.hum.pumpkin.transport;
 
-public interface TransporterServer {
+public interface Server {
 
 	void open();
 	

@@ -4,30 +4,30 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.hum.pumpkin.protocol.URL;
-import org.hum.pumpkin.transport.Transporter;
+import org.hum.pumpkin.transport.Client;
 
 public abstract class AbstractTransporterFactory implements TransporterFactory {
 
-	private final static Map<String, Transporter> transpoterCache = new ConcurrentHashMap<>();
+	private final static Map<String, Client> clientCache = new ConcurrentHashMap<>();
 
 	@Override
-	public Transporter createTransporter(URL url) {
+	public Client createClient(URL url) {
 		String tranportKey = url.getProtocol() + "://" + url.getHost() + ":" + url.getPort() + "/" + url.getPath();
-		Transporter transporter = transpoterCache.get(tranportKey);
-		if (transporter != null) {
-			return transporter;
+		Client client = clientCache.get(tranportKey);
+		if (client != null) {
+			return client;
 		}
 		// Transporter一定不要重复创建，其内部对象通过JVM GC不一定能够回收，因此一定要保证线程安全
-		synchronized (transpoterCache) {
-			transporter = transpoterCache.get(tranportKey);
-			if (transporter != null) {
-				return transporter;
+		synchronized (clientCache) {
+			client = clientCache.get(tranportKey);
+			if (client != null) {
+				return client;
 			}
-			transporter = doCreate(url);
-			transpoterCache.put(tranportKey, transporter);
+			client = doCreate(url);
+			clientCache.put(tranportKey, client);
 		}
-		return transporter;
+		return client;
 	}
 	
-	protected abstract Transporter doCreate(URL url);
+	protected abstract Client doCreate(URL url);
 }

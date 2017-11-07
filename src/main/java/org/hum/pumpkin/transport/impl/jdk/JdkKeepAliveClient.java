@@ -11,14 +11,14 @@ import org.hum.pumpkin.exchange.Request;
 import org.hum.pumpkin.exchange.Response;
 import org.hum.pumpkin.protocol.URL;
 import org.hum.pumpkin.serviceloader.ServiceLoaderHolder;
-import org.hum.pumpkin.transport.Transporter;
+import org.hum.pumpkin.transport.Client;
 import org.hum.pumpkin.transport.serialization.Serialization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class JdkKeeyAliveTranporter implements Transporter {
+public class JdkKeepAliveClient implements Client {
 
-	private static final Logger logger = LoggerFactory.getLogger(JdkKeeyAliveTranporter.class);
+	private static final Logger logger = LoggerFactory.getLogger(JdkKeepAliveClient.class);
 
 	private final Serialization serialization = ServiceLoaderHolder.loadByCache(Serialization.class);
 	
@@ -28,7 +28,7 @@ public class JdkKeeyAliveTranporter implements Transporter {
 	private String host;
 	private int port;
 
-	public JdkKeeyAliveTranporter(URL url) throws UnknownHostException, IOException {
+	public JdkKeepAliveClient(URL url) throws UnknownHostException, IOException {
 		this.host = url.getHost();
 		this.port = url.getPort();
 		socket = new Socket(host, port);
