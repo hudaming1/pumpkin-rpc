@@ -1,8 +1,16 @@
-我现在该如何初始化invokerHolder中的连接呢？并且如何保障holder中的连接和注册中心的同步呢？考虑采用责任链模式，初始化Invoker
+设计优化：
+	我现在该如何初始化invokerHolder中的连接呢？并且如何保障holder中的连接和注册中心的同步呢？考虑采用责任链模式，初始化Invoker
+	丰富ServiceLoader的功能，SPI不太好用，考虑改用其他实现。
+	现在设计的设计，全层都太依赖于URL这个类，其实还是应该根据不同的层，将URL再详细设计。
+   		补充：Request现在好像也有越层的问题，考虑使用Maven Module重新设计，或许一定程度能解决该问题
 
-丰富ServiceLoader的功能，SPI不太好用，考虑改用其他实现。
-进行压力测试
-扩展其他实现
-TcpSocket长短连接目前都没有close
-现在设计的设计，全层都太依赖于URL这个类，其实还是应该根据不同的层，将URL再详细设计。
-   补充：Request现在好像也有越层的问题，考虑使用Maven Module重新设计，或许一定程度能解决该问题
+功能实现：
+   TcpSocket长短连接目前都没有close 
+   扩展其他实现（序列化、通信、Spring等）
+   进行压力测试
+   补全Logger功能
+   实现注册中心
+   Server/Client端的过滤器/拦截器
+   
+bug:
+   Server采用JDKSocket，Client采用Netty通信时，当Client关闭后，Server会报出大量EOF异常.
