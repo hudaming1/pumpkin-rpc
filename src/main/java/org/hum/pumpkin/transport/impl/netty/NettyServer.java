@@ -1,6 +1,6 @@
 package org.hum.pumpkin.transport.impl.netty;
 
-import org.hum.pumpkin.common.RpcException;
+import org.hum.pumpkin.common.exception.RpcException;
 import org.hum.pumpkin.exchange.Request;
 import org.hum.pumpkin.protocol.URL;
 import org.hum.pumpkin.serialization.Serialization;

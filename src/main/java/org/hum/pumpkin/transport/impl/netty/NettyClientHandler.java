@@ -3,7 +3,7 @@ package org.hum.pumpkin.transport.impl.netty;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.hum.pumpkin.common.RpcException;
+import org.hum.pumpkin.common.exception.RpcException;
 import org.hum.pumpkin.exchange.Request;
 import org.hum.pumpkin.exchange.Response;
 import org.hum.pumpkin.transport.ClientHandler;

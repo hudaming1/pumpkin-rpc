@@ -3,7 +3,7 @@ package org.hum.pumpkin.config;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hum.pumpkin.common.RpcException;
+import org.hum.pumpkin.common.exception.RpcException;
 import org.hum.pumpkin.exporter.Exporter;
 import org.hum.pumpkin.protocol.Protocol;
 import org.hum.pumpkin.protocol.URL;

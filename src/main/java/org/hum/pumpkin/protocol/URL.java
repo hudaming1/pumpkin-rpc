@@ -2,6 +2,7 @@ package org.hum.pumpkin.protocol;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public class URL {
 
@@ -49,5 +50,20 @@ public class URL {
 
 	public String getPath() {
 		return path;
+	}
+	
+	public String getParamString() {
+		StringBuilder sbuilder = new StringBuilder();
+		
+		for (Entry<String, Object> entry : params.entrySet()) {
+			sbuilder.append("&").append(entry.getKey()).append("=").append(entry.getValue());
+		}
+		
+		return sbuilder.toString().replaceFirst("&", "?");
+	}
+	
+	@Override
+	public String toString() {
+		return protocol + "://" + host + ":" + port + getParamString();
 	}
 }

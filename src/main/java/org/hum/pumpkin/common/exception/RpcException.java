@@ -1,6 +1,6 @@
-package org.hum.pumpkin.common;
+package org.hum.pumpkin.common.exception;
 
-public class RpcException extends RuntimeException {
+public class RpcException extends PumpkinException {
 
 	private static final long serialVersionUID = -4852969632068397402L;
 	

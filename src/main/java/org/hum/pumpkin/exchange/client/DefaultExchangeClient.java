@@ -10,6 +10,10 @@ import org.hum.pumpkin.serviceloader.ServiceLoaderHolder;
 import org.hum.pumpkin.threadpool.ThreadPoolFactory;
 import org.hum.pumpkin.transport.Client;
 
+/**
+ * Exchange层默认实现，DefaultExchange需要实现
+ * 	重试、超时、异步等功能
+ */
 public class DefaultExchangeClient implements ExchangeClient {
 
 	private Client client;

@@ -3,7 +3,7 @@ package org.hum.pumpkin.proxy;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Proxy;
 
-import org.hum.pumpkin.common.RpcException;
+import org.hum.pumpkin.common.exception.RpcException;
 import org.hum.pumpkin.invoker.Invoker;
 
 public class JdkProxyFactory implements ProxyFactory {
