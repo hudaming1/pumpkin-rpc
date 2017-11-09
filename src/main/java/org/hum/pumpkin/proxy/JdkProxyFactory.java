@@ -1,17 +1,26 @@
 package org.hum.pumpkin.proxy;
 
+import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 import org.hum.pumpkin.common.exception.RpcException;
 import org.hum.pumpkin.invoker.Invoker;
+import org.hum.pumpkin.invoker.RpcInvocation;
 
 public class JdkProxyFactory implements ProxyFactory {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <T> T getProxy(Invoker<T> invoker) {
-		return (T) Proxy.newProxyInstance(invoker.getClass().getClassLoader(), new Class[] { invoker.getType() }, new InvokerInvocationHandler<>(invoker));
+	public <T> T getProxy(final Invoker<T> invoker) {
+		return (T) Proxy.newProxyInstance(invoker.getClass().getClassLoader(), new Class[] { invoker.getType() }, new InvocationHandler() {
+			@Override
+			public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+				RpcInvocation invocation = new RpcInvocation(method.getName(), method.getParameterTypes(), args);
+				return invoker.invoke(invocation).get();
+			}
+		});
 	}
 
 	@Override
