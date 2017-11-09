@@ -19,7 +19,7 @@ Version 1.0
         ④ Kryo序列化方式
     当然协议层的规定也不是绝对的，这只是一种协议设计者推荐的搭配，最终通信方式仍然是取决于客户端。
 ##### 4.数据交换层
-        在最早一版(可以认为是v0.0.1)时我将"数据交换层"与"传输层"合并为"传输层"，但在实现时发现还是可以继续解耦。最终我将通信的
+    在最早一版(可以认为是v0.0.1)时我将"数据交换层"与"传输层"合并为"传输层"，但在实现时发现还是可以继续解耦。最终我将通信的
     重试、超时、同步异步等功能与传输功能分开。其中"重试、超时、同步异步"这些功能实质上是与下层的传输没有关系的，因此将这部分功能放
     到了"数据交换层"
 ##### 5.传输层
@@ -29,12 +29,12 @@ Version 1.0
     在传输时直接将Request对象转成字节流传输，计划在v2.0时对这层进行改造。
     
 ### v1.0 完成功能
-    1.Transporter层支持Jdk-Socket、Netty <br />
-    2.Serialization支持Jdk-ObjectStream、Kryo <br />
-    3.thread-pool采用ExcecutorService <br />
-    4.扩展组件采用JDK自带的SPI <br />
-    5.Proxy采用Jdk自带反射组件 <br />
+    1.Transporter层支持Jdk-Socket、Netty 
+    2.Serialization支持Jdk-ObjectStream、Kryo
+    3.thread-pool采用ExcecutorService
+    4.扩展组件采用JDK自带的SPI 
+    5.Proxy采用Jdk自带反射组件
 
 ### 代码运行
-    1.启动服务端：src/test/java/org/hum/pumpkin/test/simple/ServerTest.java <br />
+    1.启动服务端：src/test/java/org/hum/pumpkin/test/simple/ServerTest.java
     2.启动客户端：src/test/java/org/hum/pumpkin/test/simple/ClientTest.java
