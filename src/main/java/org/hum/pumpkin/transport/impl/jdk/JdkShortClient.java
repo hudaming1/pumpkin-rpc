@@ -23,6 +23,9 @@ public class JdkShortClient implements Client {
 	private final Serialization serialization = ServiceLoaderHolder.loadByCache(Serialization.class);
 	private String url;
 	private int port;
+	private Socket socket = null;
+	private InputStream inputStream = null;
+	private OutputStream outputStream = null;
 
 	public JdkShortClient(URL url) throws UnknownHostException, IOException {
 		this.url = url.getHost();
@@ -31,9 +34,6 @@ public class JdkShortClient implements Client {
 
 	@Override
 	public Response send(Request request) {
-		Socket socket = null;
-		InputStream inputStream = null;
-		OutputStream outputStream = null;
 		try {
 			socket = new Socket(url, port);
 			outputStream = socket.getOutputStream();
@@ -44,34 +44,35 @@ public class JdkShortClient implements Client {
 		} catch (IOException e) {
 			throw new RpcException("invoke" + url + ":" + port + " exception", e);
 		} finally {
-			if (inputStream != null) {
-				try {
-					inputStream.close();
-					inputStream = null;
-				} catch (IOException e) {
-					logger.error("close tcp [" + url + ":" + port + "] inputstream error", e);
-				}
-			}
-			if (outputStream != null) {
-				try {
-					outputStream.close();
-					outputStream = null;
-				} catch (IOException e) {
-					logger.error("close tcp [" + url + ":" + port + "] outputstream error", e);
-				}
-			}
-			if (socket != null) {
-				try {
-					socket.close();
-					socket = null;
-				} catch (IOException e) {
-					logger.error("close tcp [" + url + ":" + port + "] socket connection error", e);
-				}
-			}
+			close();
 		}
 	}
 
 	@Override
 	public void close() {
+		if (inputStream != null) {
+			try {
+				inputStream.close();
+				inputStream = null;
+			} catch (IOException e) {
+				logger.error("close tcp [" + url + ":" + port + "] inputstream error", e);
+			}
+		}
+		if (outputStream != null) {
+			try {
+				outputStream.close();
+				outputStream = null;
+			} catch (IOException e) {
+				logger.error("close tcp [" + url + ":" + port + "] outputstream error", e);
+			}
+		}
+		if (socket != null) {
+			try {
+				socket.close();
+				socket = null;
+			} catch (IOException e) {
+				logger.error("close tcp [" + url + ":" + port + "] socket connection error", e);
+			}
+		}
 	}
 }

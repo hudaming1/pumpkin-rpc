@@ -6,6 +6,8 @@ import org.hum.pumpkin.protocol.URL;
 import org.hum.pumpkin.serialization.Serialization;
 import org.hum.pumpkin.serviceloader.ServiceLoaderHolder;
 import org.hum.pumpkin.transport.Client;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -17,9 +19,11 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 
 public class NettyClient implements Client {
 
+	private static final Logger logger = LoggerFactory.getLogger(NettyClient.class);
 	private URL url;
 	private final Serialization serialization = ServiceLoaderHolder.loadByCache(Serialization.class);
 	private NettyClientHandler nettyClientHandler = new NettyClientHandler();
+	private EventLoopGroup group = null;
 
 	public NettyClient(URL url) {
 		this.url = url;
@@ -31,7 +35,7 @@ public class NettyClient implements Client {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				EventLoopGroup group = new NioEventLoopGroup();
+				group = new NioEventLoopGroup();
 				try {
 					Bootstrap bootstrap = new Bootstrap();
 					bootstrap.group(group);
@@ -48,9 +52,9 @@ public class NettyClient implements Client {
 					ChannelFuture future = bootstrap.connect(url.getHost(), url.getPort()).sync();
 					future.channel().closeFuture().sync();
 				} catch (Exception ce) {
-					ce.printStackTrace();
+					logger.error("NettyClient connect error", ce);
 				} finally {
-					group.shutdownGracefully();
+					close();
 				}
 			}
 		}).start();
@@ -63,6 +67,8 @@ public class NettyClient implements Client {
 
 	@Override
 	public void close() {
-		// TODO
+		if (group.isTerminated()) {
+			group.shutdownGracefully();
+		}
 	}
 }

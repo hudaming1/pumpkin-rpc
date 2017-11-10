@@ -7,6 +7,8 @@ import org.hum.pumpkin.serialization.Serialization;
 import org.hum.pumpkin.serviceloader.ServiceLoaderHolder;
 import org.hum.pumpkin.transport.Server;
 import org.hum.pumpkin.transport.ServerHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
@@ -18,9 +20,12 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 public class NettyServer implements Server {
 
+	private static final Logger logger = LoggerFactory.getLogger(NettyServer.class);
 	private URL url;
 	private ServerHandler serverHandler;
 	private final Serialization serialization = ServiceLoaderHolder.loadByCache(Serialization.class);
+	private EventLoopGroup bossGroup = null;
+	private EventLoopGroup workerGroup = null;
 
 	public NettyServer(URL url, ServerHandler serverHandler) {
 		this.url = url;
@@ -29,8 +34,8 @@ public class NettyServer implements Server {
 
 	@Override
 	public void open() {
-		EventLoopGroup bossGroup = new NioEventLoopGroup();
-		EventLoopGroup workerGroup = new NioEventLoopGroup();
+		bossGroup = new NioEventLoopGroup();
+		workerGroup = new NioEventLoopGroup();
 		try {
 
 			ServerBootstrap bootstrap = new ServerBootstrap();
@@ -46,19 +51,23 @@ public class NettyServer implements Server {
 			});
 
 			ChannelFuture future = bootstrap.bind(url.getPort()).sync();
-			System.out.println("listening port on " + url.getPort());
+			logger.info("netty server listening port on " + url.getPort());
 
 			future.channel().closeFuture().sync();
 		} catch (Exception ce) {
 			throw new RpcException("server start exception.", ce);
 		} finally {
-			bossGroup.shutdownGracefully();
-			workerGroup.shutdownGracefully();
+			close();
 		}
 	}
 
 	@Override
 	public void close() {
-		// TODO Auto-generated method stub
+		if (!bossGroup.isTerminated()) {
+			bossGroup.shutdownGracefully();
+		}
+		if (workerGroup.isTerminated()) {
+			workerGroup.shutdownGracefully();
+		}
 	}
 }

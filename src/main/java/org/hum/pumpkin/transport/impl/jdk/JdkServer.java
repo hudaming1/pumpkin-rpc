@@ -49,7 +49,6 @@ public class JdkServer implements Server {
 	}
 
 	private void listenning() {
-		// TODO 这里新建线程好吗？
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
