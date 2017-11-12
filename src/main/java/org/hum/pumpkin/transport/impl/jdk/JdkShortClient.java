@@ -21,28 +21,30 @@ public class JdkShortClient implements Client {
 	private static final Logger logger = LoggerFactory.getLogger(JdkShortClient.class);
 
 	private final Serialization serialization = ServiceLoaderHolder.loadByCache(Serialization.class);
-	private String url;
+	private String host;
+	private URL url;
 	private int port;
 	private Socket socket = null;
 	private InputStream inputStream = null;
 	private OutputStream outputStream = null;
 
 	public JdkShortClient(URL url) throws UnknownHostException, IOException {
-		this.url = url.getHost();
+		this.host = url.getHost();
 		this.port = url.getPort();
+		this.url = url;
 	}
 
 	@Override
 	public MessageBack send(Message message) {
 		try {
-			socket = new Socket(url, port);
+			socket = new Socket(host, port);
 			outputStream = socket.getOutputStream();
 			
 			serialization.serialize(outputStream, message);
 			inputStream = socket.getInputStream();
 			return serialization.deserialize(inputStream, MessageBack.class);
 		} catch (IOException e) {
-			throw new RpcException("invoke" + url + ":" + port + " exception", e);
+			throw new RpcException("invoke" + host + ":" + port + " exception", e);
 		} finally {
 			close();
 		}
@@ -55,7 +57,7 @@ public class JdkShortClient implements Client {
 				inputStream.close();
 				inputStream = null;
 			} catch (IOException e) {
-				logger.error("close tcp [" + url + ":" + port + "] inputstream error", e);
+				logger.error("close tcp [" + host + ":" + port + "] inputstream error", e);
 			}
 		}
 		if (outputStream != null) {
@@ -63,7 +65,7 @@ public class JdkShortClient implements Client {
 				outputStream.close();
 				outputStream = null;
 			} catch (IOException e) {
-				logger.error("close tcp [" + url + ":" + port + "] outputstream error", e);
+				logger.error("close tcp [" + host + ":" + port + "] outputstream error", e);
 			}
 		}
 		if (socket != null) {
@@ -71,8 +73,13 @@ public class JdkShortClient implements Client {
 				socket.close();
 				socket = null;
 			} catch (IOException e) {
-				logger.error("close tcp [" + url + ":" + port + "] socket connection error", e);
+				logger.error("close tcp [" + host + ":" + port + "] socket connection error", e);
 			}
 		}
+	}
+
+	@Override
+	public URL getURL() {
+		return url;
 	}
 }

@@ -32,8 +32,6 @@ public class DefaultExchangeClient implements ExchangeClient {
 		try {
 			// 重试、超时等通信层逻辑都在Exchange类处理，然Transporter专心处理传输实现
 			// TODO 考虑这里需要异步处理吗？
-			request.getTimeout();
-			request.getRetryTimes();
 			
 			Future<Response> future = executorService.submit(new Callable<Response>() {
 				@Override

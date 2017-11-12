@@ -71,4 +71,9 @@ public class NettyClient implements Client {
 			group.shutdownGracefully();
 		}
 	}
+
+	@Override
+	public URL getURL() {
+		return url;
+	}
 }

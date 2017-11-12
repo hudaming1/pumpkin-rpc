@@ -24,12 +24,14 @@ public class JdkKeepAliveClient implements Client {
 	private Socket socket;
 	private InputStream inputStream;
 	private OutputStream outputStream;
+	private URL url;
 	private String host;
 	private int port;
 
 	public JdkKeepAliveClient(URL url) throws UnknownHostException, IOException {
 		this.host = url.getHost();
 		this.port = url.getPort();
+		this.url = url;
 		socket = new Socket(host, port);
 		logger.info("socket " + host + ":" + port + " build connection success.");
 		socket.setKeepAlive(true);
@@ -69,5 +71,10 @@ public class JdkKeepAliveClient implements Client {
 				logger.error("close tcp [" + host + ":" + port + "] socket connection error", e);
 			}
 		}
+	}
+
+	@Override
+	public URL getURL() {
+		return url;
 	}
 }
