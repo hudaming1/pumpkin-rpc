@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hum.pumpkin.common.exception.RpcException;
+import org.hum.pumpkin.common.serviceloader.ServiceLoaderHolder;
+import org.hum.pumpkin.config.registry.RegistryConfig;
 import org.hum.pumpkin.protocol.Protocol;
 import org.hum.pumpkin.protocol.URL;
 import org.hum.pumpkin.protocol.exporter.Exporter;
-import org.hum.pumpkin.registry.conf.RegistryConfig;
-import org.hum.pumpkin.serviceloader.ServiceLoaderHolder;
 import org.hum.pumpkin.util.InetUtils;
 
 public class ServiceConfig<T> {

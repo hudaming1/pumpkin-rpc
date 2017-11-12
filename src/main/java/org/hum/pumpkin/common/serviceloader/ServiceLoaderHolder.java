@@ -1,4 +1,4 @@
-package org.hum.pumpkin.serviceloader;
+package org.hum.pumpkin.common.serviceloader;
 
 import java.util.Map;
 import java.util.ServiceLoader;

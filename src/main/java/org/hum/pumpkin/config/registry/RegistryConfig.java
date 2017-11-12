@@ -1,4 +1,4 @@
-package org.hum.pumpkin.registry.conf;
+package org.hum.pumpkin.config.registry;
 
 public class RegistryConfig {
 
