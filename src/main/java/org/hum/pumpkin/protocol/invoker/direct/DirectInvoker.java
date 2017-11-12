@@ -1,12 +1,12 @@
-package org.hum.pumpkin.invoker.direct;
+package org.hum.pumpkin.protocol.invoker.direct;
 
 import org.hum.pumpkin.exchange.Exchanger;
 import org.hum.pumpkin.exchange.Request;
 import org.hum.pumpkin.exchange.Response;
 import org.hum.pumpkin.exchange.client.ExchangeClient;
-import org.hum.pumpkin.invoker.RpcInvocation;
-import org.hum.pumpkin.invoker.RpcResult;
 import org.hum.pumpkin.protocol.URL;
+import org.hum.pumpkin.protocol.invoker.RpcInvocation;
+import org.hum.pumpkin.protocol.invoker.RpcResult;
 import org.hum.pumpkin.serviceloader.ServiceLoaderHolder;
 
 public class DirectInvoker<T> extends AbstractDirectInvoker<T> {

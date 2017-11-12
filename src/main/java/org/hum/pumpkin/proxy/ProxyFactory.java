@@ -1,6 +1,6 @@
 package org.hum.pumpkin.proxy;
 
-import org.hum.pumpkin.invoker.Invoker;
+import org.hum.pumpkin.protocol.invoker.Invoker;
 
 public interface ProxyFactory {
 

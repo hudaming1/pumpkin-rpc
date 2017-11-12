@@ -6,8 +6,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 import org.hum.pumpkin.common.exception.RpcException;
-import org.hum.pumpkin.invoker.Invoker;
-import org.hum.pumpkin.invoker.RpcInvocation;
+import org.hum.pumpkin.protocol.invoker.Invoker;
+import org.hum.pumpkin.protocol.invoker.RpcInvocation;
 
 public class JdkProxyFactory implements ProxyFactory {
 

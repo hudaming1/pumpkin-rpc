@@ -1,7 +1,7 @@
-package org.hum.pumpkin.invoker.cluster;
+package org.hum.pumpkin.protocol.invoker.cluster;
 
-import org.hum.pumpkin.invoker.RpcInvocation;
-import org.hum.pumpkin.invoker.RpcResult;
+import org.hum.pumpkin.protocol.invoker.RpcInvocation;
+import org.hum.pumpkin.protocol.invoker.RpcResult;
 
 public class FailoverClusterInvoker<T> extends AbstractClusterInvoker<T> {
 

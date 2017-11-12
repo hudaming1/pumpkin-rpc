@@ -1,4 +1,4 @@
-package org.hum.pumpkin.invoker;
+package org.hum.pumpkin.protocol.invoker;
 
 import java.io.Serializable;
 

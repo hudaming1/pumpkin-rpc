@@ -1,4 +1,4 @@
-package org.hum.pumpkin.invoker;
+package org.hum.pumpkin.protocol.invoker;
 
 public interface Invoker<T> {
 	

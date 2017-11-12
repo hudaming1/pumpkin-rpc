@@ -1,7 +1,7 @@
 package org.hum.pumpkin.protocol;
 
-import org.hum.pumpkin.exporter.Exporter;
-import org.hum.pumpkin.invoker.Invoker;
+import org.hum.pumpkin.protocol.exporter.Exporter;
+import org.hum.pumpkin.protocol.invoker.Invoker;
 
 public interface Protocol {
 	

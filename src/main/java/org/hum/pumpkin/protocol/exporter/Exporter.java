@@ -1,4 +1,4 @@
-package org.hum.pumpkin.exporter;
+package org.hum.pumpkin.protocol.exporter;
 
 public interface Exporter<T> {
 
