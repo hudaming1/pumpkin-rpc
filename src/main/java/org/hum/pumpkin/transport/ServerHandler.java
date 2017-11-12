@@ -5,5 +5,5 @@ import org.hum.pumpkin.transport.message.MessageBack;
 
 public interface ServerHandler {
 
-	MessageBack received(Message request);
+	MessageBack received(Message message);
 }

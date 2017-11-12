@@ -7,12 +7,12 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import org.hum.pumpkin.common.exception.RpcException;
-import org.hum.pumpkin.exchange.Request;
-import org.hum.pumpkin.exchange.Response;
 import org.hum.pumpkin.protocol.URL;
 import org.hum.pumpkin.serialization.Serialization;
 import org.hum.pumpkin.serviceloader.ServiceLoaderHolder;
 import org.hum.pumpkin.transport.Client;
+import org.hum.pumpkin.transport.message.Message;
+import org.hum.pumpkin.transport.message.MessageBack;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,14 +33,14 @@ public class JdkShortClient implements Client {
 	}
 
 	@Override
-	public Response send(Request request) {
+	public MessageBack send(Message message) {
 		try {
 			socket = new Socket(url, port);
 			outputStream = socket.getOutputStream();
 			
-			serialization.serialize(outputStream, request);
+			serialization.serialize(outputStream, message);
 			inputStream = socket.getInputStream();
-			return serialization.deserialize(inputStream, Response.class);
+			return serialization.deserialize(inputStream, MessageBack.class);
 		} catch (IOException e) {
 			throw new RpcException("invoke" + url + ":" + port + " exception", e);
 		} finally {

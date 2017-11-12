@@ -8,6 +8,8 @@ public class Message implements Serializable {
 	private Header header;
 	private Object body;
 
+	public Message() {}
+	
 	public Message(Header header, Object body) {
 		this.header = header;
 		this.body = body;

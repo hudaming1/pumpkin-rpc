@@ -33,10 +33,12 @@ public class KryoSerialization implements Serialization {
 			kryo = pool.borrow();
 			output = new Output(outputStream);
 			kryo.writeObject(output, object);
+			output.flush();
 		} finally {
-			if (output != null) {
-				output.close();
-			}
+			// TODO 关闭由调用者控制？ (因为我在采用JDK调用时，在这里关闭会造成Stream还未读取就close掉了)
+//			if (output != null) {
+//				output.close();
+//			}
 			if (kryo != null) {
 				pool.release(kryo);
 			}
@@ -55,9 +57,10 @@ public class KryoSerialization implements Serialization {
 			logger.error("deserialize " + clazz.getName() + " error", ce);
 			return null;
 		} finally {
-			if (input != null) {
-				input.close();
-			}
+			// TODO 关闭由调用者控制？
+//			if (input != null) {
+//				input.close();
+//			}
 			if (kryo != null) {
 				pool.release(kryo);
 			}

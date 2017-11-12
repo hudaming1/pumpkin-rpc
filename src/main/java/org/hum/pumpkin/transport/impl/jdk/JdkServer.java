@@ -7,13 +7,13 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import org.hum.pumpkin.common.exception.RpcException;
-import org.hum.pumpkin.exchange.Request;
-import org.hum.pumpkin.exchange.Response;
 import org.hum.pumpkin.protocol.URL;
 import org.hum.pumpkin.serialization.Serialization;
 import org.hum.pumpkin.serviceloader.ServiceLoaderHolder;
-import org.hum.pumpkin.transport.ServerHandler;
 import org.hum.pumpkin.transport.Server;
+import org.hum.pumpkin.transport.ServerHandler;
+import org.hum.pumpkin.transport.message.Message;
+import org.hum.pumpkin.transport.message.MessageBack;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,6 +62,7 @@ public class JdkServer implements Server {
 				}
 			}
 		}).start();
+		logger.info("tcp server listenning on port : " + url.getPort());
 	}
 
 	private void handler(final Socket socket) {
@@ -70,11 +71,16 @@ public class JdkServer implements Server {
 			public void run() {
 				while (true) {
 					try {
+						// 如果客户端已经退出，就关闭连接
+						if (socket.isClosed()) {
+							logger.info("tcp client[" + socket.getInetAddress().getHostAddress() + ":" + socket.getPort() + "] has been disconnected");
+							break;
+						}
 						InputStream inputStream = socket.getInputStream();
 						OutputStream outputStream = socket.getOutputStream();
-						Request request = serialization.deserialize(inputStream, Request.class);
-						Response response = serverHandler.received(request);
-						serialization.serialize(outputStream, response);
+						Message message = serialization.deserialize(inputStream, Message.class);
+						MessageBack messageBack = serverHandler.received(message);
+						serialization.serialize(outputStream, messageBack);
 					} catch (Exception ce) {
 						logger.error("process client[" + socket.getInetAddress().getHostAddress() + ":" + socket.getPort() + "] exception", ce);
 					}

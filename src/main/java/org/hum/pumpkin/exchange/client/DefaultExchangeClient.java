@@ -38,7 +38,7 @@ public class DefaultExchangeClient implements ExchangeClient {
 			Future<Response> future = executorService.submit(new Callable<Response>() {
 				@Override
 				public Response call() throws Exception {
-					Message message = new Message(new Header(request.getId(), MessageTypeEnum.Service.getCode()), request.getData());
+					Message message = new Message(new Header(request.getId(), MessageTypeEnum.Service.getCode()), request);
 					MessageBack messageBack = client.send(message);
 					if (messageBack.getHeader().getType() == MessageTypeEnum.Service.getCode()) {
 						return (Response) messageBack.getBody();

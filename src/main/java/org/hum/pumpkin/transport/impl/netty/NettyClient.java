@@ -8,7 +8,6 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
-import org.hum.pumpkin.exchange.Response;
 import org.hum.pumpkin.protocol.URL;
 import org.hum.pumpkin.serialization.Serialization;
 import org.hum.pumpkin.serviceloader.ServiceLoaderHolder;
@@ -45,7 +44,7 @@ public class NettyClient implements Client {
 						@Override
 						protected void initChannel(Channel ch) throws Exception {
 							ch.pipeline().addLast(new NettyEncoder(serialization));
-							ch.pipeline().addLast(new NettyDecoder<Response>(Response.class, serialization));
+							ch.pipeline().addLast(new NettyDecoder<MessageBack>(MessageBack.class, serialization));
 							ch.pipeline().addLast(nettyClientHandler);
 						}
 					});
@@ -62,8 +61,8 @@ public class NettyClient implements Client {
 	}
 
 	@Override
-	public MessageBack send(Message request) {
-		return nettyClientHandler.send(request);
+	public MessageBack send(Message essage) {
+		return nettyClientHandler.send(essage);
 	}
 
 	@Override

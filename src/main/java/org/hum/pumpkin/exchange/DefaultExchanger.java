@@ -10,11 +10,10 @@ import org.hum.pumpkin.transport.factory.TransporterFactory;
 public class DefaultExchanger extends AbstractExchanger {
 	
 	private final TransporterFactory transporterFactory = ServiceLoaderHolder.loadByCache(TransporterFactory.class);
-	private ExchangeServerHandler exchangeServerHandler = new ExchangeServerHandler();
 
 	@Override
 	protected Server doBind(URL url, ExchangeServerHandler serverHandler) {
-		return transporterFactory.createServer(url, serverHandler);
+		return transporterFactory.createServer(url, serverHandler.getServerHandler());
 	}
 
 	@Override

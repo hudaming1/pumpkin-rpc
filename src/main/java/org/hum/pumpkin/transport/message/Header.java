@@ -9,6 +9,8 @@ public class Header implements Serializable {
 	private int magicNum = Constant.PUMKIN_MAGIC_NUM;
 	private long messageId;
 	private byte type;
+	
+	public Header() {}
 
 	public Header(long messageId, byte type) {
 		this.messageId = messageId;

@@ -6,12 +6,12 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import org.hum.pumpkin.exchange.Request;
-import org.hum.pumpkin.exchange.Response;
 import org.hum.pumpkin.protocol.URL;
 import org.hum.pumpkin.serialization.Serialization;
 import org.hum.pumpkin.serviceloader.ServiceLoaderHolder;
 import org.hum.pumpkin.transport.Client;
+import org.hum.pumpkin.transport.message.Message;
+import org.hum.pumpkin.transport.message.MessageBack;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,9 +38,9 @@ public class JdkKeepAliveClient implements Client {
 	}
 
 	@Override
-	public Response send(Request request) {
-		serialization.serialize(outputStream, request);
-		return serialization.deserialize(inputStream, Response.class);
+	public MessageBack send(Message message) {
+		serialization.serialize(outputStream, message);
+		return serialization.deserialize(inputStream, MessageBack.class);
 	}
 
 	@Override

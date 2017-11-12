@@ -7,6 +7,8 @@ public class MessageBack implements Serializable {
 	private static final long serialVersionUID = 8533775421917568498L;
 	private Header header;
 	private Object body;
+	
+	public MessageBack() {}
 
 	public MessageBack(Header header, Object body) {
 		this.header = header;
