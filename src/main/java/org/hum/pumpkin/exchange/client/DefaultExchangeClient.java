@@ -9,6 +9,10 @@ import org.hum.pumpkin.exchange.Response;
 import org.hum.pumpkin.serviceloader.ServiceLoaderHolder;
 import org.hum.pumpkin.threadpool.ThreadPoolFactory;
 import org.hum.pumpkin.transport.Client;
+import org.hum.pumpkin.transport.message.Header;
+import org.hum.pumpkin.transport.message.Message;
+import org.hum.pumpkin.transport.message.MessageBack;
+import org.hum.pumpkin.transport.message.MessageTypeEnum;
 
 /**
  * Exchange层默认实现，DefaultExchange需要实现
@@ -34,7 +38,14 @@ public class DefaultExchangeClient implements ExchangeClient {
 			Future<Response> future = executorService.submit(new Callable<Response>() {
 				@Override
 				public Response call() throws Exception {
-					return client.send(request);
+					Message message = new Message(new Header(request.getId(), MessageTypeEnum.Service.getCode()), request.getData());
+					MessageBack messageBack = client.send(message);
+					if (messageBack.getHeader().getType() == MessageTypeEnum.Service.getCode()) {
+						return (Response) messageBack.getBody();
+					} else {
+						// TODO other wise
+						return null;
+					}
 				}
 			});
 			

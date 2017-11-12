@@ -1,11 +1,11 @@
 package org.hum.pumpkin.transport;
 
-import org.hum.pumpkin.exchange.Request;
-import org.hum.pumpkin.exchange.Response;
+import org.hum.pumpkin.transport.message.Message;
+import org.hum.pumpkin.transport.message.MessageBack;
 
 public interface Client {
 	
-	Response send(Request invocation);
+	MessageBack send(Message invocation);
 	
 	void close();
 }

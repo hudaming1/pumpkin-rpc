@@ -1,13 +1,13 @@
 package org.hum.pumpkin.transport.impl.netty;
 
-import org.hum.pumpkin.exchange.Request;
-import org.hum.pumpkin.exchange.Response;
-import org.hum.pumpkin.transport.ServerHandler;
-
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
-public class NettyServerHandler extends SimpleChannelInboundHandler<Request> {
+import org.hum.pumpkin.transport.ServerHandler;
+import org.hum.pumpkin.transport.message.Message;
+import org.hum.pumpkin.transport.message.MessageBack;
+
+public class NettyServerHandler extends SimpleChannelInboundHandler<Message> {
 	
 	private ServerHandler serverHandler;
 	
@@ -16,8 +16,8 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<Request> {
 	}
 	
 	@Override
-	protected void channelRead0(ChannelHandlerContext ctx, Request request) throws Exception {
-		Response response = serverHandler.received(request);
-		ctx.writeAndFlush(response);
+	protected void channelRead0(ChannelHandlerContext ctx, Message message) throws Exception {
+		MessageBack messageBack = serverHandler.received(message);
+		ctx.writeAndFlush(messageBack);
 	}
 }

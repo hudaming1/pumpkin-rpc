@@ -4,32 +4,32 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.hum.pumpkin.exchange.Response;
+import org.hum.pumpkin.transport.message.MessageBack;
 
 public class MessageCallback {
 
 	private Lock lock = new ReentrantLock();
 	private Condition isFinish = lock.newCondition();
-	private Response response;
+	private MessageBack messageBack;
 
 	public MessageCallback() {
 	}
 	
-	public void finish(Response response) {
+	public void finish(MessageBack messageBack) {
 		try {
 			lock.lock();
-			this.response = response;
+			this.messageBack = messageBack;
 			this.isFinish.signal();
 		} finally {
 			lock.unlock();
 		}
 	}
 	
-	public Response get() throws InterruptedException {
+	public MessageBack get() throws InterruptedException {
 		try {
 			lock.lock();
 			this.isFinish.await();
-			return response;
+			return messageBack;
 		} finally {
 			lock.unlock();
 		}

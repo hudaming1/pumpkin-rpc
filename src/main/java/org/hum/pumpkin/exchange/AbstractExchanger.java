@@ -1,16 +1,15 @@
 package org.hum.pumpkin.exchange;
 
-import org.hum.pumpkin.exchange.client.ExchangeClient;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.hum.pumpkin.common.UrlConstant;
 import org.hum.pumpkin.exchange.client.DefaultExchangeClient;
+import org.hum.pumpkin.exchange.client.ExchangeClient;
 import org.hum.pumpkin.exchange.server.DefaultExchangeServer;
 import org.hum.pumpkin.exchange.server.ExchangeServer;
+import org.hum.pumpkin.exchange.server.ExchangeServerHandler;
 import org.hum.pumpkin.protocol.URL;
-import org.hum.pumpkin.transport.ServerHandler;
 import org.hum.pumpkin.transport.Client;
 import org.hum.pumpkin.transport.Server;
 
@@ -20,13 +19,13 @@ public abstract class AbstractExchanger implements Exchanger {
 	private static final Object createLock = new Object();
 	
 	@Override
-	public ExchangeServer bind(URL url, ServerHandler serverHandler) {
+	public ExchangeServer bind(URL url, ExchangeServerHandler serverHandler) {
 		// TODO test版本 待完善
 		Server transporterServer = doBind(url, serverHandler);
 		return new DefaultExchangeServer(transporterServer);
 	}
 
-	protected abstract Server doBind(URL url, ServerHandler serverHandler);
+	protected abstract Server doBind(URL url, ExchangeServerHandler serverHandler);
 
 	@Override
 	public ExchangeClient connect(URL url) {

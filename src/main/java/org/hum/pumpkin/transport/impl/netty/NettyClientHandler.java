@@ -1,17 +1,17 @@
 package org.hum.pumpkin.transport.impl.netty;
 
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.SimpleChannelInboundHandler;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.hum.pumpkin.common.exception.RpcException;
-import org.hum.pumpkin.exchange.Request;
-import org.hum.pumpkin.exchange.Response;
 import org.hum.pumpkin.transport.ClientHandler;
+import org.hum.pumpkin.transport.message.Message;
+import org.hum.pumpkin.transport.message.MessageBack;
 
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.SimpleChannelInboundHandler;
-
-public class NettyClientHandler extends SimpleChannelInboundHandler<Response> implements ClientHandler {
+public class NettyClientHandler extends SimpleChannelInboundHandler<MessageBack> implements ClientHandler {
 
 	private volatile ChannelHandlerContext ctx;
 	private Map<Long, MessageCallback> msgCallbackMap = new ConcurrentHashMap<>();
@@ -22,20 +22,20 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<Response> im
 	}
 
 	@Override
-	protected void channelRead0(ChannelHandlerContext arg0, Response response) throws Exception {
-		MessageCallback callBack = msgCallbackMap.get(response.getRequestId());
-		callBack.finish(response);
+	protected void channelRead0(ChannelHandlerContext arg0, MessageBack messageBack) throws Exception {
+		MessageCallback callBack = msgCallbackMap.get(messageBack.getHeader().getMessageId());
+		callBack.finish(messageBack);
 	}
 
 	@Override
-	public Response send(Request request) {
+	public MessageBack send(Message message) {
 		while (ctx == null) {
 			// blocked
 		}
 		
 		MessageCallback messageCallback = new MessageCallback();
-		msgCallbackMap.put(request.getId(), messageCallback);
-		ctx.writeAndFlush(request);
+		msgCallbackMap.put(message.getHeader().getMessageId(), messageCallback);
+		ctx.writeAndFlush(message);
 		try {
 			return messageCallback.get();
 		} catch (InterruptedException e) {

@@ -21,22 +21,7 @@ public class DefaultExporter<T> implements Exporter<T>{
 	private static final Exchanger EXCHANGER = ServiceLoaderHolder.loadByCache(Exchanger.class);
 	private T ref;
 	private ExchangeServer exchangeServer;
-	private ServerHandler serverHandler = new ServerHandler() {
-		@Override
-		public Response received(final Request request) {
-			if (!(request.getData() instanceof RpcInvocation)) {
-				// TODO 这里改怎么处理？
-				return new Response(request.getId(), null, null);
-			}
-			Future<RpcResult> future = EXECUTOR_SERVICE.submit(new Tasker((RpcInvocation) request.getData(), ref));
-			try {
-				RpcResult result = future.get();
-				return new Response(request.getId(), result, null);
-			} catch (InterruptedException | ExecutionException e) {
-				return new Response(request.getId(), null, e);
-			}
-		}
-	};
+	
 	
 	public DefaultExporter(Class<T> classType, T instances, URL url) {
 		this.ref = instances;
