@@ -2,19 +2,17 @@ package org.hum.pumpkin.transport.message;
 
 public enum MessageTypeEnum {
 
-	Handshack(Byte.parseByte("1"), "握手"), 
-	Heartbeat(Byte.parseByte("2"), "心跳"), 
-	Service(Byte.parseByte("3"), "业务请求");
+	Handshack(1, "握手请求"), Heartbeat(2, "心跳请求"), Business(3, "业务请求");
 
-	private Byte code;
+	private byte code;
 	private String desc;
 
-	MessageTypeEnum(Byte code, String desc) {
-		this.code = code;
+	MessageTypeEnum(Integer code, String desc) {
+		this.code = code.byteValue();
 		this.desc = desc;
 	}
 
-	public Byte getCode() {
+	public byte getCode() {
 		return code;
 	}
 

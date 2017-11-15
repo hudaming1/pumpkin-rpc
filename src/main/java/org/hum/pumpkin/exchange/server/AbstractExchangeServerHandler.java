@@ -17,10 +17,10 @@ public abstract class AbstractExchangeServerHandler implements ExchangeServerHan
 	private ServerHandler serverHandler = new ServerHandler() {
 		@Override
 		public MessageBack received(Message message) {
-			if (message.getHeader().getType() == MessageTypeEnum.Service.getCode()) {
+			if (message.getHeader().getType() == MessageTypeEnum.Business.getCode()) {
 				Request request = (Request) message.getBody();
 				Response response = handler(request);
-				return new MessageBack(new Header(message.getHeader().getMessageId(), MessageTypeEnum.Service.getCode()), response);
+				return new MessageBack(new Header(message.getHeader().getMessageId(), MessageTypeEnum.Business.getCode()), response);
 			}
 			// TODO
 			throw new RuntimeException("un implements code");

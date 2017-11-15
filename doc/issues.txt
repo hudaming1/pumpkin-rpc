@@ -11,3 +11,5 @@ Version 2.0.0
 		a) 反射注入set方法
 		b) 通过配置构建责任链
 	2.引进注册中心
+	
+熔断机制实现可参考：https://yq.aliyun.com/articles/7443

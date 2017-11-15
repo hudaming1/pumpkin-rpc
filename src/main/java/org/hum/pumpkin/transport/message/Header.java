@@ -8,6 +8,10 @@ public class Header implements Serializable {
 	private static final long serialVersionUID = 3691820711930518636L;
 	private int magicNum = Constant.PUMKIN_MAGIC_NUM;
 	private long messageId;
+	/**
+	 * 消息类型
+	 * {@link MessageTypeEnum}
+	 */
 	private byte type;
 	
 	public Header() {}
