@@ -40,7 +40,6 @@ public class JdkServer implements Server {
 				return;
 			}
 			isRun = true;
-			server = new ServerSocket(url.getPort());
 			listenning();
 		} catch (Exception e) {
 			isRun = false;
@@ -55,6 +54,12 @@ public class JdkServer implements Server {
 				while (isRun) {
 					try {
 						Socket socket = server.accept();
+						// 1.如果握手失败，则关闭连接
+						if (!serverHandler.acceptConnection(socket.getInetAddress().getHostName(), socket.getPort(), null)) {
+							socket.close();
+							continue;
+						}
+						// 
 						handler(socket);
 					} catch (Exception e) {
 						e.printStackTrace();

@@ -2,11 +2,9 @@ package org.hum.pumpkin.exchange.server;
 
 import org.hum.pumpkin.exchange.Request;
 import org.hum.pumpkin.exchange.Response;
+import org.hum.pumpkin.transport.AbstractServerHandler;
 import org.hum.pumpkin.transport.ServerHandler;
-import org.hum.pumpkin.transport.message.Header;
 import org.hum.pumpkin.transport.message.Message;
-import org.hum.pumpkin.transport.message.MessageBack;
-import org.hum.pumpkin.transport.message.MessageTypeEnum;
 
 /**
  * Server端的Exchange层可能有些鸡肋，实现的目的仅是为了解耦Protocol和Transport层。
@@ -14,16 +12,16 @@ import org.hum.pumpkin.transport.message.MessageTypeEnum;
  */
 public abstract class AbstractExchangeServerHandler implements ExchangeServerHandler {
 
-	private ServerHandler serverHandler = new ServerHandler() {
+	private ServerHandler serverHandler = new AbstractServerHandler() {
+		
 		@Override
-		public MessageBack received(Message message) {
-			if (message.getHeader().getType() == MessageTypeEnum.Business.getCode()) {
-				Request request = (Request) message.getBody();
-				Response response = handler(request);
-				return new MessageBack(new Header(message.getHeader().getMessageId(), MessageTypeEnum.Business.getCode()), response);
-			}
-			// TODO
-			throw new RuntimeException("un implements code");
+		public Response received(Request request) {
+			return handler(request);
+		}
+
+		@Override
+		public boolean acceptConnection(String host, int port, Message message) {
+			return false;
 		}
 	};
 	
