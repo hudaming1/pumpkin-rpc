@@ -16,17 +16,20 @@ public abstract class AbstractServerHandler implements ServerHandler {
 	
 	@Override
 	public MessageBack received(String host, Message message) {
-		System.out.println(message);
 		if (message.getHeader().getType() == MessageTypeEnum.Handshack.getCode()) {
 			if (acceptConnection(host, message.getBody() == null ? null: message.getBody().toString())) {
 				authedHost.add(host);
 				return new MessageBack(new Header(message.getHeader().getMessageId(), MessageTypeEnum.Handshack.getCode()), true);
 			}
 		} 
+		// 如果客户端没有经过握手鉴权，则返回NoAuth
 		if (!authedHost.contains(host)) {
 			return new MessageBack(new Header(message.getHeader().getMessageId(), MessageTypeEnum.Fail.getCode()), "no auth!");
-		}
-		if (message.getHeader().getType() == MessageTypeEnum.Business.getCode()) {
+		} else if (message.getHeader().getType() == MessageTypeEnum.Heartbeat.getCode()) {
+			System.out.println("receive host[" + host + "] heartbeat!");
+			return null;
+		} else if (message.getHeader().getType() == MessageTypeEnum.Business.getCode()) {
+			// 处理业务请求
 			Request request = (Request) message.getBody();
 			return new MessageBack(new Header(message.getHeader().getMessageId(), MessageTypeEnum.Business.getCode()), received(request));
 		}

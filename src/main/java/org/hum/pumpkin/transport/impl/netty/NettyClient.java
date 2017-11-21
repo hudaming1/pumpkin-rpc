@@ -12,6 +12,7 @@ import org.hum.pumpkin.common.serviceloader.ServiceLoaderHolder;
 import org.hum.pumpkin.protocol.url.URL;
 import org.hum.pumpkin.serialization.Serialization;
 import org.hum.pumpkin.transport.Client;
+import org.hum.pumpkin.transport.impl.netty.plugins.HeartBeatClientHandler;
 import org.hum.pumpkin.transport.message.Message;
 import org.hum.pumpkin.transport.message.MessageBack;
 import org.slf4j.Logger;
@@ -24,10 +25,10 @@ public class NettyClient implements Client {
 	private final Serialization serialization = ServiceLoaderHolder.loadByCache(Serialization.class);
 	private NettyClientHandler nettyClientHandler = new NettyClientHandler();
 	private EventLoopGroup group = null;
+	private HeartBeatClientHandler heartBeatHandler = new HeartBeatClientHandler();
 
 	public NettyClient(URL url) {
 		this.url = url;
-		
 		initClient();
 	}
 	
@@ -45,6 +46,7 @@ public class NettyClient implements Client {
 						protected void initChannel(Channel ch) throws Exception {
 							ch.pipeline().addLast(new NettyEncoder(serialization));
 							ch.pipeline().addLast(new NettyDecoder<MessageBack>(MessageBack.class, serialization));
+							ch.pipeline().addLast(heartBeatHandler);
 							ch.pipeline().addLast(nettyClientHandler);
 						}
 					});
@@ -58,6 +60,7 @@ public class NettyClient implements Client {
 				}
 			}
 		}).start();
+		heartBeatHandler.waitHandShake();
 	}
 
 	@Override

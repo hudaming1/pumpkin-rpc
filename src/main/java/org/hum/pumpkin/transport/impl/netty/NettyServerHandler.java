@@ -18,6 +18,8 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<Message> {
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, Message message) throws Exception {
 		MessageBack messageBack = serverHandler.received(ctx.channel().remoteAddress().toString(), message);
-		ctx.writeAndFlush(messageBack);
+		if (messageBack != null) {
+			ctx.writeAndFlush(messageBack);
+		}
 	}
 }

@@ -79,7 +79,9 @@ public class JdkServer implements Server {
 						OutputStream outputStream = socket.getOutputStream();
 						Message message = serialization.deserialize(inputStream, Message.class);
 						MessageBack messageBack = serverHandler.received(socket.getInetAddress().getHostName(), message);
-						serialization.serialize(outputStream, messageBack);
+						if (messageBack != null) {
+							serialization.serialize(outputStream, messageBack);
+						}
 					} catch (Exception ce) {
 						logger.error("process client[" + socket.getInetAddress().getHostAddress() + ":" + socket.getPort() + "] exception", ce);
 					}
