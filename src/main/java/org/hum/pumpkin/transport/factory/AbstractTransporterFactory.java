@@ -3,7 +3,7 @@ package org.hum.pumpkin.transport.factory;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.hum.pumpkin.protocol.URL;
+import org.hum.pumpkin.protocol.url.URL;
 import org.hum.pumpkin.transport.Client;
 
 public abstract class AbstractTransporterFactory implements TransporterFactory {

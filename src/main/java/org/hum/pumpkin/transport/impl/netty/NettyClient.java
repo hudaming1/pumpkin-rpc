@@ -9,7 +9,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
 import org.hum.pumpkin.common.serviceloader.ServiceLoaderHolder;
-import org.hum.pumpkin.protocol.URL;
+import org.hum.pumpkin.protocol.url.URL;
 import org.hum.pumpkin.serialization.Serialization;
 import org.hum.pumpkin.transport.Client;
 import org.hum.pumpkin.transport.message.Message;

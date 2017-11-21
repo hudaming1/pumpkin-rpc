@@ -10,7 +10,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 import org.hum.pumpkin.common.exception.RpcException;
 import org.hum.pumpkin.common.serviceloader.ServiceLoaderHolder;
-import org.hum.pumpkin.protocol.URL;
+import org.hum.pumpkin.protocol.url.URL;
 import org.hum.pumpkin.serialization.Serialization;
 import org.hum.pumpkin.transport.Server;
 import org.hum.pumpkin.transport.ServerHandler;

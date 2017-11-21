@@ -8,7 +8,7 @@ import java.net.Socket;
 
 import org.hum.pumpkin.common.exception.RpcException;
 import org.hum.pumpkin.common.serviceloader.ServiceLoaderHolder;
-import org.hum.pumpkin.protocol.URL;
+import org.hum.pumpkin.protocol.url.URL;
 import org.hum.pumpkin.serialization.Serialization;
 import org.hum.pumpkin.transport.Server;
 import org.hum.pumpkin.transport.ServerHandler;
@@ -54,12 +54,6 @@ public class JdkServer implements Server {
 				while (isRun) {
 					try {
 						Socket socket = server.accept();
-						// 1.如果握手失败，则关闭连接
-						if (!serverHandler.acceptConnection(socket.getInetAddress().getHostName(), socket.getPort(), null)) {
-							socket.close();
-							continue;
-						}
-						// 
 						handler(socket);
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -84,7 +78,7 @@ public class JdkServer implements Server {
 						InputStream inputStream = socket.getInputStream();
 						OutputStream outputStream = socket.getOutputStream();
 						Message message = serialization.deserialize(inputStream, Message.class);
-						MessageBack messageBack = serverHandler.received(message);
+						MessageBack messageBack = serverHandler.received(socket.getInetAddress().getHostName(), message);
 						serialization.serialize(outputStream, messageBack);
 					} catch (Exception ce) {
 						logger.error("process client[" + socket.getInetAddress().getHostAddress() + ":" + socket.getPort() + "] exception", ce);

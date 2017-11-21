@@ -9,7 +9,7 @@ import org.hum.pumpkin.exchange.client.ExchangeClient;
 import org.hum.pumpkin.exchange.server.DefaultExchangeServer;
 import org.hum.pumpkin.exchange.server.ExchangeServer;
 import org.hum.pumpkin.exchange.server.ExchangeServerHandler;
-import org.hum.pumpkin.protocol.URL;
+import org.hum.pumpkin.protocol.url.URL;
 import org.hum.pumpkin.transport.Client;
 import org.hum.pumpkin.transport.Server;
 

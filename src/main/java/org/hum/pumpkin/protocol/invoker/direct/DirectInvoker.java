@@ -5,9 +5,9 @@ import org.hum.pumpkin.exchange.Exchanger;
 import org.hum.pumpkin.exchange.Request;
 import org.hum.pumpkin.exchange.Response;
 import org.hum.pumpkin.exchange.client.ExchangeClient;
-import org.hum.pumpkin.protocol.URL;
 import org.hum.pumpkin.protocol.invoker.RpcInvocation;
 import org.hum.pumpkin.protocol.invoker.RpcResult;
+import org.hum.pumpkin.protocol.url.URL;
 
 public class DirectInvoker<T> extends AbstractDirectInvoker<T> {
 

@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import org.hum.pumpkin.common.UrlConstant;
 import org.hum.pumpkin.common.exception.RpcException;
-import org.hum.pumpkin.protocol.URL;
+import org.hum.pumpkin.protocol.url.URL;
 import org.hum.pumpkin.transport.Server;
 import org.hum.pumpkin.transport.ServerHandler;
 import org.hum.pumpkin.transport.Client;

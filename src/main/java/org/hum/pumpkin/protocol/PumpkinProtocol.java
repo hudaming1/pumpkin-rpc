@@ -5,6 +5,7 @@ import org.hum.pumpkin.protocol.exporter.DefaultExporter;
 import org.hum.pumpkin.protocol.exporter.Exporter;
 import org.hum.pumpkin.protocol.invoker.Invoker;
 import org.hum.pumpkin.protocol.invoker.direct.DirectInvoker;
+import org.hum.pumpkin.protocol.url.URL;
 
 /**
  * 南瓜协议：
