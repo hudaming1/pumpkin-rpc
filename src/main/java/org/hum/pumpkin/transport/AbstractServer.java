@@ -1,7 +1,7 @@
 package org.hum.pumpkin.transport;
 
 import org.hum.pumpkin.common.exception.PumpkinException;
-import org.hum.pumpkin.protocol.url.URL;
+import org.hum.pumpkin.common.url.URL;
 
 public abstract class AbstractServer implements Server {
 

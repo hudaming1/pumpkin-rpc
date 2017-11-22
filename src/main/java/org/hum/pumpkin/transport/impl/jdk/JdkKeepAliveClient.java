@@ -7,7 +7,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import org.hum.pumpkin.common.serviceloader.ServiceLoaderHolder;
-import org.hum.pumpkin.protocol.url.URL;
+import org.hum.pumpkin.common.url.URL;
 import org.hum.pumpkin.serialization.Serialization;
 import org.hum.pumpkin.transport.Client;
 import org.hum.pumpkin.transport.message.Message;

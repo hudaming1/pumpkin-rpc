@@ -3,13 +3,13 @@ package org.hum.pumpkin.exchange;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.hum.pumpkin.common.UrlConstant;
+import org.hum.pumpkin.common.url.URL;
+import org.hum.pumpkin.common.url.URLConstant;
 import org.hum.pumpkin.exchange.client.DefaultExchangeClient;
 import org.hum.pumpkin.exchange.client.ExchangeClient;
 import org.hum.pumpkin.exchange.server.DefaultExchangeServer;
 import org.hum.pumpkin.exchange.server.ExchangeServer;
 import org.hum.pumpkin.exchange.server.ExchangeServerHandler;
-import org.hum.pumpkin.protocol.url.URL;
 import org.hum.pumpkin.transport.Client;
 import org.hum.pumpkin.transport.Server;
 
@@ -29,7 +29,7 @@ public abstract class AbstractExchanger implements Exchanger {
 
 	@Override
 	public ExchangeClient connect(URL url) {
-		Boolean isShare = url.getBoolean(UrlConstant.IS_SHARE_CONNECTION);
+		Boolean isShare = url.getBoolean(URLConstant.IS_SHARE_CONNECTION);
 		if (isShare == null || isShare) {
 			String serviceKey = getServiceKey(url);
 			ExchangeClient exchangeClient = EXCHANGE_CLIENTS.get(serviceKey);

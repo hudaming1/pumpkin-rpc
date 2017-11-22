@@ -1,4 +1,4 @@
-package org.hum.pumpkin.protocol.url.enumtype;
+package org.hum.pumpkin.common.url.enumtype;
 
 public enum EAuthType {
 	

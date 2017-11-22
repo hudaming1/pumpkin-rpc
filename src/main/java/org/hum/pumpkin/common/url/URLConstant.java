@@ -1,6 +1,8 @@
-package org.hum.pumpkin.common;
+package org.hum.pumpkin.common.url;
 
-public class UrlConstant {
+import org.hum.pumpkin.common.url.enumtype.EAuthType;
+
+public class URLConstant {
 
 	// 是否保持长连接
 	public static final String IS_KEEP_ALIVE = "is_keep_alive";
@@ -17,4 +19,9 @@ public class UrlConstant {
 	
 	// 是否采用异步请求
 	public static final String IS_ASYN_REQUEST = "is_asyn_request";
+
+	/**
+	 * 鉴权类型 {@link EAuthType}
+	 */
+	public static final String AUTH_TYPE = "auth_type";
 }

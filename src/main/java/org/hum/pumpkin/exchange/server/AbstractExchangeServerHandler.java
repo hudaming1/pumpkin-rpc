@@ -1,10 +1,8 @@
 package org.hum.pumpkin.exchange.server;
 
+import org.hum.pumpkin.common.url.URL;
 import org.hum.pumpkin.exchange.Request;
 import org.hum.pumpkin.exchange.Response;
-import org.hum.pumpkin.protocol.url.URL;
-import org.hum.pumpkin.protocol.url.URLUtils;
-import org.hum.pumpkin.protocol.url.enumtype.EAuthType;
 import org.hum.pumpkin.transport.AbstractServerHandler;
 import org.hum.pumpkin.transport.ServerHandler;
 
@@ -25,16 +23,6 @@ public abstract class AbstractExchangeServerHandler implements ExchangeServerHan
 		@Override
 		public Response received(Request request) {
 			return handler(request);
-		}
-
-		@Override
-		public boolean acceptConnection(String host, String auth) {
-			if (EAuthType.getEnum(URLUtils.getAuthType(url)) == null) {
-				// 不需要鉴权
-				return true;
-			}
-			// TODO 其他鉴权尚未实现
-			return false;
 		}
 	};
 	

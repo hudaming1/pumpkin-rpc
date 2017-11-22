@@ -2,10 +2,12 @@ package org.hum.pumpkin.transport.impl.netty;
 
 import org.hum.pumpkin.common.exception.RpcException;
 import org.hum.pumpkin.common.serviceloader.ServiceLoaderHolder;
-import org.hum.pumpkin.protocol.url.URL;
+import org.hum.pumpkin.common.url.URL;
 import org.hum.pumpkin.serialization.Serialization;
 import org.hum.pumpkin.transport.Server;
 import org.hum.pumpkin.transport.ServerHandler;
+import org.hum.pumpkin.transport.impl.netty.plugins.AuthController;
+import org.hum.pumpkin.transport.impl.netty.plugins.HeartBeatServerHandler;
 import org.hum.pumpkin.transport.message.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +25,7 @@ public class NettyServer implements Server {
 	private static final Logger logger = LoggerFactory.getLogger(NettyServer.class);
 	private URL url;
 	private ServerHandler serverHandler;
+	private AuthController authController;
 	private final Serialization serialization = ServiceLoaderHolder.loadByCache(Serialization.class);
 	private EventLoopGroup bossGroup = null;
 	private EventLoopGroup workerGroup = null;
@@ -30,6 +33,7 @@ public class NettyServer implements Server {
 	public NettyServer(URL url, ServerHandler serverHandler) {
 		this.url = url;
 		this.serverHandler = serverHandler;
+		this.authController = new AuthController(url);
 	}
 
 	@Override
@@ -46,6 +50,7 @@ public class NettyServer implements Server {
 				protected void initChannel(Channel ch) throws Exception {
 					ch.pipeline().addLast(new NettyEncoder(serialization));
 					ch.pipeline().addLast(new NettyDecoder<Message>(Message.class, serialization));
+					ch.pipeline().addLast(new HeartBeatServerHandler(authController));
 					ch.pipeline().addLast(new NettyServerHandler(serverHandler));
 				}
 			});

@@ -1,9 +1,9 @@
 package org.hum.pumpkin.exchange;
 
+import org.hum.pumpkin.common.url.URL;
 import org.hum.pumpkin.exchange.client.ExchangeClient;
 import org.hum.pumpkin.exchange.server.ExchangeServer;
 import org.hum.pumpkin.exchange.server.ExchangeServerHandler;
-import org.hum.pumpkin.protocol.url.URL;
 
 public interface Exchanger {
 

@@ -1,9 +1,9 @@
 package org.hum.pumpkin.protocol;
 
+import org.hum.pumpkin.common.url.URL;
 import org.hum.pumpkin.protocol.exporter.Exporter;
 import org.hum.pumpkin.protocol.invoker.Invoker;
 import org.hum.pumpkin.protocol.invoker.cluster.FailoverClusterInvoker;
-import org.hum.pumpkin.protocol.url.URL;
 
 public class RegistryProtocol implements Protocol {
 

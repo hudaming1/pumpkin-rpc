@@ -1,11 +1,11 @@
 package org.hum.pumpkin.protocol;
 
-import org.hum.pumpkin.common.UrlConstant;
+import org.hum.pumpkin.common.url.URL;
+import org.hum.pumpkin.common.url.URLConstant;
 import org.hum.pumpkin.protocol.exporter.DefaultExporter;
 import org.hum.pumpkin.protocol.exporter.Exporter;
 import org.hum.pumpkin.protocol.invoker.Invoker;
 import org.hum.pumpkin.protocol.invoker.direct.DirectInvoker;
-import org.hum.pumpkin.protocol.url.URL;
 
 /**
  * 南瓜协议：
@@ -23,8 +23,8 @@ public class PumpkinProtocol implements Protocol {
 
 	@Override
 	public <T> Invoker<T> refer(Class<T> classType, URL url) {
-		url.buildParam(UrlConstant.IS_KEEP_ALIVE, true);
-		url.buildParam(UrlConstant.IS_SHARE_CONNECTION, true);
+		url.buildParam(URLConstant.IS_KEEP_ALIVE, true);
+		url.buildParam(URLConstant.IS_SHARE_CONNECTION, true);
 		return new DirectInvoker<>(classType, url);
 	}
 }

@@ -1,4 +1,4 @@
-package org.hum.pumpkin.protocol.url;
+package org.hum.pumpkin.common.url;
 
 import java.util.HashMap;
 import java.util.Map;
