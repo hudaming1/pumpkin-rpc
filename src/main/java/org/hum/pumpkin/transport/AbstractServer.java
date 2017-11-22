@@ -2,12 +2,14 @@ package org.hum.pumpkin.transport;
 
 import org.hum.pumpkin.common.exception.PumpkinException;
 import org.hum.pumpkin.common.url.URL;
+import org.hum.pumpkin.transport.event.ServerEvent;
 
 public abstract class AbstractServer implements Server {
 
 	private ServerHandler serverHandler;
 	private volatile boolean isRun;
 	private URL url;
+	private ServerEvent serverEvent;
 	
 	public AbstractServer(URL url, ServerHandler serverHandler) {
 		this.url = url;
@@ -22,18 +24,16 @@ public abstract class AbstractServer implements Server {
 		// 2.启动：打开端口
 		openPort();
 		
-		// 3.状态 - 已运行
-		isRun = true;
+		// 3.发布事件
+		serverEvent.open(serverHandler);
 		
-		// 4.等待客户端连接
-		Connector connector = acceptConnection();
+		// 4.状态 - 已运行
+		isRun = true;
 	}
 	
 	public abstract void initServer(URL url) throws PumpkinException;
 	
 	public abstract void openPort();
-	
-	public abstract Connector acceptConnection();
 	
 	@Override
 	public void close() {
@@ -44,20 +44,4 @@ public abstract class AbstractServer implements Server {
 	}
 	
 	public abstract void doClose();
-	
-	public static class Connector {
-		private String host;
-		private String port;
-		public Connector(String host, String port) {
-			super();
-			this.host = host;
-			this.port = port;
-		}
-		public String getHost() {
-			return host;
-		}
-		public String getPort() {
-			return port;
-		}
-	}
 }
