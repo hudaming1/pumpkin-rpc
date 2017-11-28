@@ -7,7 +7,6 @@ import org.hum.pumpkin.common.url.URL;
 import org.hum.pumpkin.serialization.Serialization;
 import org.hum.pumpkin.transport.AbstractServer;
 import org.hum.pumpkin.transport.ServerHandler;
-import org.hum.pumpkin.transport.impl.netty.plugins.HeartBeatServerHandler;
 import org.hum.pumpkin.transport.message.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
