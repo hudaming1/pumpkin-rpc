@@ -56,7 +56,9 @@ public class NettyServer implements Server {
 			ChannelFuture future = bootstrap.bind(url.getPort()).sync();
 			logger.info("netty server listening port on " + url.getPort());
 			
-			serverEventHandler.fireOpen(serverHandler);
+			if (serverEventHandler != null) {
+				serverEventHandler.fireOpen(serverHandler);
+			}
 
 			future.channel().closeFuture().sync();
 		} catch (Exception ce) {
@@ -68,7 +70,9 @@ public class NettyServer implements Server {
 
 	@Override
 	public void close() {
-		serverEventHandler.fireClose(serverHandler);
+		if (serverEventHandler != null) {
+			serverEventHandler.fireClose(serverHandler);
+		}
 		if (!bossGroup.isTerminated()) {
 			bossGroup.shutdownGracefully();
 		}

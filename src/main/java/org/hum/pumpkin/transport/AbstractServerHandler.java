@@ -15,8 +15,13 @@ public abstract class AbstractServerHandler implements ServerHandler {
 			// 处理业务请求
 			Request request = (Request) message.getBody();
 			return new MessageBack(new Header(message.getHeader().getMessageId(), MessageTypeEnum.Business.getCode()), received(request));
+		} else if (message.getHeader().getType() == MessageTypeEnum.Handshack.getCode()) {
+			return new MessageBack(new Header(message.getHeader().getMessageId(), MessageTypeEnum.Handshack.getCode()), true);
+		} else if (message.getHeader().getType() == MessageTypeEnum.Heartbeat.getCode()) {
+			// TODO 握手策略：服务器无需return
+			return new MessageBack(new Header(message.getHeader().getMessageId(), MessageTypeEnum.Heartbeat.getCode()), true);
 		}
-		throw new RuntimeException("unimplements code");
+		throw new RuntimeException("unimplements code, ");
 	}
 	
 	public abstract Response received(Request request);

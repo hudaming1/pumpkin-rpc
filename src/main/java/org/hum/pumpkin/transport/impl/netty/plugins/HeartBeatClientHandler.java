@@ -35,7 +35,10 @@ public class HeartBeatClientHandler extends SimpleChannelInboundHandler<MessageB
 				ctx.close();
 			}
 			return;
-		} 
+		} else if (messageBack.getHeader().getType() == MessageTypeEnum.Heartbeat.getCode()) {
+			
+			return ;
+		}
 		ctx.fireChannelRead(messageBack);
 	}
 	
@@ -57,6 +60,7 @@ public class HeartBeatClientHandler extends SimpleChannelInboundHandler<MessageB
 		public void run() {
 			Message heartBeatMessage = new Message(new Header(System.currentTimeMillis(), MessageTypeEnum.Heartbeat.getCode()), null);
 			ctx.writeAndFlush(heartBeatMessage);
+			System.out.println("send heartbeat request");
 		}
 	}
 
