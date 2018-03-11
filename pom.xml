@@ -4,6 +4,18 @@
 	<groupId>org.hum</groupId>
 	<artifactId>pumpkin-rpc</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	
+	<modules>
+		<module>pumpkin-rpc-transport</module>
+		<module>pumpkin-rpc-common</module>
+		<module>pumpkin-rpc-exchange</module>
+		<module>pumpkin-rpc-protocol-default</module>
+		<module>pumpkin-rpc-proxy</module>
+		<module>pumpkin-rpc-serialization</module>
+		<module>pumpkin-rpc-config</module>
+		<module>pumpkin-rpc-protocol</module>
+	</modules>
 
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
