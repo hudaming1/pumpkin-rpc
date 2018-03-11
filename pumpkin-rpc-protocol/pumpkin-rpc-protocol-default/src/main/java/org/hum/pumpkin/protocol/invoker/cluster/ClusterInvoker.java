@@ -12,6 +12,7 @@ import org.hum.pumpkin.exchange.Exchanger;
 import org.hum.pumpkin.exchange.Request;
 import org.hum.pumpkin.exchange.Response;
 import org.hum.pumpkin.exchange.client.ExchangeClient;
+import org.hum.pumpkin.protocol.ProtocolEnum;
 import org.hum.pumpkin.protocol.invoker.Invoker;
 import org.hum.pumpkin.protocol.invoker.RpcInvocation;
 import org.hum.pumpkin.protocol.invoker.RpcResult;
@@ -35,7 +36,29 @@ public class ClusterInvoker<T> implements Invoker<T> {
 		this.registry = registry;
 		this.classType = classType;
 		this.url = url;
-		exchangeClient = exchanger.connect(url);
+		if (url.getProtocol().equals(ProtocolEnum.Direct.getName())) {
+			this.exchangeClient = exchanger.connect(url);
+		} else if (url.getProtocol().equals(ProtocolEnum.Registry.getName())) {
+			// init client
+			// 1.find registiry url TODO 采用自动发现机制
+			List<String> urls = registry.discover(classType.getName());
+			if (urls == null || urls.isEmpty()) {
+				throw new RpcException("no found availabled server! classtype=" + classType.getName());
+			}
+
+			// 1.5 init map
+			Map<String, ExchangeClient> cmap = clientMap.get(classType.getName());
+			if (cmap == null) {
+				clientMap.put(classType.getName(), new ConcurrentHashMap<String, ExchangeClient>());
+			}
+			
+			// 2.reg
+			for (String _url : urls) {
+				String[] urlArr = _url.split(":");
+				ExchangeClient exchangeClient = exchanger.connect(new URL(registryConfig.getName(), urlArr[0], Integer.parseInt(urlArr[1]), classType.getName()));
+				clientMap.get(classType.getName()).put(_url, exchangeClient);
+			}
+		}
 	}
 
 	@Override
@@ -46,7 +69,6 @@ public class ClusterInvoker<T> implements Invoker<T> {
 	@Override
 	public RpcResult invoke(RpcInvocation invocation) {
 		try {
-			Request request = new Request(url.getHost(), url.getPort(), invocation);
 			// TODO 日后完善
 			// request.setRetryTimes(url.getInteger(UrlConstant.RETRY_TIMES));
 			
@@ -59,6 +81,8 @@ public class ClusterInvoker<T> implements Invoker<T> {
 			// 2.find router strategy TODO SPI
 			Long index = invocation.getInvocationId() % urls.size() ;
 			String url = urls.get(index.intValue());
+			String[] urlArr = url.split(":");
+			Request request = new Request(urlArr[0], Integer.parseInt(urlArr[1]), invocation);
 			
 			// 3.select url
 			Map<String, ExchangeClient> cmap = clientMap.get(classType.getName());
@@ -66,7 +90,7 @@ public class ClusterInvoker<T> implements Invoker<T> {
 				clientMap.put(classType.getName(), new ConcurrentHashMap<String, ExchangeClient>());
 			}
 			if (cmap != null && cmap.containsKey(url)) {
-				Response response = exchangeClient.send(request);
+				Response response = cmap.get(url).send(request);
 				if (response.getData() instanceof RpcResult) {
 					return (RpcResult) response.getData();
 				} else {
@@ -75,7 +99,6 @@ public class ClusterInvoker<T> implements Invoker<T> {
 			}
 
 			// 4.create client
-			String[] urlArr = url.split(":");
 			ExchangeClient exchangeClient = exchanger.connect(new URL(registryConfig.getName(), urlArr[0], Integer.parseInt(urlArr[1]), classType.getName()));
 			clientMap.get(classType.getName()).put(url, exchangeClient);
 			Response response = exchangeClient.send(request);
@@ -85,6 +108,7 @@ public class ClusterInvoker<T> implements Invoker<T> {
 				throw new ClassCastException("response data cann't parse, type is " + response.getData().getClass().getName());
 			}
 		} catch (Exception ce) {
+			ce.printStackTrace();
 			return new RpcResult(null, ce);
 		}
 	}

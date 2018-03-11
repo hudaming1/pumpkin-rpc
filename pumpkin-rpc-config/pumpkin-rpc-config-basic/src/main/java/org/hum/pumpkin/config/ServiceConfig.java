@@ -69,6 +69,10 @@ public class ServiceConfig<T> {
 		try {
 			URL url = new URL(protocol, InetUtils.getLocalAddress(), port, interfaceType.getName());
 			
+			if (registryConfig != null) {
+				url.buildParam("registryConfig", registryConfig);
+			}
+			
 			Exporter<T> exporter = PROTOCOL.export(interfaceType, ref, url);
 
 			EXPORTER_LIST.add(exporter);

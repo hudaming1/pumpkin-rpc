@@ -39,5 +39,10 @@
 			<artifactId>pumpkin-rpc-serialization-kyro</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.hum</groupId>
+			<artifactId>pumpkin-rpc-registry-zookeeper</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
 	</dependencies>
 </project>

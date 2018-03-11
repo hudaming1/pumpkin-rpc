@@ -6,6 +6,7 @@ import org.hum.pumpkin.common.url.URL;
 import org.hum.pumpkin.protocol.Protocol;
 import org.hum.pumpkin.protocol.invoker.Invoker;
 import org.hum.pumpkin.proxy.ProxyFactory;
+import org.hum.pumpkin.registry.RegistryConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,6 +21,7 @@ public class ReferenceConfig<T> {
 	private int port;
 	private String className;
 	private Class<T> interfaceType;
+	private RegistryConfig registryConfig;
 
 	public ReferenceConfig(Class<T> interfaceType) {
 		this.interfaceType = interfaceType;
@@ -37,8 +39,13 @@ public class ReferenceConfig<T> {
 	public T get() {
 		URL url = new URL(protocol, address, port, className);
 		try {
+			
+			if (registryConfig != null) {
+				url.buildParam("registryConfig", registryConfig);
+			}
+			
 			invoker = PROTOCOL.refer(interfaceType, url);
-
+			
 			T proxyInstances = PROXY_FACTORY.getProxy(invoker);
 			logger.info("proxy " + className + ", use protocol " + protocol + " refer " + address + ":" + port);
 			
@@ -71,5 +78,13 @@ public class ReferenceConfig<T> {
 
 	public void setClassName(String className) {
 		this.className = className;
+	}
+
+	public void setRegistryConfig(RegistryConfig registryConfig) {
+		this.registryConfig = registryConfig;
+	}
+	
+	public RegistryConfig getRegistryConfig() {
+		return registryConfig;
 	}
 }

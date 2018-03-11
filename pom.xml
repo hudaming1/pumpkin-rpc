@@ -10,7 +10,7 @@
 		<module>pumpkin-rpc-transport</module>
 		<module>pumpkin-rpc-common</module>
 		<module>pumpkin-rpc-exchange</module>
-		<module>pumpkin-rpc-protocol-default</module>
+		
 		<module>pumpkin-rpc-proxy</module>
 		<module>pumpkin-rpc-serialization</module>
 		<module>pumpkin-rpc-config</module>
