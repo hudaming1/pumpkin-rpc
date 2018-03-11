@@ -15,6 +15,9 @@ import org.hum.pumpkin.protocol.invoker.RpcInvocation;
 import org.hum.pumpkin.protocol.invoker.RpcResult;
 import org.hum.pumpkin.threadpool.ThreadPoolFactory;
 
+/**
+ * Exporter不仅需要取分出服务，还有Group和Version，Filter也都在本层做
+ */
 public class DefaultExporter<T> implements Exporter<T>{
 
 	private static final Exchanger EXCHANGER = ServiceLoaderHolder.loadByCache(Exchanger.class);

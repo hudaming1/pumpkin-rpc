@@ -8,14 +8,6 @@
 	</parent>
 	<artifactId>pumpkin-rpc-transport</artifactId>
 	<packaging>pom</packaging>
-	
-	<dependencies>
-		<dependency>
-			<groupId>org.hum</groupId>
-			<artifactId>pumpkin-rpc-common</artifactId>
-			<version>${project.parent.version}</version>
-		</dependency>
-	</dependencies>
 	<modules>
 		<module>pumpkin-rpc-transport-api</module>
 		<module>pumpkin-rpc-transport-netty</module>

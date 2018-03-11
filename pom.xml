@@ -17,32 +17,6 @@
 		<module>pumpkin-rpc-protocol</module>
 		<module>pumpkin-rpc-threadpool</module>
 		<module>pumpkin-rpc-test</module>
+		<module>pumpkin-rpc-registry</module>
 	</modules>
-
-	<dependencies>
-		<!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
-		<dependency>
-			<groupId>io.netty</groupId>
-			<artifactId>netty-all</artifactId>
-			<version>4.1.2.Final</version>
-		</dependency>
-		<!--logback -->
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-			<version>1.1.3</version>
-		</dependency>
-		<!-- zookeeper -->
-		<dependency>
-			<groupId>com.github.sgroschupf</groupId>
-			<artifactId>zkclient</artifactId>
-			<version>0.1</version>
-		</dependency>
-		<!-- kryo -->
-		<dependency>
-			<groupId>com.esotericsoftware</groupId>
-			<artifactId>kryo</artifactId>
-			<version>3.0.3</version>
-		</dependency>
-	</dependencies>
 </project>

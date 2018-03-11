@@ -6,11 +6,13 @@ import java.io.Serializable;
 public class RpcInvocation implements Serializable {
 
 	private static final long serialVersionUID = 6668787664662887722L;
+	private long invocationId;
 	private String method;
 	private Class[] paramTypes;
 	private Object[] params;
 	
 	public RpcInvocation() {
+		invocationId = System.currentTimeMillis();
 	}
 
 	public RpcInvocation(String method, Class[] paramTypes, Object[] params) {
@@ -29,5 +31,9 @@ public class RpcInvocation implements Serializable {
 
 	public Object[] getParams() {
 		return params;
+	}
+	
+	public long getInvocationId() {
+		return invocationId;
 	}
 }

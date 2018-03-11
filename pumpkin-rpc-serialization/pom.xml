@@ -13,4 +13,11 @@
 		<module>pumpkin-rpc-serialization-api</module>
 		<module>pumpkin-rpc-serialization-kyro</module>
 	</modules>
+	<dependencies>
+		<dependency>
+			<groupId>org.hum</groupId>
+			<artifactId>pumpkin-rpc-common</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+	</dependencies>
 </project>
