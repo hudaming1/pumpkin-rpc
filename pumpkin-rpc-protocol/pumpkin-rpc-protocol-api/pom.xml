@@ -11,7 +11,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.hum</groupId>
-			<artifactId>pumpkin-rpc-exchange</artifactId>
+			<artifactId>pumpkin-rpc-exchange-api</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
 	</dependencies>

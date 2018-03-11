@@ -5,9 +5,9 @@ import org.hum.pumpkin.common.exception.RpcException;
 import org.hum.pumpkin.common.serviceloader.ServiceLoaderHolder;
 import org.hum.pumpkin.common.url.URL;
 import org.hum.pumpkin.serialization.Serialization;
-import org.hum.pumpkin.transport.AbstractServer;
-import org.hum.pumpkin.transport.ServerHandler;
 import org.hum.pumpkin.transport.message.Message;
+import org.hum.pumpkin.transport.server.AbstractServer;
+import org.hum.pumpkin.transport.server.ServerHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,6 +19,9 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
+/**
+ * NettyServer2继承自AbstractServer
+ */
 public class NettyServer2 extends AbstractServer {
 
 	private static final Logger logger = LoggerFactory.getLogger(NettyServer.class);

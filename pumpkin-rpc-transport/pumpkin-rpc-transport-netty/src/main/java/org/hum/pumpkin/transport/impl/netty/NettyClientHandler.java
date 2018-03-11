@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.hum.pumpkin.common.exception.RpcException;
-import org.hum.pumpkin.transport.ClientHandler;
+import org.hum.pumpkin.transport.client.ClientHandler;
 import org.hum.pumpkin.transport.message.Message;
 import org.hum.pumpkin.transport.message.MessageBack;
 

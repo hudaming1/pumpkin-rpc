@@ -8,7 +8,7 @@ import org.hum.pumpkin.common.serviceloader.ServiceLoaderHolder;
 import org.hum.pumpkin.exchange.Request;
 import org.hum.pumpkin.exchange.Response;
 import org.hum.pumpkin.threadpool.ThreadPoolFactory;
-import org.hum.pumpkin.transport.Client;
+import org.hum.pumpkin.transport.client.Client;
 import org.hum.pumpkin.transport.message.Header;
 import org.hum.pumpkin.transport.message.Message;
 import org.hum.pumpkin.transport.message.MessageBack;

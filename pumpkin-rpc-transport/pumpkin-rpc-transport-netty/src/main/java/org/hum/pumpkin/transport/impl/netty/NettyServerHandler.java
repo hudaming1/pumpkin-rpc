@@ -1,8 +1,8 @@
 package org.hum.pumpkin.transport.impl.netty;
 
-import org.hum.pumpkin.transport.ServerHandler;
 import org.hum.pumpkin.transport.message.Message;
 import org.hum.pumpkin.transport.message.MessageBack;
+import org.hum.pumpkin.transport.server.ServerHandler;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;

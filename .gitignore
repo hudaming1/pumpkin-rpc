@@ -9,3 +9,7 @@ target/
 target/classes/META-INF/MANIFEST.MF
 target/test-classes/org/hum/pumpkin/test/simple/ServerTest.class
 .classpath
+*.MF
+*.MF
+*.properties
+*.MF

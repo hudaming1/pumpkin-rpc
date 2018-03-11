@@ -1,4 +1,4 @@
-package org.hum.pumpkin.transport;
+package org.hum.pumpkin.transport.server;
 
 import org.hum.pumpkin.common.exception.PumpkinException;
 import org.hum.pumpkin.common.url.URL;

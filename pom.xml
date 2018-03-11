@@ -15,6 +15,7 @@
 		<module>pumpkin-rpc-serialization</module>
 		<module>pumpkin-rpc-config</module>
 		<module>pumpkin-rpc-protocol</module>
+		<module>pumpkin-rpc-threadpool</module>
 	</modules>
 
 	<dependencies>

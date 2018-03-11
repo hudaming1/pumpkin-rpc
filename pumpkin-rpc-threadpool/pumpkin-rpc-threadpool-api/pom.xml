@@ -3,16 +3,8 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.hum</groupId>
-		<artifactId>pumpkin-rpc-config</artifactId>
+		<artifactId>pumpkin-rpc-threadpool</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>pumpkin-rpc-config-basic</artifactId>
-	
-	<dependencies>
-		<dependency>
-			<groupId>org.hum</groupId>
-			<artifactId>pumpkin-rpc-proxy-api</artifactId>
-			<version>${project.parent.version}</version>
-		</dependency>
-	</dependencies>
+	<artifactId>pumpkin-rpc-threadpool-api</artifactId>
 </project>

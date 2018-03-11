@@ -1,6 +1,6 @@
 package org.hum.pumpkin.exchange.server;
 
-import org.hum.pumpkin.transport.Server;
+import org.hum.pumpkin.transport.server.Server;
 
 public class DefaultExchangeServer implements ExchangeServer {
 

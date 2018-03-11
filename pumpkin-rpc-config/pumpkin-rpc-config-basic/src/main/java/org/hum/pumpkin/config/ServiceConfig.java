@@ -6,7 +6,6 @@ import java.util.List;
 import org.hum.pumpkin.common.exception.RpcException;
 import org.hum.pumpkin.common.serviceloader.ServiceLoaderHolder;
 import org.hum.pumpkin.common.url.URL;
-import org.hum.pumpkin.config.registry.RegistryConfig;
 import org.hum.pumpkin.protocol.Protocol;
 import org.hum.pumpkin.protocol.exporter.Exporter;
 import org.hum.pumpkin.util.InetUtils;
@@ -15,12 +14,11 @@ public class ServiceConfig<T> {
 
 	private String protocol;
 	private int port;
-	private RegistryConfig registryConfig;
 	private Class<T> interfaceType;
 	private T ref;
 	private static final Protocol PROTOCOL = ServiceLoaderHolder.loadByCache(Protocol.class);
 	// 记录发布的服务，当server.close时需要知道销毁哪些对象
-	private static final List<Exporter<?>> EXPORTER_LIST = new ArrayList<>();
+	private static final List<Exporter<?>> EXPORTER_LIST = new ArrayList<Exporter<?>>();
 
 	public Class<T> getInterfaceType() {
 		return interfaceType;
@@ -52,14 +50,6 @@ public class ServiceConfig<T> {
 
 	public void setPort(int port) {
 		this.port = port;
-	}
-
-	public RegistryConfig getRegistryConfig() {
-		return registryConfig;
-	}
-
-	public void setRegistryConfig(RegistryConfig registryConfig) {
-		this.registryConfig = registryConfig;
 	}
 
 	public void export() {

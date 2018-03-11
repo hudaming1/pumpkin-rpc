@@ -1,6 +1,6 @@
 package org.hum.pumpkin.transport.event;
 
-import org.hum.pumpkin.transport.ServerHandler;
+import org.hum.pumpkin.transport.server.ServerHandler;
 
 public interface ServerEventHandler {
 

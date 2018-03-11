@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.hum.pumpkin.common.url.URL;
-import org.hum.pumpkin.transport.Client;
+import org.hum.pumpkin.transport.client.Client;
 
 public abstract class AbstractTransporterFactory implements TransporterFactory {
 

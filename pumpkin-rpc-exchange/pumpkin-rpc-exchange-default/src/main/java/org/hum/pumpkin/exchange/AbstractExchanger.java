@@ -10,8 +10,8 @@ import org.hum.pumpkin.exchange.client.ExchangeClient;
 import org.hum.pumpkin.exchange.server.DefaultExchangeServer;
 import org.hum.pumpkin.exchange.server.ExchangeServer;
 import org.hum.pumpkin.exchange.server.ExchangeServerHandler;
-import org.hum.pumpkin.transport.Client;
-import org.hum.pumpkin.transport.Server;
+import org.hum.pumpkin.transport.client.Client;
+import org.hum.pumpkin.transport.server.Server;
 
 public abstract class AbstractExchanger implements Exchanger {
 

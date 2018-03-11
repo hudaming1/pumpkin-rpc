@@ -1,4 +1,4 @@
-package org.hum.pumpkin.transport;
+package org.hum.pumpkin.transport.client;
 
 import org.hum.pumpkin.common.url.URL;
 import org.hum.pumpkin.transport.message.Message;

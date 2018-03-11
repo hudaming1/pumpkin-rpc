@@ -1,4 +1,4 @@
-package org.hum.pumpkin.transport;
+package org.hum.pumpkin.transport.server;
 
 public interface Server {
 

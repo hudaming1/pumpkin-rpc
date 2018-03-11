@@ -6,18 +6,10 @@
 		<artifactId>pumpkin-rpc</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>pumpkin-rpc-exchange</artifactId>
+	<artifactId>pumpkin-rpc-threadpool</artifactId>
 	<packaging>pom</packaging>
 	<modules>
-		<module>pumpkin-rpc-exchange-api</module>
-		<module>pumpkin-rpc-exchange-default</module>
+		<module>pumpkin-rpc-threadpool-api</module>
+		<module>pumpkin-rpc-threadpool-default</module>
 	</modules>
-	
-	<dependencies>
-		<dependency>
-			<groupId>org.hum</groupId>
-			<artifactId>pumpkin-rpc-transport-api</artifactId>
-			<version>${project.parent.version}</version>
-		</dependency>
-	</dependencies>
 </project>

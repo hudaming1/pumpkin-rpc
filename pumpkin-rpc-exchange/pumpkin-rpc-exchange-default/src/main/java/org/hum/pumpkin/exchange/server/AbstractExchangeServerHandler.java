@@ -1,14 +1,15 @@
 package org.hum.pumpkin.exchange.server;
 
 import org.hum.pumpkin.common.url.URL;
-import org.hum.pumpkin.exchange.Request;
-import org.hum.pumpkin.exchange.Response;
-import org.hum.pumpkin.transport.AbstractServerHandler;
-import org.hum.pumpkin.transport.ServerHandler;
+import org.hum.pumpkin.transport.message.Message;
+import org.hum.pumpkin.transport.message.MessageBack;
+import org.hum.pumpkin.transport.server.AbstractServerHandler;
+import org.hum.pumpkin.transport.server.ServerHandler;
 
 /**
- * Server端的Exchange层可能有些鸡肋，实现的目的仅是为了解耦Protocol和Transport层。
- * 我不希望在Protocol层出现Message和MessageBack对象，因为他们是Transport层的class。
+ * TODO 目前唯一的实现类居然是在上层Procotol里，需要看看怎么改合适
+ * 对比Transporter负责传输，Exchange更专注于传输的逻辑，例如业务请求重试；
+ * 服务启动后的握手，心跳监测逻辑都在Exchange处理
  */
 public abstract class AbstractExchangeServerHandler implements ExchangeServerHandler {
 	
@@ -19,10 +20,10 @@ public abstract class AbstractExchangeServerHandler implements ExchangeServerHan
 	}
 
 	private ServerHandler serverHandler = new AbstractServerHandler() {
-		
 		@Override
-		public Response received(Request request) {
-			return handler(request);
+		public MessageBack received(String host, Message message) {
+			// TODO Auto-generated method stub
+			return null;
 		}
 	};
 	
