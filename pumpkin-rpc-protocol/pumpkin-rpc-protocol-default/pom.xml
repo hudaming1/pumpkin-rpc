@@ -19,5 +19,10 @@
 			<artifactId>pumpkin-rpc-threadpool-api</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.hum</groupId>
+			<artifactId>pumpkin-rpc-proxy-api</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
 	</dependencies>
 </project>

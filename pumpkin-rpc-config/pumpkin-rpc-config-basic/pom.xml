@@ -7,11 +7,36 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>pumpkin-rpc-config-basic</artifactId>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>org.hum</groupId>
-			<artifactId>pumpkin-rpc-proxy-api</artifactId>
+			<artifactId>pumpkin-rpc-proxy-default</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hum</groupId>
+			<artifactId>pumpkin-rpc-protocol-default</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hum</groupId>
+			<artifactId>pumpkin-rpc-threadpool-default</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hum</groupId>
+			<artifactId>pumpkin-rpc-exchange-default</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hum</groupId>
+			<artifactId>pumpkin-rpc-transport-netty</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hum</groupId>
+			<artifactId>pumpkin-rpc-serialization-kyro</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
 	</dependencies>

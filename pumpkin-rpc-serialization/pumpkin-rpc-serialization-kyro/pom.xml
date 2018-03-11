@@ -7,12 +7,18 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>pumpkin-rpc-serialization-kyro</artifactId>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>org.hum</groupId>
 			<artifactId>pumpkin-rpc-serialization-api</artifactId>
 			<version>${project.parent.version}</version>
+		</dependency>
+		<!-- kryo -->
+		<dependency>
+			<groupId>com.esotericsoftware</groupId>
+			<artifactId>kryo</artifactId>
+			<version>3.0.3</version>
 		</dependency>
 	</dependencies>
 </project>
