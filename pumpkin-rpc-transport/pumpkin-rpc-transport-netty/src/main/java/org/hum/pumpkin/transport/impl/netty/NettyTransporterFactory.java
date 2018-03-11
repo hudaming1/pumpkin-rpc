@@ -3,6 +3,8 @@ package org.hum.pumpkin.transport.impl.netty;
 import org.hum.pumpkin.common.url.URL;
 import org.hum.pumpkin.transport.client.Client;
 import org.hum.pumpkin.transport.factory.AbstractTransporterFactory;
+import org.hum.pumpkin.transport.impl.netty.client.NettyClient;
+import org.hum.pumpkin.transport.impl.netty.server.NettyServer;
 import org.hum.pumpkin.transport.server.Server;
 import org.hum.pumpkin.transport.server.ServerHandler;
 

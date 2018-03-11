@@ -14,7 +14,6 @@ import org.hum.pumpkin.exchange.server.ExchangeServerHandler;
 import org.hum.pumpkin.protocol.invoker.RpcInvocation;
 import org.hum.pumpkin.protocol.invoker.RpcResult;
 import org.hum.pumpkin.threadpool.ThreadPoolFactory;
-import org.hum.pumpkin.transport.server.ServerHandler;
 
 public class DefaultExporter<T> implements Exporter<T>{
 
@@ -24,11 +23,9 @@ public class DefaultExporter<T> implements Exporter<T>{
 	private ExchangeServer exchangeServer;
 	private ExchangeServerHandler serverHandler = null;
 	
-	
 	public DefaultExporter(Class<T> classType, T instances, URL url) {
 		this.ref = instances;
 		this.serverHandler = new ExchangeServerHandler() {
-
 			@Override
 			public Response handler(Request request) {
 				Future<RpcResult> future = EXECUTOR_SERVICE.submit(new Tasker((RpcInvocation) request.getData(), ref));
@@ -38,11 +35,6 @@ public class DefaultExporter<T> implements Exporter<T>{
 				} catch (InterruptedException | ExecutionException e) {
 					return new Response(request.getId(), null, e);
 				}
-			}
-
-			@Override
-			public ServerHandler getServerHandler() {
-				return null;
 			}
 		};
 		this.exchangeServer = EXCHANGER.bind(url, serverHandler);

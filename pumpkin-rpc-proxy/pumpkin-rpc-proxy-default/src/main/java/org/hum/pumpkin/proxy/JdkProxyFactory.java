@@ -1,7 +1,6 @@
 package org.hum.pumpkin.proxy;
 
 import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
@@ -27,8 +26,7 @@ public class JdkProxyFactory implements ProxyFactory {
 	public Object invoke(Object instances, String methodName, Class<?>[] paramTypes, Object[] params) {
 		try {
 			return instances.getClass().getMethod(methodName, paramTypes).invoke(instances, params);
-		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
-				| SecurityException e) {
+		} catch (Exception e) {
 			throw new RpcException("reflect invoke [" + instances.getClass().getName() + "." + methodName + "] exception", e);
 		}
 	}

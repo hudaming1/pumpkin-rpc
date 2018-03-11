@@ -7,6 +7,9 @@ import org.hum.pumpkin.protocol.invoker.RpcInvocation;
 import org.hum.pumpkin.protocol.invoker.RpcResult;
 import org.hum.pumpkin.proxy.ProxyFactory;
 
+/**
+ * TODO protocol不应该依赖上层proxy的对象
+ */
 public class Tasker implements Callable<RpcResult> {
 	
 	private final static ProxyFactory proxyFactory = ServiceLoaderHolder.loadByCache(ProxyFactory.class);
