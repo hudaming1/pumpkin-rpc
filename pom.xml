@@ -16,6 +16,7 @@
 		<module>pumpkin-rpc-config</module>
 		<module>pumpkin-rpc-protocol</module>
 		<module>pumpkin-rpc-threadpool</module>
+		<module>pumpkin-rpc-test</module>
 	</modules>
 
 	<dependencies>
