@@ -18,6 +18,14 @@ public class URL {
 		this.port = port;
 		this.path = path;
 	}
+	
+	public void setHost(String host) {
+		this.host = host;
+	}
+	
+	public void setPort(int port) {
+		this.port = port;
+	}
 
 	public Object getParam(String key) {
 		return params.get(key);

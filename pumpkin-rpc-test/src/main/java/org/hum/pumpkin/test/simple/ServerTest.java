@@ -11,7 +11,7 @@ public class ServerTest {
 		ServiceConfig<IHelloService> serviceConfig = new ServiceConfig<>();
 		serviceConfig.setProtocol("registry");
 		serviceConfig.setRegistryConfig(new RegistryConfig("zookeeper", "172.16.219.129", 2181));
-		serviceConfig.setPort(9080);
+		serviceConfig.setPort(9081);
 		serviceConfig.setInterfaceType(IHelloService.class);
 		serviceConfig.setRef(new HelloServiceImpl());
 		serviceConfig.export();

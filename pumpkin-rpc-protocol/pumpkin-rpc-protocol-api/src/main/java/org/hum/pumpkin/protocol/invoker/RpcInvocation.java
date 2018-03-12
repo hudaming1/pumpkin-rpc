@@ -19,6 +19,7 @@ public class RpcInvocation implements Serializable {
 		this.method = method;
 		this.paramTypes = paramTypes;
 		this.params = params;
+		invocationId = System.currentTimeMillis();
 	}
 
 	public String getMethod() {
