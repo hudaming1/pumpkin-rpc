@@ -10,6 +10,7 @@
 	<artifactId>pumpkin-rpc-config</artifactId>
 	<modules>
 		<module>pumpkin-rpc-config-basic</module>
+		<module>pumpkin-rpc-config-spring</module>
 	</modules>
 	
 </project>
