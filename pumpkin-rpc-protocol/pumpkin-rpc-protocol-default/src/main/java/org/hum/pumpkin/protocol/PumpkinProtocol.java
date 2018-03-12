@@ -7,10 +7,10 @@ import org.hum.pumpkin.common.exception.PumpkinException;
 import org.hum.pumpkin.common.serviceloader.ServiceLoaderHolder;
 import org.hum.pumpkin.common.url.URL;
 import org.hum.pumpkin.common.url.URLConstant;
+import org.hum.pumpkin.protocol.cluster.invoker.ClusterInvoker;
 import org.hum.pumpkin.protocol.exporter.DefaultExporter;
 import org.hum.pumpkin.protocol.exporter.Exporter;
 import org.hum.pumpkin.protocol.invoker.Invoker;
-import org.hum.pumpkin.protocol.invoker.cluster.ClusterInvoker;
 import org.hum.pumpkin.protocol.invoker.direct.DirectInvoker;
 import org.hum.pumpkin.registry.Registry;
 import org.hum.pumpkin.registry.RegistryConfig;
@@ -45,8 +45,12 @@ public class PumpkinProtocol implements Protocol {
 		if (url.getProtocol() != null && url.getProtocol().equals(Constant.PROTOCOL_REGISTRY)) {
 			try {
 				RegistryConfig registryConfig = (RegistryConfig) url.getParam(URLConstant.REGISTRY_CONFIG);
+				// TODO 为以后多注册中心做准备（但需要ServiceLoader支持）
+				// for (RegistryConfig registryConfig : registryConfigs) {
+				// Registry registry = ServiceLoaderHolder.getExtensionByName(registryConfig.getName());
 				this.registry.connect(registryConfig.getAddress(), registryConfig.getPort());
 				this.registry.registry(classType, InetUtils.getLocalAddress(), url.getPort());
+				// }
 			} catch (UnknownHostException e) {
 				throw new PumpkinException("registry exception", e);
 			}

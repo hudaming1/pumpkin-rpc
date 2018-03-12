@@ -1,4 +1,4 @@
-package org.hum.pumpkin.protocol.invoker.cluster;
+package org.hum.pumpkin.protocol.cluster.invoker;
 
 import java.util.HashMap;
 import java.util.List;
@@ -6,8 +6,10 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.hum.pumpkin.common.exception.RpcException;
+import org.hum.pumpkin.common.serviceloader.ServiceLoaderHolder;
 import org.hum.pumpkin.common.url.URL;
 import org.hum.pumpkin.protocol.ProtocolEnum;
+import org.hum.pumpkin.protocol.cluster.directory.Directory;
 import org.hum.pumpkin.protocol.invoker.Invoker;
 import org.hum.pumpkin.protocol.invoker.RpcInvocation;
 import org.hum.pumpkin.protocol.invoker.RpcResult;
@@ -17,6 +19,7 @@ import org.hum.pumpkin.registry.RegistryConfig;
 
 public class ClusterInvoker<T> implements Invoker<T> {
 
+	private Directory directory = ServiceLoaderHolder.loadByCache(Directory.class);
 	private RegistryConfig registryConfig;
 	private Registry registry;
 	private Class<T> classType;
