@@ -9,11 +9,11 @@ public class ClientTest {
 
 	public static void main(String[] args) throws InterruptedException {
 		ReferenceConfig<IHelloService> referenceBean = new ReferenceConfig<>(IHelloService.class);
-		// referenceBean.setUrl("127.0.0.1", 9080);
-		// referenceBean.setProtocol(ProtocolEnum.Direct.getName());
+		 referenceBean.setUrl("127.0.0.1", 9080);
+		 referenceBean.setProtocol(ProtocolEnum.Direct.getName());
 
-		referenceBean.setProtocol("registry");
-		referenceBean.setRegistryConfig(new RegistryConfig("zookeeper", "172.16.219.129", 2181));
+//		referenceBean.setProtocol("registry");
+//		referenceBean.setRegistryConfig(new RegistryConfig("zookeeper", "172.16.219.129", 2181));
 
 		IHelloService helloService = referenceBean.get();
 

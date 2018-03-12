@@ -24,4 +24,7 @@ public class URLConstant {
 	 * 鉴权类型 {@link EAuthType}
 	 */
 	public static final String AUTH_TYPE = "auth_type";
+	
+	// 注册中心
+	public static final String REGISTRY_CONFIG = "registryConfig";
 }

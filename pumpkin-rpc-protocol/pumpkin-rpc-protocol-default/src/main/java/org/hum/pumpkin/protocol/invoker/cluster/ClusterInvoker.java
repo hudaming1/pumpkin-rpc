@@ -21,7 +21,7 @@ public class ClusterInvoker<T> implements Invoker<T> {
 	private Registry registry;
 	private Class<T> classType;
 	private URL url;
-	// className -> ip:port -> Client
+	// className -> ip:port -> Invoker
 	private Map<String, Map<String, DirectInvoker<T>>> clientMap = new HashMap<>();
 
 	// TODO registryConfig和Registry，作为2个参数传入，有点恶心
@@ -46,6 +46,7 @@ public class ClusterInvoker<T> implements Invoker<T> {
 		// 2.reg
 		for (String _url : urls) {
 			String[] urlArr = _url.split(":");
+			// TODO 重新创建URL会导致上层URL信息丢失
 			URL directUrl = new URL(ProtocolEnum.Direct.getName(), urlArr[0], Integer.parseInt(urlArr[1]), classType.getName());
 			DirectInvoker<T> invoker = new DirectInvoker<>(classType, directUrl);
 			clientMap.get(classType.getName()).put(_url, invoker);
@@ -60,16 +61,13 @@ public class ClusterInvoker<T> implements Invoker<T> {
 	@Override
 	public RpcResult invoke(RpcInvocation invocation) {
 		try {
-			// TODO 日后完善
-			// request.setRetryTimes(url.getInteger(UrlConstant.RETRY_TIMES));
-			
 			// 1.find registiry url TODO 采用自动发现机制
 			List<String> urls = registry.discover(classType.getName());
 			if (urls == null || urls.isEmpty()) {
 				throw new RpcException("no found availabled server! classtype=" + classType.getName());
 			}
 
-			// 2.find router strategy TODO SPI
+			// 2.find router strategy TODO 需要扩展支持
 			Long index = invocation.getInvocationId() % urls.size() ;
 			String url = urls.get(index.intValue());
 			String[] urlArr = url.split(":");

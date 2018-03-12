@@ -6,6 +6,7 @@ import java.util.List;
 import org.hum.pumpkin.common.exception.RpcException;
 import org.hum.pumpkin.common.serviceloader.ServiceLoaderHolder;
 import org.hum.pumpkin.common.url.URL;
+import org.hum.pumpkin.common.url.URLConstant;
 import org.hum.pumpkin.protocol.Protocol;
 import org.hum.pumpkin.protocol.exporter.Exporter;
 import org.hum.pumpkin.registry.RegistryConfig;
@@ -18,6 +19,7 @@ public class ServiceConfig<T> {
 	private Class<T> interfaceType;
 	private RegistryConfig registryConfig;
 	private T ref;
+	// TODO 协议后期其实可以同时共存多个，所以这里使用的SPI需要向Dubbo学习改进
 	private static final Protocol PROTOCOL = ServiceLoaderHolder.loadByCache(Protocol.class);
 	// 记录发布的服务，当server.close时需要知道销毁哪些对象
 	private static final List<Exporter<?>> EXPORTER_LIST = new ArrayList<Exporter<?>>();
@@ -69,8 +71,9 @@ public class ServiceConfig<T> {
 		try {
 			URL url = new URL(protocol, InetUtils.getLocalAddress(), port, interfaceType.getName());
 			
+			// TODO 其他服务层的配置信息，需要配置到url.param中
 			if (registryConfig != null) {
-				url.buildParam("registryConfig", registryConfig);
+				url.buildParam(URLConstant.REGISTRY_CONFIG, registryConfig);
 			}
 			
 			Exporter<T> exporter = PROTOCOL.export(interfaceType, ref, url);
