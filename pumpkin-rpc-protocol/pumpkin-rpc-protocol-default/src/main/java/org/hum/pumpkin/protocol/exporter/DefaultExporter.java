@@ -54,6 +54,7 @@ public class DefaultExporter<T> implements Exporter<T>{
 		public Response handler(Request request) {
 			try {
 				RpcInvocation rpcInvocation = (RpcInvocation) request.getData();
+				System.out.println(rpcInvocation);
 				Object instance = beanMap.get(rpcInvocation.getInterfaceType());
 				Future<RpcResult> future = EXECUTOR_SERVICE.submit(new Tasker((RpcInvocation) request.getData(), instance));
 				return new Response(request.getId(), future.get(), null);

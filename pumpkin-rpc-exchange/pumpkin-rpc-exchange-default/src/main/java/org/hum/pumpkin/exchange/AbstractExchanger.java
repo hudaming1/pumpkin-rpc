@@ -17,12 +17,17 @@ public abstract class AbstractExchanger implements Exchanger {
 
 	private static final Map<String, ExchangeClient> EXCHANGE_CLIENTS = new ConcurrentHashMap<>();
 	private static final Object createLock = new Object();
+	private static volatile ExchangeServer server;
 	
 	@Override
 	public ExchangeServer bind(URL url, ExchangeServerHandler serverHandler) {
 		// TODO test版本 待完善
 		Server transporterServer = doBind(url, serverHandler);
-		return new DefaultExchangeServer(transporterServer);
+		// TODO synchronized，保证ExchangeServer为单例
+		if (server == null) {
+			server = new DefaultExchangeServer(transporterServer);
+		}
+		return server;
 	}
 
 	protected abstract Server doBind(URL url, ExchangeServerHandler serverHandler);
