@@ -16,7 +16,7 @@ public class JdkProxyFactory implements ProxyFactory {
 		return (T) Proxy.newProxyInstance(invoker.getClass().getClassLoader(), new Class[] { invoker.getType() }, new InvocationHandler() {
 			@Override
 			public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-				RpcInvocation invocation = new RpcInvocation(method.getName(), method.getParameterTypes(), args);
+				RpcInvocation invocation = new RpcInvocation(invoker.getType(), method.getName(), method.getParameterTypes(), args);
 				return invoker.invoke(invocation).get();
 			}
 		});

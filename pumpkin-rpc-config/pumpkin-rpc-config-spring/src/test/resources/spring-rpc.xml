@@ -8,7 +8,7 @@
     http://www.pumpkin.org/schema/pumpkin.xsd"
 	default-autowire="byName">
 	
-	<pumpkin:protocol id="pumpkin-protocol" name="pumpkin" port="9080" />
+	<pumpkin:protocol name="pumpkin" port="9080" />
 	<pumpkin:registry id="pumpkin-registry" address="zookeeper://172.16.219.129:2181" />
 	
 	<bean id="testService" class="org.hum.pumpkin.config.spring.test.TestServiceImpl" />

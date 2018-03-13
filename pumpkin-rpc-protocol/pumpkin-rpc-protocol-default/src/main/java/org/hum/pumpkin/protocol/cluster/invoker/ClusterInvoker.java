@@ -19,7 +19,7 @@ import org.hum.pumpkin.registry.RegistryConfig;
 
 public class ClusterInvoker<T> implements Invoker<T> {
 
-	private Directory directory = ServiceLoaderHolder.loadByCache(Directory.class);
+//	private Directory directory = ServiceLoaderHolder.loadByCache(Directory.class);
 	private RegistryConfig registryConfig;
 	private Registry registry;
 	private Class<T> classType;

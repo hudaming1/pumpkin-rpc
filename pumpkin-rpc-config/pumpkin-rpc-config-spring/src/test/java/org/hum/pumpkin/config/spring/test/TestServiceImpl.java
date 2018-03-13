@@ -3,6 +3,6 @@ package org.hum.pumpkin.config.spring.test;
 public class TestServiceImpl implements TestService {
 
 	public String sayHello(String name) {
-		return "hello " + name;
+		return "helloo " + name;
 	}
 }

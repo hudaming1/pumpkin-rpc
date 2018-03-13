@@ -1,5 +1,7 @@
 package org.hum.pumpkin.protocol.exporter;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
@@ -27,13 +29,18 @@ public class DefaultExporter<T> implements Exporter<T>{
 
 	private static final Exchanger EXCHANGER = ServiceLoaderHolder.loadByCache(Exchanger.class);
 	private static final ExecutorService EXECUTOR_SERVICE = ServiceLoaderHolder.loadByCache(ThreadPoolFactory.class).create();
+	// TODO 这里应该存InvokerMap
+	private static final Map<Class<?>, Object> beanMap = new ConcurrentHashMap<>();
 	private T ref;
 	private ExchangeServer exchangeServer;
 	private ExchangeServerHandler serverHandler;
 	
 	public DefaultExporter(Class<T> classType, T instances, URL url) {
 		this.ref = instances;
-		this.serverHandler = new SimpleExchangeServerHandler(ref);
+		if (!beanMap.containsKey(classType)) {
+			beanMap.put(classType, instances);
+		}
+		this.serverHandler = new SimpleExchangeServerHandler();
 		this.exchangeServer = EXCHANGER.bind(url, serverHandler);
 	}
 
@@ -43,14 +50,12 @@ public class DefaultExporter<T> implements Exporter<T>{
 	}
 	
 	private class SimpleExchangeServerHandler implements ExchangeServerHandler {
-		private T ref;
-		public SimpleExchangeServerHandler(T ref) {
-			this.ref = ref;
-		}
 		@Override
 		public Response handler(Request request) {
 			try {
-				Future<RpcResult> future = EXECUTOR_SERVICE.submit(new Tasker((RpcInvocation) request.getData(), this.ref));
+				RpcInvocation rpcInvocation = (RpcInvocation) request.getData();
+				Object instance = beanMap.get(rpcInvocation.getInterfaceType());
+				Future<RpcResult> future = EXECUTOR_SERVICE.submit(new Tasker((RpcInvocation) request.getData(), instance));
 				return new Response(request.getId(), future.get(), null);
 			} catch (Exception e) {
 				return new Response(request.getId(), null, e);

@@ -9,8 +9,8 @@ public class ServerTest {
 
 	public static void main(String[] args) {
 		ServiceConfig<IHelloService> serviceConfig = new ServiceConfig<>();
-		serviceConfig.setProtocol("registry");
-		serviceConfig.setRegistryConfig(new RegistryConfig("zookeeper", "172.16.219.129", 2181));
+		serviceConfig.setProtocol("pumpkin");
+//		serviceConfig.setRegistryConfig(new RegistryConfig("zookeeper", "172.16.219.129", 2181));
 		serviceConfig.setPort(9080);
 		serviceConfig.setInterfaceType(IHelloService.class);
 		serviceConfig.setRef(new HelloServiceImpl());

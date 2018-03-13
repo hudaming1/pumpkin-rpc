@@ -1,11 +1,24 @@
 package org.hum.pumpkin.config.spring.bean;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class PumpkinRegistryBean {
 
+	private static final List<String> registries = new ArrayList<String>();
 	private String address;
 	private String protocolName;
 	private String host;
 	private int port;
+	
+	public static void addRegistry(String registryBeanId) {
+		registries.add(registryBeanId);
+	}
+	
+	public static List<String> getRegistries() {
+		return (List<String>) Collections.unmodifiableList(registries);
+	}
 
 	public String getAddress() {
 		return address;
