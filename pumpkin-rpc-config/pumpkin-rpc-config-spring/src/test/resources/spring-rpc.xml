@@ -8,14 +8,11 @@
     http://www.pumpkin.org/schema/pumpkin.xsd"
 	default-autowire="byName">
 	
-	<pumpkin:protocol id="test" name="pumpkin" port="9080" />
-	<!-- 
-	<pumpkin:registry address="zookeeper://172.16.219.129:2181" />
-	 -->
+	<pumpkin:protocol id="pumpkin-protocol" name="pumpkin" port="9080" />
+	<pumpkin:registry id="pumpkin-registry" address="zookeeper://172.16.219.129:2181" />
 	
-	<!-- 
-	<pumpkin:service id="test" interface="com.alibaba.dubbo.examples.validation.api.ValidationService" ref="validationService" />
-	 -->	
+	<bean id="testService" class="org.hum.pumpkin.config.spring.test.TestServiceImpl" />
+	<pumpkin:service protocol="pumpkin-protocol" id="test" registryConfig="pumpkin-registry" interface="org.hum.pumpkin.config.spring.test.TestService" ref="testService" />
 	
 	<!-- 
 	<pumpkin:reference id="validationService" url="pumpkin://172.16.219.129:9080/" interface="com.alibaba.dubbo.examples.validation.api.ValidationService"/>

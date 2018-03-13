@@ -1,3 +1,5 @@
+package org.hum.pumpkin.config.spring.test;
+
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class Test {

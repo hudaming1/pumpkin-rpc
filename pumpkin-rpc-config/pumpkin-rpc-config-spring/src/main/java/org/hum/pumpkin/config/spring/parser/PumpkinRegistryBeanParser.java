@@ -10,13 +10,16 @@ import org.w3c.dom.Element;
 public class PumpkinRegistryBeanParser implements BeanDefinitionParser {
 
 	public BeanDefinition parse(Element element, ParserContext parserContext) {
+
 		// TODO check
+		String id = element.getAttribute("id") == null ? "pumpkin-registry" : element.getAttribute("id");
 		String address = element.getAttribute("address");
 		RootBeanDefinition beanDefinition = new RootBeanDefinition();
 		beanDefinition.setBeanClass(PumpkinRegistryBean.class);
 		beanDefinition.getPropertyValues().addPropertyValue("address", address);
+		
 		// TODO create id strangy
-		parserContext.getRegistry().registerBeanDefinition("pumpkin-registry", beanDefinition);
+		parserContext.getRegistry().registerBeanDefinition(id, beanDefinition);
 		return beanDefinition;
 	}
 }

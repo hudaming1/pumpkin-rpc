@@ -30,6 +30,8 @@
 		<xsd:complexType>
 			<xsd:complexContent>
 				<xsd:extension base="beans:identifiedType">
+					<xsd:attribute name="registryConfig" type="xsd:string" />
+					<xsd:attribute name="protocol" type="xsd:string" />
 					<xsd:attribute name="interface" type="xsd:string" />
 					<xsd:attribute name="ref" type="xsd:string" />
 				</xsd:extension>
