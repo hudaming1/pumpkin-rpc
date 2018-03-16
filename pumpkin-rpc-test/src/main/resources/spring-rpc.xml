@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="GBK"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xmlns:pumpkin="http://www.pumpkin.org/schema/pumpkin"  
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd 
+    http://www.pumpkin.org/schema/pumpkin 
+    http://www.pumpkin.org/schema/pumpkin.xsd"
+	default-autowire="byName">
+	
+	<pumpkin:protocol name="pumpkin" port="9080" />
+	<pumpkin:registry id="pumpkin-registry" address="zookeeper://172.16.219.129:2181" />
+	
+	<bean id="userServiceImpl" class="org.hum.pumpkin.test._service.UserServiceImpl" />
+	<pumpkin:service protocol="pumpkin-protocol" id="userService" registryConfig="pumpkin-registry" interface="org.hum.pumpkin.test._service.IUserService" ref="userServiceImpl" />
+	
+	
+	<bean id="helloServiceImpl" class="org.hum.pumpkin.test._service.HelloServiceImpl" />
+	<pumpkin:service protocol="pumpkin-protocol" id="helloService" registryConfig="pumpkin-registry" interface="org.hum.pumpkin.test._service.IHelloService" ref="helloServiceImpl" />
+	
+	<!-- 
+	<pumpkin:reference id="validationService" url="pumpkin://172.16.219.129:9080/" interface="com.alibaba.dubbo.examples.validation.api.ValidationService"/>
+	 -->
+
+</beans>

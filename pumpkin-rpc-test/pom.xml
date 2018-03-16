@@ -10,7 +10,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.hum</groupId>
-			<artifactId>pumpkin-rpc-config-basic</artifactId>
+			<artifactId>pumpkin-rpc-config-spring</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
 	</dependencies>
