@@ -5,12 +5,11 @@
 	<artifactId>pumpkin-rpc</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	
+
 	<modules>
 		<module>pumpkin-rpc-transport</module>
 		<module>pumpkin-rpc-common</module>
 		<module>pumpkin-rpc-exchange</module>
-		
 		<module>pumpkin-rpc-proxy</module>
 		<module>pumpkin-rpc-serialization</module>
 		<module>pumpkin-rpc-config</module>
@@ -19,4 +18,48 @@
 		<module>pumpkin-rpc-test</module>
 		<module>pumpkin-rpc-registry</module>
 	</modules>
+
+	<dependencyManagement>
+		<dependencies>
+			<!-- Log libs -->
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${slf4j_version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-log4j12</artifactId>
+				<version>${slf4j_version}</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-logging</groupId>
+				<artifactId>commons-logging</artifactId>
+				<version>${jcl_version}</version>
+			</dependency>
+			<dependency>
+				<groupId>log4j</groupId>
+				<artifactId>log4j</artifactId>
+				<version>${log4j_version}</version>
+			</dependency>
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-classic</artifactId>
+				<version>${logback_version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<properties>
+		<!-- Log libs -->
+		<slf4j_version>1.7.25</slf4j_version>
+		<jcl_version>1.2</jcl_version>
+		<log4j_version>1.2.16</log4j_version>
+		<logback_version>1.2.2</logback_version>
+
+		<!-- for maven compiler plugin -->
+		<java_source_version>1.7</java_source_version>
+		<java_target_version>1.7</java_target_version>
+		<file_encoding>UTF-8</file_encoding>
+	</properties>
 </project>

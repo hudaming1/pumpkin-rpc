@@ -13,3 +13,6 @@ target/test-classes/org/hum/pumpkin/test/simple/ServerTest.class
 *.MF
 *.properties
 *.MF
+.DS_Store
+target/classes/META-INF/maven/org.hum/pumpkin-rpc/pom.properties
+target/classes/META-INF/maven/org.hum/pumpkin-rpc/pom.properties
