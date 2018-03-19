@@ -9,6 +9,7 @@ import org.springframework.util.StringUtils;
 public class PumpkinReferenceBean<T> implements FactoryBean<T>{
 
 	private PumpkinRegistryBean registryConfig;
+	// TODO 如果定义多协议时，需要制定使用哪个协议
 	private String protocol;
 	private Class<T> interfaceType;
 	private String url;
@@ -49,6 +50,7 @@ public class PumpkinReferenceBean<T> implements FactoryBean<T>{
 		ReferenceConfig<T> referenceBean = new ReferenceConfig<T>(interfaceType);
 		// 1.优先使用内部url
 		if (!StringUtils.isEmpty(url)) {
+			// TODO check url
 			// TODO 稍后用正则修改
 			String host = url.split(":")[0];
 			String port = url.split(":")[1];

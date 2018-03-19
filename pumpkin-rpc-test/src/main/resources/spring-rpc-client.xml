@@ -8,9 +8,9 @@
     http://www.pumpkin.org/schema/pumpkin.xsd"
 	default-autowire="byName">
 	
-	<pumpkin:protocol name="pumpkin" port="9080" />
 	<pumpkin:registry id="pumpkin-registry" address="zookeeper://172.16.219.129:2181" />
 	
-	<pumpkin:reference id="userService" protocol="pumpkin" interface="org.hum.pumpkin.test._service.IUserService"  />
+	<pumpkin:reference id="userService" interface="org.hum.pumpkin.test._service.IUserService"  />
+	<pumpkin:reference id="helloService" url="127.0.0.1:9080" interface="org.hum.pumpkin.test._service.IHelloService"  />
 	
 </beans>

@@ -23,9 +23,9 @@ public class PumpkinReferenceBeanParser implements BeanDefinitionParser {
 
 		RootBeanDefinition beanDefinition = new RootBeanDefinition(PumpkinReferenceBean.class);
 		beanDefinition.getPropertyValues().addPropertyValue("interfaceType", interfaceType);
-		// TODO 不要强依赖于protocol，默认就是pumpkin协议
 		beanDefinition.getPropertyValues().addPropertyValue("protocol", element.getAttribute("protocol"));
 		beanDefinition.getPropertyValues().addPropertyValue("registryConfig", getRegistry(id, element));
+		beanDefinition.getPropertyValues().addPropertyValue("url", element.getAttribute("url"));
 		parserContext.getRegistry().registerBeanDefinition(id, beanDefinition);
 		return beanDefinition;
 	}
