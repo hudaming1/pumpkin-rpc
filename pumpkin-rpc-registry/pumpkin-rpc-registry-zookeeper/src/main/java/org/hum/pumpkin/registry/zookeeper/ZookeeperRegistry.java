@@ -1,7 +1,6 @@
 package org.hum.pumpkin.registry.zookeeper;
 
 import java.util.List;
-
 import org.I0Itec.zkclient.ZkClient;
 import org.hum.pumpkin.registry.Registry;
 

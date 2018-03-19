@@ -7,9 +7,9 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>pumpkin-rpc-registry-zookeeper</artifactId>
-    <properties>
-        <skip_maven_deploy>true</skip_maven_deploy>
-    </properties>
+	<properties>
+		<skip_maven_deploy>true</skip_maven_deploy>
+	</properties>
 
 	<dependencies>
 		<dependency>
@@ -18,9 +18,9 @@
 			<version>${project.parent.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.github.sgroschupf</groupId>
+			<groupId>com.101tec</groupId>
 			<artifactId>zkclient</artifactId>
-			<version>0.1</version>
+			<version>0.10</version>
 		</dependency>
 	</dependencies>
 </project>

@@ -1,17 +1,12 @@
 package org.hum.pumpkin.config.spring.bean;
 
 import org.hum.pumpkin.config.ReferenceConfig;
-import org.hum.pumpkin.protocol.Protocol;
 import org.hum.pumpkin.registry.RegistryConfig;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.FactoryBean;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.util.StringUtils;
 
-public class PumpkinReferenceBean<T> implements FactoryBean<T>, ApplicationContextAware {
+public class PumpkinReferenceBean<T> implements FactoryBean<T>{
 
-	private transient ApplicationContext applicationContext;
 	private PumpkinRegistryBean registryConfig;
 	private String protocol;
 	private Class<T> interfaceType;
@@ -62,11 +57,6 @@ public class PumpkinReferenceBean<T> implements FactoryBean<T>, ApplicationConte
 		return referenceBean.get();
 	}
 	
-//	private String getProtocol() {
-//		// String[] beanNamesForType = applicationContext.getBeanNamesForType(Protocol.class);
-//		return "";
-//	}
-
 	public Class<T> getObjectType() {
 		return interfaceType;
 	}
@@ -79,9 +69,5 @@ public class PumpkinReferenceBean<T> implements FactoryBean<T>, ApplicationConte
 	public String toString() {
 		return "PumpkinReferenceBean [registryConfig=" + registryConfig + ", protocol=" + protocol + ", interfaceType="
 				+ interfaceType + ", url=" + url + "]";
-	}
-
-	public void setApplicationContext(ApplicationContext arg0) throws BeansException {
-		this.applicationContext = arg0;
 	}
 }
