@@ -3,8 +3,8 @@ package org.hum.pumpkin.config.spring.parser;
 import java.util.List;
 
 import org.hum.pumpkin.common.exception.ServiceException;
-import org.hum.pumpkin.config.spring.bean.PumpkinReferenceBean;
-import org.hum.pumpkin.config.spring.bean.PumpkinRegistryBean;
+import org.hum.pumpkin.config.spring.bean.ReferenceBean;
+import org.hum.pumpkin.config.spring.bean.RegistryBean;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.RuntimeBeanReference;
 import org.springframework.beans.factory.support.RootBeanDefinition;
@@ -21,7 +21,7 @@ public class PumpkinReferenceBeanParser implements BeanDefinitionParser {
 		String interfaceType = element.getAttribute("interface");
 		String id = StringUtils.isEmpty(element.getAttribute("id")) ? interfaceType : element.getAttribute("id");
 
-		RootBeanDefinition beanDefinition = new RootBeanDefinition(PumpkinReferenceBean.class);
+		RootBeanDefinition beanDefinition = new RootBeanDefinition(ReferenceBean.class);
 		beanDefinition.getPropertyValues().addPropertyValue("interfaceType", interfaceType);
 		beanDefinition.getPropertyValues().addPropertyValue("protocol", element.getAttribute("protocol"));
 		beanDefinition.getPropertyValues().addPropertyValue("registryConfig", getRegistry(id, element));
@@ -37,7 +37,7 @@ public class PumpkinReferenceBeanParser implements BeanDefinitionParser {
 			return new RuntimeBeanReference(registryConfigId);
 		}
 		// 2.如果service没有指定registry，则看看有没有全局registry可用
-		List<String> registries = PumpkinRegistryBean.getRegistries();
+		List<String> registries = RegistryBean.getRegistries();
 		if (registries == null || registries.isEmpty()) {
 			return null;
 		} else if (registries.size() > 1) {

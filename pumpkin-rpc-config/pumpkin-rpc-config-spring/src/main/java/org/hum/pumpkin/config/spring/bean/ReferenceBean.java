@@ -6,19 +6,19 @@ import org.hum.pumpkin.registry.RegistryConfig;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.util.StringUtils;
 
-public class PumpkinReferenceBean<T> implements FactoryBean<T>{
+public class ReferenceBean<T> implements FactoryBean<T>{
 
-	private PumpkinRegistryBean registryConfig;
+	private RegistryBean registryConfig;
 	// TODO 如果定义多协议时，需要制定使用哪个协议
 	private String protocol;
 	private Class<T> interfaceType;
 	private String url;
 
-	public PumpkinRegistryBean getRegistryConfig() {
+	public RegistryBean getRegistryConfig() {
 		return registryConfig;
 	}
 
-	public void setRegistryConfig(PumpkinRegistryBean registryConfig) {
+	public void setRegistryConfig(RegistryBean registryConfig) {
 		this.registryConfig = registryConfig;
 	}
 

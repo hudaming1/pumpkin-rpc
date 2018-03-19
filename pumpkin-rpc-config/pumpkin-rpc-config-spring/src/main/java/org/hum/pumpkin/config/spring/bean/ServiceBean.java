@@ -8,20 +8,20 @@ import org.hum.pumpkin.util.InetUtils;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 
-public class PumpkinServiceBean implements ApplicationListener<ContextRefreshedEvent> {
+public class ServiceBean implements ApplicationListener<ContextRefreshedEvent> {
 
-	private PumpkinRegistryBean registryConfig;
+	private RegistryBean registryConfig;
 	private ArrayList<String> protocols;
 	private String interfaceType;
 	private Object ref;
 	
-	public PumpkinServiceBean() {}
+	public ServiceBean() {}
 
-	public PumpkinRegistryBean getRegistryConfig() {
+	public RegistryBean getRegistryConfig() {
 		return registryConfig;
 	}
 
-	public void setRegistryConfig(PumpkinRegistryBean registryConfig) {
+	public void setRegistryConfig(RegistryBean registryConfig) {
 		this.registryConfig = registryConfig;
 	}
 
@@ -53,7 +53,7 @@ public class PumpkinServiceBean implements ApplicationListener<ContextRefreshedE
 	public void onApplicationEvent(ContextRefreshedEvent arg0) {
 		try {
 			for (String procotolBeanId : protocols) {
-				PumpkinProtocolBean protocolBean = arg0.getApplicationContext().getBean(procotolBeanId, PumpkinProtocolBean.class);
+				ProtocolBean protocolBean = arg0.getApplicationContext().getBean(procotolBeanId, ProtocolBean.class);
 				ServiceConfig serviceConfig = new ServiceConfig();
 				serviceConfig.setRegistryConfig(new RegistryConfig(registryConfig.getProtocolName(), registryConfig.getHost(), registryConfig.getPort()));
 				serviceConfig.setProtocol(protocolBean.getName());

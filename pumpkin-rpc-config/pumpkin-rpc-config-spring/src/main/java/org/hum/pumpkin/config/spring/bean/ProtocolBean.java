@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class PumpkinProtocolBean {
+public class ProtocolBean {
 
 	private static final List<String> protocols = new ArrayList<String>();
 	private String name;

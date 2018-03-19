@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class PumpkinRegistryBean {
+public class RegistryBean {
 
 	private static final List<String> registries = new ArrayList<String>();
 	private String address;

@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hum.pumpkin.common.exception.ServiceException;
-import org.hum.pumpkin.config.spring.bean.PumpkinProtocolBean;
-import org.hum.pumpkin.config.spring.bean.PumpkinRegistryBean;
-import org.hum.pumpkin.config.spring.bean.PumpkinServiceBean;
+import org.hum.pumpkin.config.spring.bean.ProtocolBean;
+import org.hum.pumpkin.config.spring.bean.RegistryBean;
+import org.hum.pumpkin.config.spring.bean.ServiceBean;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.RuntimeBeanReference;
 import org.springframework.beans.factory.support.RootBeanDefinition;
@@ -24,7 +24,7 @@ public class PumpkinServiceBeanParser implements BeanDefinitionParser {
 		String interfaceType = element.getAttribute("interface");
 		String id = StringUtils.isEmpty(element.getAttribute("id")) ? interfaceType : element.getAttribute("id");
 
-		RootBeanDefinition beanDefinition = new RootBeanDefinition(PumpkinServiceBean.class);
+		RootBeanDefinition beanDefinition = new RootBeanDefinition(ServiceBean.class);
 		beanDefinition.getPropertyValues().addPropertyValue("interfaceType", interfaceType);
 		beanDefinition.getPropertyValues().addPropertyValue("ref", new RuntimeBeanReference(element.getAttribute("ref")));
 		beanDefinition.getPropertyValues().addPropertyValue("protocols", getProtocols(element));
@@ -46,7 +46,7 @@ public class PumpkinServiceBeanParser implements BeanDefinitionParser {
 			return protocols;
 		}
 		// 2.如果用户没有指定协议，则使用默认协议
-		for (String protocolId : PumpkinProtocolBean.getProtocls()) {
+		for (String protocolId : ProtocolBean.getProtocls()) {
 			protocols.add(protocolId);
 		}
 		return protocols;
@@ -59,7 +59,7 @@ public class PumpkinServiceBeanParser implements BeanDefinitionParser {
 			return new RuntimeBeanReference(registryConfigId);
 		}
 		// 2.如果service没有指定registry，则看看有没有全局registry可用
-		List<String> registries = PumpkinRegistryBean.getRegistries();
+		List<String> registries = RegistryBean.getRegistries();
 		if (registries == null || registries.isEmpty()) {
 			return null;
 		} else if (registries.size() > 1) {

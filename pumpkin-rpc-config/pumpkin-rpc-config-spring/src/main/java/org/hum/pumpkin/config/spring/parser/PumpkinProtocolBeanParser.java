@@ -2,7 +2,7 @@ package org.hum.pumpkin.config.spring.parser;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.hum.pumpkin.config.spring.bean.PumpkinProtocolBean;
+import org.hum.pumpkin.config.spring.bean.ProtocolBean;
 import org.hum.pumpkin.config.spring.common.Constant;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.RootBeanDefinition;
@@ -19,11 +19,11 @@ public class PumpkinProtocolBeanParser implements BeanDefinitionParser {
 		
 		String id = Constant.PROTOCOL_NAME + idGenerator.incrementAndGet();
 		
-		RootBeanDefinition beanDefinition = new RootBeanDefinition(PumpkinProtocolBean.class);
+		RootBeanDefinition beanDefinition = new RootBeanDefinition(ProtocolBean.class);
 		beanDefinition.getPropertyValues().addPropertyValue("name", element.getAttribute("name"));
 		beanDefinition.getPropertyValues().addPropertyValue("port", element.getAttribute("port"));
 		parserContext.getRegistry().registerBeanDefinition(id, beanDefinition);
-		PumpkinProtocolBean.addProtocol(id);
+		ProtocolBean.addProtocol(id);
 		return beanDefinition;
 	}
 }
