@@ -1,5 +1,6 @@
 package org.hum.pumpkin.config.spring.bean;
 
+import org.hum.pumpkin.common.Constant;
 import org.hum.pumpkin.config.ReferenceConfig;
 import org.hum.pumpkin.registry.RegistryConfig;
 import org.springframework.beans.factory.FactoryBean;
@@ -46,14 +47,20 @@ public class PumpkinReferenceBean<T> implements FactoryBean<T>{
 
 	public T getObject() throws Exception {
 		ReferenceConfig<T> referenceBean = new ReferenceConfig<T>(interfaceType);
+		// 1.优先使用内部url
 		if (!StringUtils.isEmpty(url)) {
 			// TODO 稍后用正则修改
 			String host = url.split(":")[0];
 			String port = url.split(":")[1];
 			referenceBean.setUrl(host, Integer.parseInt(port));
-		}
-		referenceBean.setProtocol(protocol);
-		referenceBean.setRegistryConfig(new RegistryConfig(registryConfig.getProtocolName(), registryConfig.getHost(), registryConfig.getPort()));
+			referenceBean.setProtocol(protocol);
+		} 
+		// 2.如果内部没有定义url，则判断有无注册中心
+		else if (registryConfig != null) {
+			referenceBean.setProtocol(Constant.PROTOCOL_REGISTRY);
+			referenceBean.setUrl(registryConfig.getHost(), registryConfig.getPort());
+			referenceBean.setRegistryConfig(new RegistryConfig(registryConfig.getProtocolName(), registryConfig.getHost(), registryConfig.getPort()));
+		} 
 		return referenceBean.get();
 	}
 	
