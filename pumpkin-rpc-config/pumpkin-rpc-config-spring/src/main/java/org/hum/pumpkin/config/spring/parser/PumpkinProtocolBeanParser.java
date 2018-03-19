@@ -18,13 +18,10 @@ public class PumpkinProtocolBeanParser implements BeanDefinitionParser {
 		// TODO check
 		
 		String id = Constant.PROTOCOL_NAME + idGenerator.incrementAndGet();
-		String name = element.getAttribute("name");
-		String port = element.getAttribute("port");
 		
-		RootBeanDefinition beanDefinition = new RootBeanDefinition();
-		beanDefinition.setBeanClass(PumpkinProtocolBean.class);
-		beanDefinition.getPropertyValues().addPropertyValue("name", name);
-		beanDefinition.getPropertyValues().addPropertyValue("port", port);
+		RootBeanDefinition beanDefinition = new RootBeanDefinition(PumpkinProtocolBean.class);
+		beanDefinition.getPropertyValues().addPropertyValue("name", element.getAttribute("name"));
+		beanDefinition.getPropertyValues().addPropertyValue("port", element.getAttribute("port"));
 		parserContext.getRegistry().registerBeanDefinition(id, beanDefinition);
 		PumpkinProtocolBean.addProtocol(id);
 		return beanDefinition;

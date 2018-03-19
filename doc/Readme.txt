@@ -2,7 +2,7 @@
 【优先修改】
 	1.spring配置一些参数鸡肋，例如protocol和registry标签还需要配置id？明显不科学。
 	2.如果只有一个protocol和registry，service就不需要制定protocol和registry了
-	3.实现client标签
+	3.实现client标签 
 
 
 【后续】

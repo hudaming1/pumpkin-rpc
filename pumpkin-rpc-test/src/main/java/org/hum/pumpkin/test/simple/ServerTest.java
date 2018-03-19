@@ -1,10 +1,10 @@
 package org.hum.pumpkin.test.simple;
 
 import org.hum.pumpkin.config.ServiceConfig;
-import org.hum.pumpkin.test._service.HelloServiceImpl;
 import org.hum.pumpkin.test._service.IHelloService;
 import org.hum.pumpkin.test._service.IUserService;
-import org.hum.pumpkin.test._service.UserServiceImpl;
+import org.hum.pumpkin.test._service.impl.HelloServiceImpl;
+import org.hum.pumpkin.test._service.impl.UserServiceImpl;
 
 public class ServerTest {
 

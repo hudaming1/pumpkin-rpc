@@ -57,10 +57,10 @@ public class PumpkinServiceBean implements ApplicationListener<ContextRefreshedE
 		this.protocols = protocols;
 	}
 
+	@SuppressWarnings({"rawtypes", "unchecked"})
 	public void onApplicationEvent(ContextRefreshedEvent arg0) {
 		try {
 			for (String procotolBeanId : protocols) {
-				System.out.println(procotolBeanId);
 				PumpkinProtocolBean protocolBean = arg0.getApplicationContext().getBean(procotolBeanId, PumpkinProtocolBean.class);
 				ServiceConfig serviceConfig = new ServiceConfig();
 				serviceConfig.setProtocol(protocolBean.getName());
