@@ -18,6 +18,7 @@ public class ReferenceConfig<T> {
 
 	private transient volatile Invoker<T> invoker;
 	private static final ProxyFactory PROXY_FACTORY = ServiceLoaderHolder.loadByCache(ProxyFactory.class);
+	// TODO 目前这种扩展机制不支持加载多实现类
 	private static final Protocol PROTOCOL = ServiceLoaderHolder.loadByCache(Protocol.class);
 	private static final Logger logger = LoggerFactory.getLogger(ReferenceConfig.class);
 	private String protocol;
@@ -81,10 +82,6 @@ public class ReferenceConfig<T> {
 	public void setUrl(String address, int port) {
 		this.address = address;
 		this.port = port;
-	}
-
-	public void setClassName(String className) {
-		this.className = className;
 	}
 
 	public void setRegistryConfig(RegistryConfig registryConfig) {

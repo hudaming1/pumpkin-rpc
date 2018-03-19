@@ -2,7 +2,7 @@ package org.hum.pumpkin.test.spring;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class Test {
+public class ServiceTest {
 
 	static ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring-rpc-service.xml");
 	

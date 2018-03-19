@@ -1,8 +1,6 @@
 package org.hum.pumpkin.config.spring;
 
-import org.hum.pumpkin.config.spring.parser.PumpkinProtocolBeanParser;
-import org.hum.pumpkin.config.spring.parser.PumpkinRegistryBeanParser;
-import org.hum.pumpkin.config.spring.parser.PumpkinServiceBeanParser;
+import org.hum.pumpkin.config.spring.parser.*;
 import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
 
 public class PumpkinNameSpaceHandler extends NamespaceHandlerSupport {
@@ -12,5 +10,6 @@ public class PumpkinNameSpaceHandler extends NamespaceHandlerSupport {
 		registerBeanDefinitionParser("protocol", new PumpkinProtocolBeanParser());
 		registerBeanDefinitionParser("registry", new PumpkinRegistryBeanParser());
 		registerBeanDefinitionParser("service", new PumpkinServiceBeanParser());
+		registerBeanDefinitionParser("reference", new PumpkinReferenceBeanParser());
 	}
 }

@@ -17,6 +17,7 @@ public class ServiceConfig<T> {
 	private String protocol;
 	private int port;
 	private Class<T> interfaceType;
+	// TODO 目前仅支持单注册中心，多注册中心太复杂了，先不弄了
 	private RegistryConfig registryConfig;
 	private T ref;
 	// TODO 协议后期其实可以同时共存多个，所以这里使用的SPI需要向Dubbo学习改进

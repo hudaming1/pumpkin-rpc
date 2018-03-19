@@ -13,7 +13,6 @@ public class PumpkinServiceBean implements ApplicationListener<ContextRefreshedE
 	private ArrayList<String> protocols;
 	private String interfaceType;
 	private Object ref;
-	private String name;
 	
 	public PumpkinServiceBean() {}
 
@@ -39,14 +38,6 @@ public class PumpkinServiceBean implements ApplicationListener<ContextRefreshedE
 
 	public void setRef(Object ref) {
 		this.ref = ref;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public ArrayList<String> getProtocols() {
@@ -78,6 +69,6 @@ public class PumpkinServiceBean implements ApplicationListener<ContextRefreshedE
 	@Override
 	public String toString() {
 		return "PumpkinServiceBean [registryConfig=" + registryConfig + ", protocols=" + protocols + ", interfaceType="
-				+ interfaceType + ", ref=" + ref + ", name=" + name + "]";
+				+ interfaceType + ", ref=" + ref + "]";
 	}
 }

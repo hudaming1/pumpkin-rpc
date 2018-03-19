@@ -7,6 +7,9 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>pumpkin-rpc-registry-zookeeper</artifactId>
+    <properties>
+        <skip_maven_deploy>true</skip_maven_deploy>
+    </properties>
 
 	<dependencies>
 		<dependency>

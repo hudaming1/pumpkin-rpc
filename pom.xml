@@ -19,47 +19,26 @@
 		<module>pumpkin-rpc-registry</module>
 	</modules>
 
-	<dependencyManagement>
-		<dependencies>
-			<!-- Log libs -->
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-api</artifactId>
-				<version>${slf4j_version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-log4j12</artifactId>
-				<version>${slf4j_version}</version>
-			</dependency>
-			<dependency>
-				<groupId>commons-logging</groupId>
-				<artifactId>commons-logging</artifactId>
-				<version>${jcl_version}</version>
-			</dependency>
-			<dependency>
-				<groupId>log4j</groupId>
-				<artifactId>log4j</artifactId>
-				<version>${log4j_version}</version>
-			</dependency>
-			<dependency>
-				<groupId>ch.qos.logback</groupId>
-				<artifactId>logback-classic</artifactId>
-				<version>${logback_version}</version>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+					<compilerId>eclipse</compilerId>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.codehaus.plexus</groupId>
+						<artifactId>plexus-compiler-eclipse</artifactId>
+						<version>2.2</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+	</build>
 
-	<properties>
-		<!-- Log libs -->
-		<slf4j_version>1.7.25</slf4j_version>
-		<jcl_version>1.2</jcl_version>
-		<log4j_version>1.2.16</log4j_version>
-		<logback_version>1.2.2</logback_version>
-
-		<!-- for maven compiler plugin -->
-		<java_source_version>1.7</java_source_version>
-		<java_target_version>1.7</java_target_version>
-		<file_encoding>UTF-8</file_encoding>
-	</properties>
 </project>

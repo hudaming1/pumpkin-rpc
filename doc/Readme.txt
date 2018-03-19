@@ -17,5 +17,5 @@
 引入Directory组件配合Registry进行路由
 扩展ServiceLoader，支持有参数的实例化，支持根据name动态获得Extension
 重新设计ClusterInvoker和DirectInvoker，两者不是必然关系，需要解耦；ClusterInvoker仅仅是集成了目录服务、注册中心、路由策略等功能，期望可以和DirectInvoker集成，也可以直接和后面的HttpInvoker集成。
-
+Maven使用depdencyManagement管理
 
