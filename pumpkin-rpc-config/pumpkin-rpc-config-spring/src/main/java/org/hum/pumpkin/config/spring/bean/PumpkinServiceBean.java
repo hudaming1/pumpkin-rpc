@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.hum.pumpkin.config.ServiceConfig;
 import org.hum.pumpkin.registry.RegistryConfig;
+import org.hum.pumpkin.util.InetUtils;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 
@@ -54,14 +55,15 @@ public class PumpkinServiceBean implements ApplicationListener<ContextRefreshedE
 			for (String procotolBeanId : protocols) {
 				PumpkinProtocolBean protocolBean = arg0.getApplicationContext().getBean(procotolBeanId, PumpkinProtocolBean.class);
 				ServiceConfig serviceConfig = new ServiceConfig();
-				serviceConfig.setProtocol(protocolBean.getName());
 				serviceConfig.setRegistryConfig(new RegistryConfig(registryConfig.getProtocolName(), registryConfig.getHost(), registryConfig.getPort()));
+				serviceConfig.setProtocol(protocolBean.getName());
+				serviceConfig.setHost(InetUtils.getLocalAddress());
 				serviceConfig.setPort(protocolBean.getPort());
 				serviceConfig.setInterfaceType(Class.forName(interfaceType));
 				serviceConfig.setRef(ref);
 				serviceConfig.export();
 			}
-		} catch (ClassNotFoundException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

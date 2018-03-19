@@ -12,5 +12,7 @@ public class ClientTest {
 		Thread.sleep(2000);
 		System.out.println(bean);
 		System.out.println(bean.getNameById(1));
+		System.out.println(bean.getNameById(2));
+		System.out.println(bean.getNameById(3));
 	}
 }

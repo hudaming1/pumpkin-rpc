@@ -10,11 +10,11 @@ import org.hum.pumpkin.common.url.URLConstant;
 import org.hum.pumpkin.protocol.Protocol;
 import org.hum.pumpkin.protocol.exporter.Exporter;
 import org.hum.pumpkin.registry.RegistryConfig;
-import org.hum.pumpkin.util.InetUtils;
 
 public class ServiceConfig<T> {
 
 	private String protocol;
+	private String host;
 	private int port;
 	private Class<T> interfaceType;
 	// TODO 目前仅支持单注册中心，多注册中心太复杂了，先不弄了
@@ -65,12 +65,20 @@ public class ServiceConfig<T> {
 		this.registryConfig = registryConfig;
 	}
 
+	public String getHost() {
+		return host;
+	}
+
+	public void setHost(String host) {
+		this.host = host;
+	}
+
 	public void export() {
 		if (interfaceType == null) {
 			throw new NullPointerException("export interfaceType mustn't be null!");
 		}
 		try {
-			URL url = new URL(protocol, InetUtils.getLocalAddress(), port, interfaceType.getName());
+			URL url = new URL(protocol, host, port, interfaceType.getName());
 			
 			// TODO 其他服务层的配置信息，需要配置到url.param中
 			if (registryConfig != null) {

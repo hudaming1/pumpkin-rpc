@@ -42,7 +42,7 @@ public class PumpkinProtocol implements Protocol {
 	}
 
 	private <T> void exportRegistry(Class<T> classType, URL url) {
-		if (url.getProtocol() != null && url.getProtocol().equals(Constant.PROTOCOL_REGISTRY)) {
+		if (url.getParam(URLConstant.REGISTRY_CONFIG) != null) {
 			try {
 				RegistryConfig registryConfig = (RegistryConfig) url.getParam(URLConstant.REGISTRY_CONFIG);
 				// TODO 为以后多注册中心做准备（但需要ServiceLoader支持）
