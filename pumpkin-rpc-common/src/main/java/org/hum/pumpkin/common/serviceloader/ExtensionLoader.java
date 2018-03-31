@@ -1,10 +1,18 @@
 package org.hum.pumpkin.common.serviceloader;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.hum.pumpkin.common.exception.PumpkinException;
 import org.hum.pumpkin.common.serviceloader.support.MetaData;
-import org.hum.pumpkin.common.serviceloader.support.PumpkinExtenFileUtils;
 
 /**
  * 扩展加载器
@@ -34,10 +42,31 @@ public class ExtensionLoader<T> {
 	private static final String PUMPKIN_CONFIG_PATH = "META-INF/pumpkin/";
 	
 	static {
-		// 1.load properties files
-		PumpkinExtenFileUtils.parseFile(PUMPKIN_SERVICE_PATH);
-		PumpkinExtenFileUtils.parseFile(PUMPKIN_CONFIG_PATH);
-		// 2.read and parse one properties
+		try {
+			parseFile(PUMPKIN_SERVICE_PATH);
+			parseFile(PUMPKIN_CONFIG_PATH);
+		} catch (Exception ce) {
+			throw new PumpkinException("parse file exception", ce);
+		}
+	}
+	private static void parseFile(String directory) throws IOException {
+		Enumeration<java.net.URL> urls = getClassLoader().getResources(directory);
+		while (urls.hasMoreElements()) {
+			File directoryInst = new File(urls.nextElement().getFile());
+			for (File file : directoryInst.listFiles()) {
+				FileMap.append(file.getName(), parseProperties(file));
+			}
+		}
+	}
+	
+	private static Map<String, String> parseProperties(File file) throws FileNotFoundException, IOException {
+		Map<String, String> content = new HashMap<>();
+		Properties props = new Properties();
+		props.load(new FileInputStream(file));
+		for (Entry<Object, Object> entry : props.entrySet()) {
+			content.put(entry.getKey().toString(), entry.getValue().toString());
+		}
+		return content;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -69,13 +98,38 @@ public class ExtensionLoader<T> {
 		return instance;
 	}
 	
+	@SuppressWarnings("unchecked")
 	private T createInstance(String extensionName) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			if (InstanceMap.get(classType) == null || InstanceMap.get(classType, extensionName) == null) {
+				String className = FileMap.get(classType.getName(), extensionName);
+				Class<?> clazz = Class.forName(className);
+				Object instance = clazz.newInstance();
+				InstanceMap.put(classType, extensionName, instance);
+			}
+			return (T) InstanceMap.get(classType, extensionName);
+		} catch (Exception e) {
+			throw new PumpkinException("instance class type [" + classType.getName() + "] failed", e);
+		}
 	}
-
+	
 	public T getDefaultExtension() {
 		return get(metaData.getDefaultExtName());
+	}
+	
+	/**
+	 * TODO 参照java.util.ServiceLoader第345行，应该取分classloader加载。
+	 * 	我这种写法应该是无法加载ExtClassLoader和RootClassLoader下的文件
+	 * <pre>
+	 *  取分boot、ext、app这3个ClassLoader，我的写法只能加载System.getProperty("java.class.path")目录下的properties。
+	 *	 boot:	System.out.println(System.getProperty("sun.boot.class.path"));
+	 *	 ext:	System.out.println(System.getProperty("java.ext.dirs"));
+	 *	 app:	System.out.println(System.getProperty("java.class.path"));
+	 * </pre>
+	 * @return
+	 */
+	private static ClassLoader getClassLoader() {
+		return ExtensionLoader.class.getClassLoader();
 	}
 	
 	static class MulitHashMap<K, V, E> {
@@ -134,11 +188,9 @@ public class ExtensionLoader<T> {
 			}
 		}
 	}
-	
-	public static void main(String[] args) {
-		Map<String, Integer> map = new ConcurrentHashMap<>();
-		System.out.println(map.putIfAbsent("1", 1));
-		System.out.println(map.put("1", 2));
-		System.out.println(map.putIfAbsent("1", 3));
-	}
 }
+
+
+
+
+
