@@ -1,7 +1,7 @@
 package org.hum.pumpkin.config;
 
 import org.hum.pumpkin.common.exception.ReferenceException;
-import org.hum.pumpkin.common.serviceloader.ServiceLoaderHolder;
+import org.hum.pumpkin.common.serviceloader.ExtensionLoader;
 import org.hum.pumpkin.common.url.URL;
 import org.hum.pumpkin.common.url.URLConstant;
 import org.hum.pumpkin.protocol.Protocol;
@@ -17,9 +17,9 @@ import org.slf4j.LoggerFactory;
 public class ReferenceConfig<T> {
 
 	private transient volatile Invoker<T> invoker;
-	private static final ProxyFactory PROXY_FACTORY = ServiceLoaderHolder.loadByCache(ProxyFactory.class);
+	private static final ProxyFactory PROXY_FACTORY = ExtensionLoader.getExtensionLoader(ProxyFactory.class).get();
 	// TODO 目前这种扩展机制不支持加载多实现类
-	private static final Protocol PROTOCOL = ServiceLoaderHolder.loadByCache(Protocol.class);
+	private static final Protocol PROTOCOL = ExtensionLoader.getExtensionLoader(Protocol.class).getAdaptive();
 	private static final Logger logger = LoggerFactory.getLogger(ReferenceConfig.class);
 	private String protocol;
 	private String address;

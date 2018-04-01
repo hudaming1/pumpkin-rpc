@@ -4,6 +4,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +17,10 @@ import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.hum.pumpkin.common.exception.PumpkinException;
+import org.hum.pumpkin.common.serviceloader.support.Adaptive;
 import org.hum.pumpkin.common.serviceloader.support.MetaData;
+import org.hum.pumpkin.common.serviceloader.support.SPI;
+import org.hum.pumpkin.common.url.URL;
 
 /**
  * 扩展加载器
@@ -25,7 +33,7 @@ import org.hum.pumpkin.common.serviceloader.support.MetaData;
  * <pre>
  * 	v2.0
  * 	  1.实现Activite标签，构造invokerChain和FilterChain
- * 	  2.实现Adapter标签，实现URL自适应加载机制（其实很类似于spring中xml配置bean.ref来解耦实现，只不过dubbo中是在运行时动态注入）。	
+ * 	  2.实现Adapter标签，实现URL自适应加载机制（其实很类似于spring中xml配置bean.ref来解耦实现，只不过dubbo中是在运行时动态改变改变）。	
  * </pre>
  */
 public class ExtensionLoader<T> {
@@ -79,14 +87,29 @@ public class ExtensionLoader<T> {
 		return extensionLoader;
 	}
 	
-	private Class<T> classType;
+	/**
+	 * XXX 参照java.util.ServiceLoader第345行，应该取分classloader加载。
+	 * 	我这种写法应该是无法加载ExtClassLoader和RootClassLoader下的文件
+	 * <pre>
+	 *  取分boot、ext、app这3个ClassLoader，我的写法只能加载System.getProperty("java.class.path")目录下的properties。
+	 *	 boot:	System.out.println(System.getProperty("sun.boot.class.path"));
+	 *	 ext:	System.out.println(System.getProperty("java.ext.dirs"));
+	 *	 app:	System.out.println(System.getProperty("java.class.path"));
+	 * </pre>
+	 * @return
+	 */
+	private static ClassLoader getClassLoader() {
+		return ExtensionLoader.class.getClassLoader();
+	}
+	
+	private Class<T> interfaceType;
 	private MetaData metaData;
 	private final Map<String, T> instanceMap = new ConcurrentHashMap<>();
 	
-	private ExtensionLoader(Class<T> classType) {
-		this.classType = classType;
+	private ExtensionLoader(Class<T> interfaceType) {
+		this.interfaceType = interfaceType;
 		// 解析classType上的注解成MetaData
-		this.metaData = new MetaData(classType);
+		this.metaData = new MetaData(interfaceType);
 	}
 
 	public T get(String extensionName) {
@@ -99,37 +122,118 @@ public class ExtensionLoader<T> {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private T createInstance(String extensionName) {
-		try {
-			if (InstanceMap.get(classType) == null || InstanceMap.get(classType, extensionName) == null) {
-				String className = FileMap.get(classType.getName(), extensionName);
-				Class<?> clazz = Class.forName(className);
-				Object instance = clazz.newInstance();
-				InstanceMap.put(classType, extensionName, instance);
-			}
-			return (T) InstanceMap.get(classType, extensionName);
-		} catch (Exception e) {
-			throw new PumpkinException("instance class type [" + classType.getName() + "] failed", e);
+	public T get() {
+		if (instanceMap.size() == 1) {
+			// XXX bad smell
+			return (T) instanceMap.values().toArray()[0];
 		}
-	}
-	
-	public T getDefaultExtension() {
 		return get(metaData.getDefaultExtName());
 	}
 	
+	@SuppressWarnings("unchecked")
+	private T createInstance(String extensionName) {
+		try {
+			if (InstanceMap.get(interfaceType) == null || InstanceMap.get(interfaceType, extensionName) == null) {
+				String className = FileMap.get(interfaceType.getName(), extensionName);
+				Class<?> clazz = Class.forName(className);
+				Object instance = clazz.newInstance();
+				InstanceMap.put(interfaceType, extensionName, instance);
+			}
+			return (T) InstanceMap.get(interfaceType, extensionName);
+		} catch (Exception e) {
+			throw new PumpkinException("instance class type [" + interfaceType.getName() + "] failed", e);
+		}
+	}
+	
+	public Collection<T> getExtensionList() {
+		return Collections.unmodifiableCollection(instanceMap.values());
+	}
+	
 	/**
-	 * TODO 参照java.util.ServiceLoader第345行，应该取分classloader加载。
-	 * 	我这种写法应该是无法加载ExtClassLoader和RootClassLoader下的文件
+	 * 返回代理对象，自动适配加载
 	 * <pre>
-	 *  取分boot、ext、app这3个ClassLoader，我的写法只能加载System.getProperty("java.class.path")目录下的properties。
-	 *	 boot:	System.out.println(System.getProperty("sun.boot.class.path"));
-	 *	 ext:	System.out.println(System.getProperty("java.ext.dirs"));
-	 *	 app:	System.out.println(System.getProperty("java.class.path"));
+	 *   dubbo适配规则：
+	 *   	1.如果参数url.key对应的Extension存在，则优先使用
+	 *   	2.如果url.key无对应的Extension，则使用Class的SPI.value作为默认值
+	 *   	3.如果SPI.value也没有对应Extension，则抛出异常
+	 * </pre>
+	 * <pre>
+	 * 	 pumpkin适配规则：
+	 * 		1.如果只有一个Extension被加载，则不用判断后续key，直接适配
+	 * 		2.如果有多个Extension被加载，则优先使用url.key对应的Extension
+	 * 		3.如果url.key无对应的Extension，则使用SPI.value
+	 * 		4.如果SPI.value业务对应，则提示异常
+	 * </pre>
+	 * <pre>
+	 * 	Dubbo中这个方法返回的对象是通过JavassistCompiler动态编译而成，but why？
 	 * </pre>
 	 * @return
 	 */
-	private static ClassLoader getClassLoader() {
-		return ExtensionLoader.class.getClassLoader();
+	@SuppressWarnings("unchecked")
+	public T getAdaptive() {
+		return (T) Proxy.newProxyInstance(interfaceType.getClassLoader(), new Class[] { interfaceType }, new InvocationHandler() {
+			@Override
+			public Object invoke(Object proxy, Method method, Object[] params) throws Throwable {
+				// 被@Adaptive标注的方法，限定所传至少一个参数是URL类型
+				URL url = null;
+				for (Object param : params) {
+					if (param instanceof URL) {
+						url = (URL) param;
+						break;
+					}
+				}
+				if (url == null) {
+					throw new IllegalArgumentException("params must contains class type [" + URL.class.getName() + "]");
+				}
+				Object proxyInstance = getAdaptiveExtension(method, url);
+				if (proxyInstance == null) {
+					throw new PumpkinException("can't find instance " + interfaceType.getClass() + " for key ");
+				}
+				return method.invoke(proxyInstance, params);
+			}
+			
+			private Object getAdaptiveExtension(Method method, URL url) {
+				if (instanceMap.isEmpty()) {
+					return null;
+				} else if (instanceMap.size() == 1) {
+					// 1.如果只有一个Extension被加载，则不用判断后续key，直接适配
+					return instanceMap.values().toArray()[0];
+				} 
+				// 2.如果有多个Extension被加载，则优先使用url.key对应的Extension
+				String adaptiveKeyName = getAdaptiveKeyName(method);
+				if (adaptiveKeyName != null) {
+					Object p = url.getParam(adaptiveKeyName);
+					String extensionName = (p == null? "" : p.toString());
+					T t = instanceMap.get(extensionName);
+					if (t != null) {
+						return t;
+					}
+				}
+				// 3.如果url.key无对应的Extension，则使用SPI.value
+				String extensionName = getSpiKeyName(method);
+				T t = instanceMap.get(extensionName);
+				// 4.如果SPI.value业务对应，则提示异常
+				if (t == null) {
+					throw new PumpkinException("can't adapt extension for " + interfaceType.getName());
+				}
+				return t;
+			}
+			
+			private String getAdaptiveKeyName(Method method) {
+				Adaptive adaptAnno = method.getAnnotation(Adaptive.class);
+				if (adaptAnno == null) {
+					return null;
+				} else if (adaptAnno.value() != null || adaptAnno.value().trim().length() > 0) {
+					return adaptAnno.value();
+				}
+				return null;
+			}
+			
+			private String getSpiKeyName(Method method) {
+				SPI spiAnno = method.getDeclaringClass().getAnnotation(SPI.class);
+				return spiAnno.value();
+			}
+		});
 	}
 	
 	static class MulitHashMap<K, V, E> {
