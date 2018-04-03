@@ -1,8 +1,9 @@
 package org.hum.pumpkin.transport.impl.netty.server;
 
 import org.hum.pumpkin.common.exception.RpcException;
-import org.hum.pumpkin.common.serviceloader.ServiceLoaderHolder;
+import org.hum.pumpkin.common.serviceloader.ExtensionLoader;
 import org.hum.pumpkin.common.url.URL;
+import org.hum.pumpkin.common.url.URLConstant;
 import org.hum.pumpkin.serialization.Serialization;
 import org.hum.pumpkin.transport.event.ServerEventHandler;
 import org.hum.pumpkin.transport.impl.netty.codec.NettyDecoder;
@@ -29,7 +30,7 @@ public class NettyServer implements Server {
 	private static final Logger logger = LoggerFactory.getLogger(NettyServer.class);
 	private URL url;
 	private ServerHandler serverHandler;
-	private final Serialization serialization = ServiceLoaderHolder.loadByCache(Serialization.class);
+	private Serialization serialization;
 	private EventLoopGroup bossGroup = null;
 	private EventLoopGroup workerGroup = null;
 	private ServerEventHandler serverEventHandler;
@@ -37,6 +38,7 @@ public class NettyServer implements Server {
 	public NettyServer(URL url, ServerHandler serverHandler) {
 		this.url = url;
 		this.serverHandler = serverHandler;
+		this.serialization = ExtensionLoader.getExtensionLoader(Serialization.class).get(url.getString(URLConstant.SERIALIZATION));
 	}
 
 	@Override

@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * 
  */
-public class ServiceLoaderHolder {
+public class ServiceLoaderHolder1 {
 	
 	private final static Map<Class<?>, Object> INSTANCE_MAP = new ConcurrentHashMap<>();
 	

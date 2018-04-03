@@ -52,6 +52,10 @@ public class URL {
 	public Boolean getBoolean(String key) {
 		return (Boolean) params.get(key);
 	}
+	
+	public String getString(String key) {
+		return (String) params.get(key);
+	}
 
 	public String getProtocol() {
 		return protocol;

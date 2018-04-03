@@ -3,6 +3,8 @@
 抽象出AbstractProtocol：filter扩展、鉴权等实现都在该类中buildInvokerChain构建
 实现ExtensionLoader
 Maven管理jar包依赖（现在显然做的还不够，拆分的不够好，版本管理上也不够统一）
+MavenModule之间的相互依赖现在看起来比较乱
+common的URL不能有RegistryConfig对象，只能存字符串
 
 【后续】
 引入spring支持 √

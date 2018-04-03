@@ -7,8 +7,9 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import org.hum.pumpkin.common.exception.RpcException;
-import org.hum.pumpkin.common.serviceloader.ServiceLoaderHolder;
+import org.hum.pumpkin.common.serviceloader.ExtensionLoader;
 import org.hum.pumpkin.common.url.URL;
+import org.hum.pumpkin.common.url.URLConstant;
 import org.hum.pumpkin.serialization.Serialization;
 import org.hum.pumpkin.transport.client.Client;
 import org.hum.pumpkin.transport.message.Message;
@@ -20,7 +21,7 @@ public class JdkShortClient implements Client {
 
 	private static final Logger logger = LoggerFactory.getLogger(JdkShortClient.class);
 
-	private final Serialization serialization = ServiceLoaderHolder.loadByCache(Serialization.class);
+	private Serialization serialization;
 	private String host;
 	private URL url;
 	private int port;
@@ -32,6 +33,7 @@ public class JdkShortClient implements Client {
 		this.host = url.getHost();
 		this.port = url.getPort();
 		this.url = url;
+		this.serialization = ExtensionLoader.getExtensionLoader(Serialization.class).get(url.getString(URLConstant.SERIALIZATION));
 	}
 
 	@Override
@@ -39,7 +41,6 @@ public class JdkShortClient implements Client {
 		try {
 			socket = new Socket(host, port);
 			outputStream = socket.getOutputStream();
-			
 			serialization.serialize(outputStream, message);
 			inputStream = socket.getInputStream();
 			return serialization.deserialize(inputStream, MessageBack.class);

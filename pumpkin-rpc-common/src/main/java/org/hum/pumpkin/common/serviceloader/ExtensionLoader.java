@@ -121,13 +121,29 @@ public class ExtensionLoader<T> {
 		return instance;
 	}
 	
+	/**
+	 * 获得默认Extension
+	 * <pre>
+	 * 	1.如果只有一个extension，则直接返回
+	 * 	2.如果有多个，则根据defaultName取出
+	 * 	3.如果没有，则抛出异常
+	 * </pre>
+	 * <pre>
+	 * 	get和getAdaptive虽然都返回T，但get返回的是T实例；getAdaptive返回的是代理对象。
+	 * </pre>
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public T get() {
 		if (instanceMap.size() == 1) {
 			// XXX bad smell
 			return (T) instanceMap.values().toArray()[0];
 		}
-		return get(metaData.getDefaultExtName());
+		T t = get(metaData.getDefaultExtName());
+		if (t == null) {
+			throw new PumpkinException("no default extension for classType[" + interfaceType.getName() + "]");
+		}
+		return t;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -135,11 +151,16 @@ public class ExtensionLoader<T> {
 		try {
 			if (InstanceMap.get(interfaceType) == null || InstanceMap.get(interfaceType, extensionName) == null) {
 				String className = FileMap.get(interfaceType.getName(), extensionName);
+				if (className == null || className.trim().length() == 0) {
+					throw new PumpkinException("cann't find className for [" + interfaceType.getName() + "] with key [" + extensionName + "]");
+				}
 				Class<?> clazz = Class.forName(className);
 				Object instance = clazz.newInstance();
 				InstanceMap.put(interfaceType, extensionName, instance);
 			}
 			return (T) InstanceMap.get(interfaceType, extensionName);
+		} catch (PumpkinException e) {
+			throw e;
 		} catch (Exception e) {
 			throw new PumpkinException("instance class type [" + interfaceType.getName() + "] failed", e);
 		}
@@ -165,12 +186,13 @@ public class ExtensionLoader<T> {
 	 * 		4.如果SPI.value业务对应，则提示异常
 	 * </pre>
 	 * <pre>
-	 * 	Dubbo中这个方法返回的对象是通过JavassistCompiler动态编译而成，but why？
+	 * 	 Dubbo中这个方法返回的对象是通过JavassistCompiler动态编译而成，but why？性能问题吗？ 
 	 * </pre>
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
 	public T getAdaptive() {
+		// TODO need cache
 		return (T) Proxy.newProxyInstance(interfaceType.getClassLoader(), new Class[] { interfaceType }, new InvocationHandler() {
 			@Override
 			public Object invoke(Object proxy, Method method, Object[] params) throws Throwable {
@@ -187,7 +209,7 @@ public class ExtensionLoader<T> {
 				}
 				Object proxyInstance = getAdaptiveExtension(method, url);
 				if (proxyInstance == null) {
-					throw new PumpkinException("can't find instance " + interfaceType.getClass() + " for key ");
+					throw new PumpkinException("can't find adapt " + interfaceType.getName());
 				}
 				return method.invoke(proxyInstance, params);
 			}

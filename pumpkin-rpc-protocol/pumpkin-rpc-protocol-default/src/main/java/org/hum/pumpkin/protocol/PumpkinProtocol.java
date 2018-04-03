@@ -4,7 +4,7 @@ import java.net.UnknownHostException;
 
 import org.hum.pumpkin.common.Constant;
 import org.hum.pumpkin.common.exception.PumpkinException;
-import org.hum.pumpkin.common.serviceloader.ServiceLoaderHolder;
+import org.hum.pumpkin.common.serviceloader.ExtensionLoader;
 import org.hum.pumpkin.common.url.URL;
 import org.hum.pumpkin.common.url.URLConstant;
 import org.hum.pumpkin.protocol.cluster.invoker.ClusterInvoker;
@@ -27,13 +27,16 @@ import org.hum.pumpkin.util.InetUtils;
  */
 public class PumpkinProtocol implements Protocol {
 
-	private final Registry registry = ServiceLoaderHolder.loadByCache(Registry.class);
+	private volatile Registry registry = null;
 
 	// TODO 后期创建Exporter时，需要传Invoker（Dubbo中采用InJvmInvoker，在扩展Service层Filter时可以形成InvokerChain）
 	@Override
 	public <T> Exporter<T> export(Class<T> classType, T instances, URL url) {
 		
 		// TODO 进行必要的url.check
+
+		// pumpkin协议规定使用netty-transporter
+		url.buildParam(URLConstant.TRANSPORT_KEY, "netty");
 		
 		// 如果服务需要对外暴露注册中心协议，则这里需要去连接注册中心注册服务
 		exportRegistry(classType, url);
@@ -44,7 +47,9 @@ public class PumpkinProtocol implements Protocol {
 	private <T> void exportRegistry(Class<T> classType, URL url) {
 		if (url.getParam(URLConstant.REGISTRY_CONFIG) != null) {
 			try {
+				// TODO URL怎么设计的？怎么还能存对象了？必须改
 				RegistryConfig registryConfig = (RegistryConfig) url.getParam(URLConstant.REGISTRY_CONFIG);
+				this.registry = ExtensionLoader.getExtensionLoader(Registry.class).get(registryConfig.getName());
 				// TODO 为以后多注册中心做准备（但需要ServiceLoader支持）
 				// for (RegistryConfig registryConfig : registryConfigs) {
 				// Registry registry = ServiceLoaderHolder.getExtensionByName(registryConfig.getName());
@@ -61,8 +66,12 @@ public class PumpkinProtocol implements Protocol {
 	public <T> Invoker<T> refer(Class<T> classType, URL url) {
 		url.buildParam(URLConstant.IS_KEEP_ALIVE, true);
 		url.buildParam(URLConstant.IS_SHARE_CONNECTION, true);
+		// pumpkin协议规定使用netty-transporter
+		url.buildParam(URLConstant.TRANSPORT_KEY, "netty");
 		if (url.getProtocol().equals(Constant.PROTOCOL_REGISTRY)) {
+			// TODO URL不能存对象，必须改
 			RegistryConfig registryConfig = (RegistryConfig) url.getParam(URLConstant.REGISTRY_CONFIG);
+			this.registry = ExtensionLoader.getExtensionLoader(Registry.class).get(registryConfig.getName());
 			registry.connect(registryConfig.getAddress(), registryConfig.getPort());
 			return new ClusterInvoker<>(registry, registryConfig, classType, url);
 		} 

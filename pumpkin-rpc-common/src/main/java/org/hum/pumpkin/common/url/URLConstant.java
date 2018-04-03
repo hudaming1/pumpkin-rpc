@@ -27,4 +27,10 @@ public class URLConstant {
 	
 	// 注册中心
 	public static final String REGISTRY_CONFIG = "registryConfig";
+	
+	// 序列化key
+	public static final String SERIALIZATION = "serialization";
+
+	// 
+	public static final String TRANSPORT_KEY = "transporter";
 }

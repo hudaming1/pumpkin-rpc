@@ -27,7 +27,5 @@ public class ServerTest {
 		serviceConfig2.setInterfaceType(IUserService.class);
 		serviceConfig2.setRef(new UserServiceImpl());
 		serviceConfig2.export();
-		
-		
 	}
 }

@@ -1,1 +1,1 @@
-org.hum.pumpkin.transport.impl.jdk.JdkTranspoterFactory
+jdk=org.hum.pumpkin.transport.impl.jdk.JdkTranspoterFactory

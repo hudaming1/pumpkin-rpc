@@ -7,8 +7,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import org.hum.pumpkin.common.exception.RpcException;
-import org.hum.pumpkin.common.serviceloader.ServiceLoaderHolder;
+import org.hum.pumpkin.common.serviceloader.ExtensionLoader;
 import org.hum.pumpkin.common.url.URL;
+import org.hum.pumpkin.common.url.URLConstant;
 import org.hum.pumpkin.serialization.Serialization;
 import org.hum.pumpkin.transport.message.Message;
 import org.hum.pumpkin.transport.message.MessageBack;
@@ -21,7 +22,7 @@ public class JdkServer implements Server {
 
 	private static final Logger logger = LoggerFactory.getLogger(JdkServer.class);
 
-	private final Serialization serialization = ServiceLoaderHolder.loadByCache(Serialization.class);
+	private Serialization serialization;
 
 	private ServerHandler serverHandler;
 	private volatile boolean isRun;
@@ -31,6 +32,7 @@ public class JdkServer implements Server {
 	public JdkServer(URL url, ServerHandler serverHandler) {
 		this.url = url;
 		this.serverHandler = serverHandler;
+		this.serialization = ExtensionLoader.getExtensionLoader(Serialization.class).get(url.getString(URLConstant.SERIALIZATION));
 	}
 
 	@Override

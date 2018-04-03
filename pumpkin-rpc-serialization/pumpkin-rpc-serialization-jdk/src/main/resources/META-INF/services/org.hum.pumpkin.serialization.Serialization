@@ -1,1 +1,1 @@
-org.hum.pumpkin.serialization.jdknative.ObjectStreamSerialization
+jdk=org.hum.pumpkin.serialization.jdknative.ObjectStreamSerialization
