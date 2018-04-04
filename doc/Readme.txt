@@ -1,10 +1,14 @@
 
-【优先修改】
+【架构层】
 抽象出AbstractProtocol：filter扩展、鉴权等实现都在该类中buildInvokerChain构建
 Maven管理jar包依赖（现在显然做的还不够，拆分的不够好，版本管理上也不够统一）
 MavenModule之间的相互依赖现在看起来比较乱
 
-【后续】
+引入Directory组件配合Registry进行路由
+重新设计ClusterInvoker和DirectInvoker，两者不是必然关系，需要解耦；ClusterInvoker仅仅是集成了目录服务、注册中心、路由策略等功能，期望可以和DirectInvoker集成，也可以直接和后面的HttpInvoker集成。
+扩展出多协议、多注册中心
+
+【插件化】
 引入spring支持 √
 引入注册中心 √
 引入telnet调用：为telnet单独开放一个Protocol，下层不动，但需要增加一个消息类型（在Protocol层没有，这是个问题）。
@@ -26,15 +30,9 @@ timeout/retry_times：在exchange实现，因为属于一次业务通信。
 配置优先级：客户端配置优先配置，没有配置使用全局配置，再其次使用服务端配置
 本地存根：客户端Protocl层做。
 令牌管理：与上线的鉴权不同，这里的令牌是为了防止客户端跨过注册中心直连。
+熔断机制：Protocol层做。
 
-
-引入Directory组件配合Registry进行路由
-扩展ServiceLoader，支持有参数的实例化，支持根据name动态获得Extension，以及加载多实例
-重新设计ClusterInvoker和DirectInvoker，两者不是必然关系，需要解耦；ClusterInvoker仅仅是集成了目录服务、注册中心、路由策略等功能，期望可以和DirectInvoker集成，也可以直接和后面的HttpInvoker集成。
-Maven使用depdencyManagement管理
-扩展出多协议、多注册中心
-
-【优化】
+【bug】
 修改bug，启动后才能发起调用。
 
 
