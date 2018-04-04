@@ -22,6 +22,11 @@ public class URL {
 		params.put("port", port);
 		params.put("path", path);
 	}
+
+	public URL(String protocol, String host, int port, String path, URL url) {
+		this(protocol, host, port, path);
+		this.params = new ConcurrentHashMap<>(url.params);
+	}
 	
 	public void setHost(String host) {
 		this.host = host;

@@ -22,7 +22,7 @@ public class ReferenceConfig<T> {
 	private static final Protocol PROTOCOL = ExtensionLoader.getExtensionLoader(Protocol.class).getAdaptive();
 	private static final Logger logger = LoggerFactory.getLogger(ReferenceConfig.class);
 	private String protocol;
-	private String address;
+	private String address = "0.0.0.0";
 	private int port;
 	private String className;
 	private Class<T> interfaceType;

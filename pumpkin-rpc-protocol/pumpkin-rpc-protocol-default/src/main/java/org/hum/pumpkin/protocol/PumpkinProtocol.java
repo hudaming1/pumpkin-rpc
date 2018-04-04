@@ -2,7 +2,6 @@ package org.hum.pumpkin.protocol;
 
 import java.net.UnknownHostException;
 
-import org.hum.pumpkin.common.Constant;
 import org.hum.pumpkin.common.exception.PumpkinException;
 import org.hum.pumpkin.common.serviceloader.ExtensionLoader;
 import org.hum.pumpkin.common.url.URL;
@@ -72,7 +71,7 @@ public class PumpkinProtocol implements Protocol {
 		url.buildParam(URLConstant.TRANSPORT_KEY, "netty");
 		// pumpkin协议规定使用kryo
 		url.buildParam(URLConstant.SERIALIZATION, "kryo");
-		if (url.getProtocol().equals(Constant.PROTOCOL_REGISTRY)) {
+		if (url.getParam(URLConstant.REGISTRY_CONFIG) != null) {
 			// TODO URL不能存对象，必须改
 			RegistryConfig registryConfig = (RegistryConfig) url.getParam(URLConstant.REGISTRY_CONFIG);
 			this.registry = ExtensionLoader.getExtensionLoader(Registry.class).get(registryConfig.getName());

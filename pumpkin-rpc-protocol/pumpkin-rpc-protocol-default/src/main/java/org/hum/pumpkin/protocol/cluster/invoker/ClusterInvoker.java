@@ -48,7 +48,7 @@ public class ClusterInvoker<T> implements Invoker<T> {
 		for (String _url : urls) {
 			String[] urlArr = _url.split(":");
 			// TODO 重新创建URL会导致上层URL信息丢失
-			URL directUrl = new URL(ProtocolEnum.Direct.getName(), urlArr[0], Integer.parseInt(urlArr[1]), classType.getName());
+			URL directUrl = new URL(ProtocolEnum.Direct.getName(), urlArr[0], Integer.parseInt(urlArr[1]), classType.getName(), url);
 			DirectInvoker<T> invoker = new DirectInvoker<>(classType, directUrl);
 			clientMap.get(classType.getName()).put(_url, invoker);
 		}
