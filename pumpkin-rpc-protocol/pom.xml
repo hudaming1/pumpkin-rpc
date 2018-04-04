@@ -8,6 +8,9 @@
 	</parent>
 	<packaging>pom</packaging>
 	<artifactId>pumpkin-rpc-protocol</artifactId>
+	<properties>
+		<skip_maven_deploy>true</skip_maven_deploy>
+	</properties>
 	<modules>
 		<module>pumpkin-rpc-protocol-default</module>
 		<module>pumpkin-rpc-protocol-api</module>

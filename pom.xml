@@ -17,7 +17,35 @@
 		<module>pumpkin-rpc-threadpool</module>
 		<module>pumpkin-rpc-test</module>
 		<module>pumpkin-rpc-registry</module>
+		<module>pumpkin-rpc-package</module>
 	</modules>
+	
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-classic</artifactId>
+				<version>${logback_version}</version>
+			</dependency>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>${junit_version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context</artifactId>
+				<version>${spring_version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	
+	
+    <properties>
+        <logback_version>1.1.3</logback_version>
+        <junit_version>4.12</junit_version>
+        <spring_version>4.3.14.RELEASE</spring_version>
+	</properties>
 	
 	<build>
 		<plugins>

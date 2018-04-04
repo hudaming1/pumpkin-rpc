@@ -8,6 +8,9 @@
 	</parent>
 	<packaging>pom</packaging>
 	<artifactId>pumpkin-rpc-config</artifactId>
+    <properties>
+        <skip_maven_deploy>true</skip_maven_deploy>
+    </properties>
 	<modules>
 		<module>pumpkin-rpc-config-basic</module>
 		<module>pumpkin-rpc-config-spring</module>
