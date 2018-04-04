@@ -37,6 +37,8 @@ public class PumpkinProtocol implements Protocol {
 
 		// pumpkin协议规定使用netty-transporter
 		url.buildParam(URLConstant.TRANSPORT_KEY, "netty");
+		// pumpkin协议规定使用kryo
+		url.buildParam(URLConstant.SERIALIZATION, "kryo");
 		
 		// 如果服务需要对外暴露注册中心协议，则这里需要去连接注册中心注册服务
 		exportRegistry(classType, url);
@@ -68,6 +70,8 @@ public class PumpkinProtocol implements Protocol {
 		url.buildParam(URLConstant.IS_SHARE_CONNECTION, true);
 		// pumpkin协议规定使用netty-transporter
 		url.buildParam(URLConstant.TRANSPORT_KEY, "netty");
+		// pumpkin协议规定使用kryo
+		url.buildParam(URLConstant.SERIALIZATION, "kryo");
 		if (url.getProtocol().equals(Constant.PROTOCOL_REGISTRY)) {
 			// TODO URL不能存对象，必须改
 			RegistryConfig registryConfig = (RegistryConfig) url.getParam(URLConstant.REGISTRY_CONFIG);

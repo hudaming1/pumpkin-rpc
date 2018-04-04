@@ -4,7 +4,7 @@ import org.hum.pumpkin.common.serviceloader.support.SPI;
 import org.hum.pumpkin.protocol.invoker.Invoker;
 
 
-@SPI
+@SPI("jdk")
 public interface ProxyFactory {
 
 	<T> T getProxy(Invoker<T> invoker);

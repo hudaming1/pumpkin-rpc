@@ -41,7 +41,7 @@ public class ExtensionLoader<T> {
 	// FileMap -> FileName, Key, ClassName
 	private static final MulitHashMap<String, String, String> FileMap = new MulitHashMap<>();
 	// InstanceMap -> InterfaceClass, Key, Object
-	private static final MulitHashMap<Class<?>, String, Object> InstanceMap = new MulitHashMap<>();
+	// private static final MulitHashMap<Class<?>, String, Object> InstanceMap = new MulitHashMap<>();
 	// LoadMap
 	private static final Map<Class<?>, ExtensionLoader<?>> extensionLoaderMap = new ConcurrentHashMap<>();
 	// 
@@ -104,6 +104,8 @@ public class ExtensionLoader<T> {
 	
 	private Class<T> interfaceType;
 	private MetaData metaData;
+	private volatile T adaptInstance;
+	private Object adaptLock = new Object();
 	private final Map<String, T> instanceMap = new ConcurrentHashMap<>();
 	
 	private ExtensionLoader(Class<T> interfaceType) {
@@ -146,19 +148,17 @@ public class ExtensionLoader<T> {
 		return t;
 	}
 	
-	@SuppressWarnings("unchecked")
 	private T createInstance(String extensionName) {
 		try {
-			if (InstanceMap.get(interfaceType) == null || InstanceMap.get(interfaceType, extensionName) == null) {
+			// TODO need synchronized
+			if (instanceMap.get(extensionName) == null) {
 				String className = FileMap.get(interfaceType.getName(), extensionName);
 				if (className == null || className.trim().length() == 0) {
 					throw new PumpkinException("cann't find className for [" + interfaceType.getName() + "] with key [" + extensionName + "]");
 				}
-				Class<?> clazz = Class.forName(className);
-				Object instance = clazz.newInstance();
-				InstanceMap.put(interfaceType, extensionName, instance);
+				instanceMap.put(extensionName, createInstances(className));
 			}
-			return (T) InstanceMap.get(interfaceType, extensionName);
+			return (T) instanceMap.get(extensionName);
 		} catch (PumpkinException e) {
 			throw e;
 		} catch (Exception e) {
@@ -172,6 +172,53 @@ public class ExtensionLoader<T> {
 	
 	/**
 	 * 返回代理对象，自动适配加载
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public T getAdaptive() {
+		if (adaptInstance == null) {
+			synchronized (adaptLock) {
+				if (adaptInstance == null) {
+					adaptInstance = (T) Proxy.newProxyInstance(interfaceType.getClassLoader(), new Class[] { interfaceType }, new AdaptiveProxy());
+				}
+			}
+		}
+		return adaptInstance;
+	}
+	
+	// 初始化extension，将File中的配置实例化成对象
+	private void preloadExtensions() {
+		// 1.根据配置文件读出ImplementClass
+		Map<String, String> map = FileMap.get(interfaceType.getName());
+		// 2.实例化Class对象
+		for (Entry<String, String> entry : map.entrySet()) {
+			if (instanceMap.containsKey(entry.getKey())) {
+				continue;
+			}
+			// 虽然不推荐锁字符串，但考虑这里的字符串不会改变且为同一对象，因此不会有影响
+			synchronized (entry.getKey()) {
+				if (instanceMap.get(entry.getKey()) == null) {
+					T instance = createInstances(entry.getValue());
+					instanceMap.putIfAbsent(entry.getKey(), instance);
+				}
+			}
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	private T createInstances(String className) {
+		try {
+			Class<?> clazz = Class.forName(className);
+			Object instance = clazz.newInstance();
+			// TODO 自动注入setter方法
+			return (T) instance;
+		} catch (Exception ce) {
+			throw new PumpkinException("instance classType[" + className + "] occured exception", ce);
+		}
+	}
+
+	/**
+	 * 自动适配规则
 	 * <pre>
 	 *   dubbo适配规则：
 	 *   	1.如果参数url.key对应的Extension存在，则优先使用
@@ -187,75 +234,78 @@ public class ExtensionLoader<T> {
 	 * </pre>
 	 * <pre>
 	 * 	 Dubbo中这个方法返回的对象是通过JavassistCompiler动态编译而成，but why？性能问题吗？ 
+	 * 		Dubbo使用动态编译，考虑的应该不是灵活性设计，而是出于性能问题，因为被adaptive修饰的类或
+	 * 	方法可能会频繁被调用（理论上回出现，但目前代码中还没找到，后续我需要再留意以待佐证我的猜测）。
 	 * </pre>
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
-	public T getAdaptive() {
-		// TODO need cache
-		return (T) Proxy.newProxyInstance(interfaceType.getClassLoader(), new Class[] { interfaceType }, new InvocationHandler() {
-			@Override
-			public Object invoke(Object proxy, Method method, Object[] params) throws Throwable {
-				// 被@Adaptive标注的方法，限定所传至少一个参数是URL类型
-				URL url = null;
-				for (Object param : params) {
-					if (param instanceof URL) {
-						url = (URL) param;
-						break;
-					}
+	class AdaptiveProxy implements InvocationHandler {
+		
+		public AdaptiveProxy() {
+			preloadExtensions();
+		}
+		
+		@Override
+		public Object invoke(Object proxy, Method method, Object[] params) throws Throwable {
+			// 被@Adaptive标注的方法，限定所传至少一个参数是URL类型
+			URL url = null;
+			for (Object param : params) {
+				if (param instanceof URL) {
+					url = (URL) param;
+					break;
 				}
-				if (url == null) {
-					throw new IllegalArgumentException("params must contains class type [" + URL.class.getName() + "]");
-				}
-				Object proxyInstance = getAdaptiveExtension(method, url);
-				if (proxyInstance == null) {
-					throw new PumpkinException("can't find adapt " + interfaceType.getName());
-				}
-				return method.invoke(proxyInstance, params);
 			}
-			
-			private Object getAdaptiveExtension(Method method, URL url) {
-				if (instanceMap.isEmpty()) {
-					return null;
-				} else if (instanceMap.size() == 1) {
-					// 1.如果只有一个Extension被加载，则不用判断后续key，直接适配
-					return instanceMap.values().toArray()[0];
-				} 
-				// 2.如果有多个Extension被加载，则优先使用url.key对应的Extension
-				String adaptiveKeyName = getAdaptiveKeyName(method);
-				if (adaptiveKeyName != null) {
-					Object p = url.getParam(adaptiveKeyName);
-					String extensionName = (p == null? "" : p.toString());
-					T t = instanceMap.get(extensionName);
-					if (t != null) {
-						return t;
-					}
-				}
-				// 3.如果url.key无对应的Extension，则使用SPI.value
-				String extensionName = getSpiKeyName(method);
-				T t = instanceMap.get(extensionName);
-				// 4.如果SPI.value业务对应，则提示异常
-				if (t == null) {
-					throw new PumpkinException("can't adapt extension for " + interfaceType.getName());
-				}
-				return t;
+			if (url == null) {
+				throw new IllegalArgumentException("params must contains class type [" + URL.class.getName() + "]");
 			}
-			
-			private String getAdaptiveKeyName(Method method) {
-				Adaptive adaptAnno = method.getAnnotation(Adaptive.class);
-				if (adaptAnno == null) {
-					return null;
-				} else if (adaptAnno.value() != null || adaptAnno.value().trim().length() > 0) {
-					return adaptAnno.value();
-				}
+			Object proxyInstance = getAdaptiveExtension(method, url);
+			if (proxyInstance == null) {
+				throw new PumpkinException("can't find adapt " + interfaceType.getName());
+			}
+			return method.invoke(proxyInstance, params);
+		}
+		
+		private Object getAdaptiveExtension(Method method, URL url) {
+			if (instanceMap.isEmpty()) {
 				return null;
+			} else if (instanceMap.size() == 1) {
+				// 1.如果只有一个Extension被加载，则不用判断后续key，直接适配
+				return instanceMap.values().toArray()[0];
+			} 
+			// 2.如果有多个Extension被加载，则优先使用url.key对应的Extension
+			String adaptiveKeyName = getAdaptiveKeyName(method);
+			if (adaptiveKeyName != null) {
+				Object p = url.getParam(adaptiveKeyName);
+				String extensionName = (p == null? "" : p.toString());
+				T t = instanceMap.get(extensionName);
+				if (t != null) {
+					return t;
+				}
 			}
-			
-			private String getSpiKeyName(Method method) {
-				SPI spiAnno = method.getDeclaringClass().getAnnotation(SPI.class);
-				return spiAnno.value();
+			// 3.如果url.key无对应的Extension，则使用SPI.value
+			String extensionName = getSpiKeyName(method);
+			T t = instanceMap.get(extensionName);
+			// 4.如果SPI.value业务对应，则提示异常
+			if (t == null) {
+				throw new PumpkinException("can't adapt extension for " + interfaceType.getName());
 			}
-		});
+			return t;
+		}
+		
+		private String getAdaptiveKeyName(Method method) {
+			Adaptive adaptAnno = method.getAnnotation(Adaptive.class);
+			if (adaptAnno == null) {
+				return null;
+			} else if (adaptAnno.value() != null || adaptAnno.value().trim().length() > 0) {
+				return adaptAnno.value();
+			}
+			return null;
+		}
+		
+		private String getSpiKeyName(Method method) {
+			SPI spiAnno = method.getDeclaringClass().getAnnotation(SPI.class);
+			return spiAnno.value();
+		}
 	}
 	
 	static class MulitHashMap<K, V, E> {
