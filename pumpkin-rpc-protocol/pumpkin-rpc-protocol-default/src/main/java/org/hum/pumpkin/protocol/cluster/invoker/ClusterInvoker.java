@@ -18,7 +18,6 @@ import org.hum.pumpkin.registry.RegistryConfig;
 public class ClusterInvoker<T> implements Invoker<T> {
 
 //	private Directory directory = ServiceLoaderHolder.loadByCache(Directory.class);
-	private RegistryConfig registryConfig;
 	private Registry registry;
 	private Class<T> classType;
 	private URL url;
@@ -26,8 +25,7 @@ public class ClusterInvoker<T> implements Invoker<T> {
 	private Map<String, Map<String, DirectInvoker<T>>> clientMap = new HashMap<>();
 
 	// TODO registryConfig和Registry，作为2个参数传入，有点恶心
-	public ClusterInvoker(Registry registry, RegistryConfig registryConfig, Class<T> classType, URL url) {
-		this.registryConfig = registryConfig;
+	public ClusterInvoker(Registry registry, Class<T> classType, URL url) {
 		this.registry = registry;
 		this.classType = classType;
 		this.url = url;

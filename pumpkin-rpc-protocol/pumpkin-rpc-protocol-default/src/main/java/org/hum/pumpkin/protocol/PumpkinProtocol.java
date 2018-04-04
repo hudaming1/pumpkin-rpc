@@ -12,7 +12,6 @@ import org.hum.pumpkin.protocol.exporter.Exporter;
 import org.hum.pumpkin.protocol.invoker.Invoker;
 import org.hum.pumpkin.protocol.invoker.direct.DirectInvoker;
 import org.hum.pumpkin.registry.Registry;
-import org.hum.pumpkin.registry.RegistryConfig;
 import org.hum.pumpkin.util.InetUtils;
 
 /**
@@ -46,16 +45,14 @@ public class PumpkinProtocol implements Protocol {
 	}
 
 	private <T> void exportRegistry(Class<T> classType, URL url) {
-		if (url.getParam(URLConstant.REGISTRY_CONFIG) != null) {
+		if (url.getParam(URLConstant.REGISTRY_NAME) != null) {
 			try {
-				// TODO URL怎么设计的？怎么还能存对象了？必须改
-				RegistryConfig registryConfig = (RegistryConfig) url.getParam(URLConstant.REGISTRY_CONFIG);
-				this.registry = ExtensionLoader.getExtensionLoader(Registry.class).get(registryConfig.getName());
+				this.registry = ExtensionLoader.getExtensionLoader(Registry.class).get(url.getString(URLConstant.REGISTRY_NAME));
 				// TODO 为以后多注册中心做准备（但需要ServiceLoader支持）
 				// for (RegistryConfig registryConfig : registryConfigs) {
 				// Registry registry = ServiceLoaderHolder.getExtensionByName(registryConfig.getName());
-				this.registry.connect(registryConfig.getAddress(), registryConfig.getPort());
-				this.registry.registry(classType, InetUtils.getLocalAddress(), url.getPort());
+				registry.connect(url.getString(URLConstant.REGISTRY_ADDRESS), url.getInteger(URLConstant.REGISTRY_PORT));
+				registry.registry(classType, InetUtils.getLocalAddress(), url.getPort());
 				// }
 			} catch (UnknownHostException e) {
 				throw new PumpkinException("registry exception", e);
@@ -71,12 +68,10 @@ public class PumpkinProtocol implements Protocol {
 		url.buildParam(URLConstant.TRANSPORT_KEY, "netty");
 		// pumpkin协议规定使用kryo
 		url.buildParam(URLConstant.SERIALIZATION, "kryo");
-		if (url.getParam(URLConstant.REGISTRY_CONFIG) != null) {
-			// TODO URL不能存对象，必须改
-			RegistryConfig registryConfig = (RegistryConfig) url.getParam(URLConstant.REGISTRY_CONFIG);
-			this.registry = ExtensionLoader.getExtensionLoader(Registry.class).get(registryConfig.getName());
-			registry.connect(registryConfig.getAddress(), registryConfig.getPort());
-			return new ClusterInvoker<>(registry, registryConfig, classType, url);
+		if (url.getParam(URLConstant.REGISTRY_NAME) != null) {
+			registry = ExtensionLoader.getExtensionLoader(Registry.class).get(url.getString(URLConstant.REGISTRY_NAME));
+			registry.connect(url.getString(URLConstant.REGISTRY_ADDRESS), url.getInteger(URLConstant.REGISTRY_PORT));
+			return new ClusterInvoker<>(registry, classType, url);
 		} 
 		return new DirectInvoker<>(classType, url);
 	}

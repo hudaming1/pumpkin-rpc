@@ -44,9 +44,11 @@ public class ReferenceConfig<T> {
 	public T get() {
 		URL url = new URL(protocol, address, port, className);
 		try {
-			
+
 			if (registryConfig != null) {
-				url.buildParam(URLConstant.REGISTRY_CONFIG, registryConfig);
+				url.buildParam(URLConstant.REGISTRY_NAME, registryConfig.getName());
+				url.buildParam(URLConstant.REGISTRY_ADDRESS, registryConfig.getAddress());
+				url.buildParam(URLConstant.REGISTRY_PORT, registryConfig.getPort());
 			}
 			
 			// TODO 其他服务相关配置，可以增加到url对象里

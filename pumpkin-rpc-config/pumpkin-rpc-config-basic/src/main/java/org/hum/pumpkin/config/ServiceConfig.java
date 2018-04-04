@@ -78,7 +78,9 @@ public class ServiceConfig<T> {
 				
 				// TODO 其他服务层的配置信息，需要配置到url.param中
 				if (registryConfig != null) {
-					url.buildParam(URLConstant.REGISTRY_CONFIG, registryConfig);
+					url.buildParam(URLConstant.REGISTRY_NAME, registryConfig.getName());
+					url.buildParam(URLConstant.REGISTRY_ADDRESS, registryConfig.getAddress());
+					url.buildParam(URLConstant.REGISTRY_PORT, registryConfig.getPort());
 				}
 				
 				Exporter<T> exporter = ProtocolLoader.get(protocol.getName()).export(interfaceType, ref, url);

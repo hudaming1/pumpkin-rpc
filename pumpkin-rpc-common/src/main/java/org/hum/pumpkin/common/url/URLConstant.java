@@ -26,11 +26,13 @@ public class URLConstant {
 	public static final String AUTH_TYPE = "auth_type";
 	
 	// 注册中心
-	public static final String REGISTRY_CONFIG = "registryConfig";
+	public static final String REGISTRY_NAME = "registryName";
+	public static final String REGISTRY_ADDRESS = "registry_address";
+	public static final String REGISTRY_PORT = "registry_port";
 	
 	// 序列化key
 	public static final String SERIALIZATION = "serialization";
 
-	// 
+	// 传输协议
 	public static final String TRANSPORT_KEY = "transporter";
 }

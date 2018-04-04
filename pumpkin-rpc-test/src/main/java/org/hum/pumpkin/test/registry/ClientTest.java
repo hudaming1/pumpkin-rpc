@@ -1,6 +1,7 @@
-package org.hum.pumpkin.test.simple;
+package org.hum.pumpkin.test.registry;
 
 import org.hum.pumpkin.config.ReferenceConfig;
+import org.hum.pumpkin.registry.RegistryConfig;
 import org.hum.pumpkin.test._service.IHelloService;
 import org.hum.pumpkin.test._service.IUserService;
 
@@ -9,13 +10,12 @@ public class ClientTest {
 	public static void main(String[] args) throws InterruptedException {
 		ReferenceConfig<IHelloService> referenceBean = new ReferenceConfig<>(IHelloService.class);
 		referenceBean.setProtocol("pumpkin");
-		referenceBean.setUrl("127.0.0.1", 9080);
-
+		referenceBean.setRegistryConfig(new RegistryConfig("zookeeper", "172.16.219.129", 2181));
 		IHelloService helloService = referenceBean.get();
 
 		ReferenceConfig<IUserService> referenceBean2 = new ReferenceConfig<>(IUserService.class);
 		referenceBean2.setProtocol("pumpkin");
-		referenceBean2.setUrl("127.0.0.1", 9080);
+		referenceBean2.setRegistryConfig(new RegistryConfig("zookeeper", "172.16.219.129", 2181));
 		IUserService userService = referenceBean2.get();
 
 		Thread.sleep(2000);
