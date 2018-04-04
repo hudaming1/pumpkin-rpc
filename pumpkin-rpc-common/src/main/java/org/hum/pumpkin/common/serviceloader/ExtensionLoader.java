@@ -40,8 +40,6 @@ public class ExtensionLoader<T> {
 
 	// FileMap -> FileName, Key, ClassName
 	private static final MulitHashMap<String, String, String> FileMap = new MulitHashMap<>();
-	// InstanceMap -> InterfaceClass, Key, Object
-	// private static final MulitHashMap<Class<?>, String, Object> InstanceMap = new MulitHashMap<>();
 	// LoadMap
 	private static final Map<Class<?>, ExtensionLoader<?>> extensionLoaderMap = new ConcurrentHashMap<>();
 	// 
@@ -104,9 +102,11 @@ public class ExtensionLoader<T> {
 	
 	private Class<T> interfaceType;
 	private MetaData metaData;
-	private volatile T adaptInstance;
 	private Object adaptLock = new Object();
 	private final Map<String, T> instanceMap = new ConcurrentHashMap<>();
+	private final StringLocker segmentLocker = new StringLocker();
+	private volatile T adaptInstance;
+	private volatile T defaultInstance;
 	
 	private ExtensionLoader(Class<T> interfaceType) {
 		this.interfaceType = interfaceType;
@@ -137,28 +137,35 @@ public class ExtensionLoader<T> {
 	 */
 	@SuppressWarnings("unchecked")
 	public T get() {
-		if (instanceMap.size() == 1) {
-			// XXX bad smell
-			return (T) instanceMap.values().toArray()[0];
+		if (defaultInstance != null) {
+			return defaultInstance;
 		}
-		T t = get(metaData.getDefaultExtName());
-		if (t == null) {
+		if (instanceMap.size() == 1) {
+			defaultInstance = (T) instanceMap.values().toArray()[0];
+			return defaultInstance;
+		}
+		defaultInstance = get(metaData.getDefaultExtName());
+		if (defaultInstance == null) {
 			throw new PumpkinException("no default extension for classType[" + interfaceType.getName() + "]");
 		}
-		return t;
+		return defaultInstance;
 	}
 	
 	private T createInstance(String extensionName) {
 		try {
-			// TODO need synchronized
-			if (instanceMap.get(extensionName) == null) {
-				String className = FileMap.get(interfaceType.getName(), extensionName);
-				if (className == null || className.trim().length() == 0) {
-					throw new PumpkinException("cann't find className for [" + interfaceType.getName() + "] with key [" + extensionName + "]");
-				}
-				instanceMap.put(extensionName, createInstances(className));
+			if (instanceMap.get(extensionName) != null) {
+				return instanceMap.get(extensionName);
 			}
-			return (T) instanceMap.get(extensionName);
+			synchronized (segmentLocker.getLockObject(extensionName)) {
+				if (instanceMap.get(extensionName) == null) {
+					String className = FileMap.get(interfaceType.getName(), extensionName);
+					if (className == null || className.trim().length() == 0) {
+						throw new PumpkinException("cann't find className for [" + interfaceType.getName() + "] with key [" + extensionName + "]");
+					}
+					instanceMap.put(extensionName, createInstances(className));
+				}
+				return instanceMap.get(extensionName);
+			}
 		} catch (PumpkinException e) {
 			throw e;
 		} catch (Exception e) {
@@ -195,8 +202,7 @@ public class ExtensionLoader<T> {
 			if (instanceMap.containsKey(entry.getKey())) {
 				continue;
 			}
-			// 虽然不推荐锁字符串，但考虑这里的字符串不会改变且为同一对象，因此不会有影响
-			synchronized (entry.getKey()) {
+			synchronized (segmentLocker.getLockObject(entry.getKey())) {
 				if (instanceMap.get(entry.getKey()) == null) {
 					T instance = createInstances(entry.getValue());
 					instanceMap.putIfAbsent(entry.getKey(), instance);
@@ -242,6 +248,7 @@ public class ExtensionLoader<T> {
 	class AdaptiveProxy implements InvocationHandler {
 		
 		public AdaptiveProxy() {
+			// adapt前需要保证interfaceType下所有的实现类已经实例化
 			preloadExtensions();
 		}
 		
@@ -364,9 +371,20 @@ public class ExtensionLoader<T> {
 			}
 		}
 	}
+	
+	// 锁字符串的前提：保证字符串引用不可变。
+	private class StringLocker {
+		private final ConcurrentHashMap<String, Object> LOCK_MAP = new ConcurrentHashMap<>();
+		public Object getLockObject(String key) {
+			Object lock = LOCK_MAP.get(key);
+			if (lock == null) {
+				LOCK_MAP.putIfAbsent(key, new Object());
+			}
+			return LOCK_MAP.get(key);
+		}
+	}
+	
+	public String toString() {
+		return "ExtensionLoader[" + interfaceType.getName() + "]";
+	}
 }
-
-
-
-
-
