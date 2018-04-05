@@ -1,6 +1,6 @@
 package org.hum.pumpkin.exchange;
 
-import org.hum.pumpkin.common.serviceloader.ServiceLoaderHolder;
+import org.hum.pumpkin.common.serviceloader.ExtensionLoader;
 import org.hum.pumpkin.common.url.URL;
 import org.hum.pumpkin.exchange.server.ExchangeServerHandler;
 import org.hum.pumpkin.transport.client.Client;
@@ -13,7 +13,7 @@ import org.hum.pumpkin.transport.server.ServerHandler;
 
 public class DefaultExchanger extends AbstractExchanger {
 	
-	private final TransporterFactory transporterFactory = ServiceLoaderHolder.loadByCache(TransporterFactory.class);
+	private TransporterFactory transporterFactory = ExtensionLoader.getExtensionLoader(TransporterFactory.class).getAdaptive();
 
 	@Override
 	protected Server doBind(final URL url, final ExchangeServerHandler serverHandler) {

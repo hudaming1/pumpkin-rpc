@@ -15,7 +15,6 @@ public class DefaultExchangeServer implements ExchangeServer {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				System.out.println("start server");
 				DefaultExchangeServer.server.open();
 			}
 		}).start();

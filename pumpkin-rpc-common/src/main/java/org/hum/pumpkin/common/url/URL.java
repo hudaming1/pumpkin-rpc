@@ -1,8 +1,8 @@
 package org.hum.pumpkin.common.url;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class URL {
 
@@ -10,13 +10,22 @@ public class URL {
 	private String host;
 	private int port;
 	private String path;
-	private Map<String, Object> params = new HashMap<>();
+	private Map<String, Object> params = new ConcurrentHashMap<>();
 
 	public URL(String protocol, String host, int port, String path) {
 		this.protocol = protocol;
 		this.host = host;
 		this.port = port;
 		this.path = path;
+		params.put("protocol", protocol);
+		params.put("host", host);
+		params.put("port", port);
+		params.put("path", path);
+	}
+
+	public URL(String protocol, String host, int port, String path, URL url) {
+		this(protocol, host, port, path);
+		this.params = new ConcurrentHashMap<>(url.params);
 	}
 	
 	public void setHost(String host) {
@@ -31,6 +40,11 @@ public class URL {
 		return params.get(key);
 	}
 
+	public Object getParam(String key, String defaultKey) {
+		Object object = params.get(key);
+		return object == null ? params.get(defaultKey) : object;
+	}
+
 	public URL buildParam(String key, Object value) {
 		params.put(key, value);
 		return this;
@@ -42,6 +56,10 @@ public class URL {
 	
 	public Boolean getBoolean(String key) {
 		return (Boolean) params.get(key);
+	}
+	
+	public String getString(String key) {
+		return (String) params.get(key);
 	}
 
 	public String getProtocol() {

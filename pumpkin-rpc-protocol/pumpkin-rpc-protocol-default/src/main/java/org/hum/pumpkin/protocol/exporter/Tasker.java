@@ -2,7 +2,7 @@ package org.hum.pumpkin.protocol.exporter;
 
 import java.util.concurrent.Callable;
 
-import org.hum.pumpkin.common.serviceloader.ServiceLoaderHolder;
+import org.hum.pumpkin.common.serviceloader.ExtensionLoader;
 import org.hum.pumpkin.protocol.invoker.RpcInvocation;
 import org.hum.pumpkin.protocol.invoker.RpcResult;
 import org.hum.pumpkin.proxy.ProxyFactory;
@@ -12,7 +12,7 @@ import org.hum.pumpkin.proxy.ProxyFactory;
  */
 public class Tasker implements Callable<RpcResult> {
 	
-	private final static ProxyFactory proxyFactory = ServiceLoaderHolder.loadByCache(ProxyFactory.class);
+	private final static ProxyFactory proxyFactory = ExtensionLoader.getExtensionLoader(ProxyFactory.class).get();
 	private RpcInvocation invocation;
 	private Object ref;
 	

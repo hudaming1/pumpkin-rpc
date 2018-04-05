@@ -5,7 +5,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
-import org.hum.pumpkin.common.serviceloader.ServiceLoaderHolder;
+import org.hum.pumpkin.common.serviceloader.ExtensionLoader;
 import org.hum.pumpkin.common.url.URL;
 import org.hum.pumpkin.exchange.Exchanger;
 import org.hum.pumpkin.exchange.Request;
@@ -27,8 +27,8 @@ import org.hum.pumpkin.threadpool.ThreadPoolFactory;
  */
 public class DefaultExporter<T> implements Exporter<T>{
 
-	private static final Exchanger EXCHANGER = ServiceLoaderHolder.loadByCache(Exchanger.class);
-	private static final ExecutorService EXECUTOR_SERVICE = ServiceLoaderHolder.loadByCache(ThreadPoolFactory.class).create();
+	private final Exchanger EXCHANGER = ExtensionLoader.getExtensionLoader(Exchanger.class).get();
+	private static final ExecutorService EXECUTOR_SERVICE = ExtensionLoader.getExtensionLoader(ThreadPoolFactory.class).get().create();
 	// TODO 这里应该存InvokerMap
 	private static final Map<Class<?>, Object> beanMap = new ConcurrentHashMap<>();
 	private T ref;

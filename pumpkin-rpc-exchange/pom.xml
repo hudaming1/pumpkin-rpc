@@ -8,16 +8,11 @@
 	</parent>
 	<artifactId>pumpkin-rpc-exchange</artifactId>
 	<packaging>pom</packaging>
+	<properties>
+		<skip_maven_deploy>true</skip_maven_deploy>
+	</properties>
 	<modules>
 		<module>pumpkin-rpc-exchange-api</module>
 		<module>pumpkin-rpc-exchange-default</module>
 	</modules>
-	
-	<dependencies>
-		<dependency>
-			<groupId>org.hum</groupId>
-			<artifactId>pumpkin-rpc-transport-api</artifactId>
-			<version>${project.parent.version}</version>
-		</dependency>
-	</dependencies>
 </project>

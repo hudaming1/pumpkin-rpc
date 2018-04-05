@@ -4,7 +4,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
-import org.hum.pumpkin.common.serviceloader.ServiceLoaderHolder;
+import org.hum.pumpkin.common.serviceloader.ExtensionLoader;
 import org.hum.pumpkin.exchange.Request;
 import org.hum.pumpkin.exchange.Response;
 import org.hum.pumpkin.threadpool.ThreadPoolFactory;
@@ -21,7 +21,7 @@ import org.hum.pumpkin.transport.message.MessageTypeEnum;
 public class DefaultExchangeClient implements ExchangeClient {
 
 	private Client client;
-	private static final ExecutorService executorService = ServiceLoaderHolder.loadByCache(ThreadPoolFactory.class).create();
+	private static final ExecutorService executorService = ExtensionLoader.getExtensionLoader(ThreadPoolFactory.class).get().create();
 
 	public DefaultExchangeClient(Client client) {
 		this.client = client;

@@ -1,19 +1,21 @@
 package org.hum.pumpkin.protocol;
 
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.hum.pumpkin.common.Constant;
 import org.hum.pumpkin.common.exception.PumpkinException;
-import org.hum.pumpkin.common.serviceloader.ServiceLoaderHolder;
+import org.hum.pumpkin.common.serviceloader.ExtensionLoader;
 import org.hum.pumpkin.common.url.URL;
 import org.hum.pumpkin.common.url.URLConstant;
+import org.hum.pumpkin.logger.Logger;
+import org.hum.pumpkin.logger.LoggerFactory;
 import org.hum.pumpkin.protocol.cluster.invoker.ClusterInvoker;
 import org.hum.pumpkin.protocol.exporter.DefaultExporter;
 import org.hum.pumpkin.protocol.exporter.Exporter;
 import org.hum.pumpkin.protocol.invoker.Invoker;
 import org.hum.pumpkin.protocol.invoker.direct.DirectInvoker;
 import org.hum.pumpkin.registry.Registry;
-import org.hum.pumpkin.registry.RegistryConfig;
 import org.hum.pumpkin.util.InetUtils;
 
 /**
@@ -27,29 +29,41 @@ import org.hum.pumpkin.util.InetUtils;
  */
 public class PumpkinProtocol implements Protocol {
 
-	private final Registry registry = ServiceLoaderHolder.loadByCache(Registry.class);
+	private static final Logger logger = LoggerFactory.getLogger(PumpkinProtocol.class);
+	private static final List<Exporter<?>> EXPORTER_LIST = new ArrayList<>();
+	private volatile Registry registry = null;
 
 	// TODO 后期创建Exporter时，需要传Invoker（Dubbo中采用InJvmInvoker，在扩展Service层Filter时可以形成InvokerChain）
 	@Override
 	public <T> Exporter<T> export(Class<T> classType, T instances, URL url) {
 		
 		// TODO 进行必要的url.check
+
+		// pumpkin协议规定使用netty-transporter
+		url.buildParam(URLConstant.TRANSPORT_KEY, "netty");
+		// pumpkin协议规定使用kryo
+		url.buildParam(URLConstant.SERIALIZATION, "kryo");
 		
 		// 如果服务需要对外暴露注册中心协议，则这里需要去连接注册中心注册服务
 		exportRegistry(classType, url);
 		
-		return new DefaultExporter<T>(classType, instances, url);
+		DefaultExporter<T> exporter = new DefaultExporter<T>(classType, instances, url);
+		EXPORTER_LIST.add(exporter);
+		
+		logger.info("export service[" + classType.getName() + "] successfully");
+		
+		return exporter;
 	}
 
 	private <T> void exportRegistry(Class<T> classType, URL url) {
-		if (url.getParam(URLConstant.REGISTRY_CONFIG) != null) {
+		if (url.getParam(URLConstant.REGISTRY_NAME) != null) {
 			try {
-				RegistryConfig registryConfig = (RegistryConfig) url.getParam(URLConstant.REGISTRY_CONFIG);
+				this.registry = ExtensionLoader.getExtensionLoader(Registry.class).get(url.getString(URLConstant.REGISTRY_NAME));
 				// TODO 为以后多注册中心做准备（但需要ServiceLoader支持）
 				// for (RegistryConfig registryConfig : registryConfigs) {
 				// Registry registry = ServiceLoaderHolder.getExtensionByName(registryConfig.getName());
-				this.registry.connect(registryConfig.getAddress(), registryConfig.getPort());
-				this.registry.registry(classType, InetUtils.getLocalAddress(), url.getPort());
+				registry.connect(url.getString(URLConstant.REGISTRY_ADDRESS), url.getInteger(URLConstant.REGISTRY_PORT));
+				registry.registry(classType, InetUtils.getLocalAddress(), url.getPort());
 				// }
 			} catch (UnknownHostException e) {
 				throw new PumpkinException("registry exception", e);
@@ -61,10 +75,14 @@ public class PumpkinProtocol implements Protocol {
 	public <T> Invoker<T> refer(Class<T> classType, URL url) {
 		url.buildParam(URLConstant.IS_KEEP_ALIVE, true);
 		url.buildParam(URLConstant.IS_SHARE_CONNECTION, true);
-		if (url.getProtocol().equals(Constant.PROTOCOL_REGISTRY)) {
-			RegistryConfig registryConfig = (RegistryConfig) url.getParam(URLConstant.REGISTRY_CONFIG);
-			registry.connect(registryConfig.getAddress(), registryConfig.getPort());
-			return new ClusterInvoker<>(registry, registryConfig, classType, url);
+		// pumpkin协议规定使用netty-transporter
+		url.buildParam(URLConstant.TRANSPORT_KEY, "netty");
+		// pumpkin协议规定使用kryo
+		url.buildParam(URLConstant.SERIALIZATION, "kryo");
+		if (url.getParam(URLConstant.REGISTRY_NAME) != null) {
+			registry = ExtensionLoader.getExtensionLoader(Registry.class).get(url.getString(URLConstant.REGISTRY_NAME));
+			registry.connect(url.getString(URLConstant.REGISTRY_ADDRESS), url.getInteger(URLConstant.REGISTRY_PORT));
+			return new ClusterInvoker<>(registry, classType, url);
 		} 
 		return new DirectInvoker<>(classType, url);
 	}

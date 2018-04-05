@@ -3,9 +3,9 @@ package org.hum.pumpkin.serialization.kryo;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.hum.pumpkin.logger.Logger;
+import org.hum.pumpkin.logger.LoggerFactory;
 import org.hum.pumpkin.serialization.Serialization;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;

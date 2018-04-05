@@ -16,8 +16,8 @@ import org.hum.pumpkin.transport.server.Server;
 public abstract class AbstractExchanger implements Exchanger {
 
 	private static final Map<String, ExchangeClient> EXCHANGE_CLIENTS = new ConcurrentHashMap<>();
-	private static final Object createLock = new Object();
-	private static volatile ExchangeServer server;
+	private final Object createLock = new Object();
+	private volatile ExchangeServer server;
 	
 	@Override
 	public ExchangeServer bind(URL url, ExchangeServerHandler serverHandler) {

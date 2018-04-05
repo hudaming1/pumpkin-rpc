@@ -7,4 +7,12 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>pumpkin-rpc-threadpool-api</artifactId>
+	
+	<dependencies>
+		<dependency>
+			<groupId>org.hum</groupId>
+			<artifactId>pumpkin-rpc-common</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+	</dependencies>
 </project>
