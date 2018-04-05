@@ -1,4 +1,4 @@
-package org.hum.pumpkin.protocol.invoker.direct;
+package org.hum.pumpkin.protocol.invoker;
 
 import org.hum.pumpkin.common.serviceloader.ExtensionLoader;
 import org.hum.pumpkin.common.url.URL;

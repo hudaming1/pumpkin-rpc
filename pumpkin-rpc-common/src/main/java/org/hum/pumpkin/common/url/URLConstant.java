@@ -33,4 +33,7 @@ public class URLConstant {
 
 	// 传输协议
 	public static final String TRANSPORT_KEY = "transporter";
+	
+	// 使用协议
+	public static final String PROTOCOL = "protocol";
 }

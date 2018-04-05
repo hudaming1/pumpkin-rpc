@@ -14,5 +14,6 @@
 	<modules>
 		<module>pumpkin-rpc-protocol-default</module>
 		<module>pumpkin-rpc-protocol-api</module>
+		<module>pumpkin-rpc-protocol-cluster</module>
 	</modules>
 </project>

@@ -6,25 +6,27 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.hum.pumpkin.common.exception.RpcException;
+import org.hum.pumpkin.common.serviceloader.ExtensionLoader;
 import org.hum.pumpkin.common.url.URL;
 import org.hum.pumpkin.protocol.ProtocolEnum;
+import org.hum.pumpkin.protocol.cluster.directory.Directory;
 import org.hum.pumpkin.protocol.invoker.Invoker;
+import org.hum.pumpkin.protocol.invoker.InvokerFactory;
 import org.hum.pumpkin.protocol.invoker.RpcInvocation;
 import org.hum.pumpkin.protocol.invoker.RpcResult;
-import org.hum.pumpkin.protocol.invoker.direct.DirectInvoker;
 import org.hum.pumpkin.registry.Registry;
-import org.hum.pumpkin.registry.RegistryConfig;
 
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class ClusterInvoker<T> implements Invoker<T> {
 
-//	private Directory directory = ServiceLoaderHolder.loadByCache(Directory.class);
+	private static final InvokerFactory INVOKER_FACTORY = ExtensionLoader.getExtensionLoader(InvokerFactory.class).getAdaptive();
+	private Directory<T> directory;
 	private Registry registry;
 	private Class<T> classType;
 	private URL url;
 	// className -> ip:port -> Invoker
-	private Map<String, Map<String, DirectInvoker<T>>> clientMap = new HashMap<>();
+	private Map<String, Map<String, Invoker<T>>> clientMap = new HashMap<>();
 
-	// Registry，作为2个参数传入，有点恶心
 	public ClusterInvoker(Registry registry, Class<T> classType, URL url) {
 		this.registry = registry;
 		this.classType = classType;
@@ -37,17 +39,16 @@ public class ClusterInvoker<T> implements Invoker<T> {
 		}
 
 		// 1.5 init map
-		Map<String, DirectInvoker<T>> cmap = clientMap.get(classType.getName());
+		Map<String, Invoker<T>> cmap = clientMap.get(classType.getName());
 		if (cmap == null) {
-			clientMap.put(classType.getName(), new ConcurrentHashMap<String, DirectInvoker<T>>());
+			clientMap.put(classType.getName(), new ConcurrentHashMap<String, Invoker<T>>());
 		}
 		
 		// 2.reg
 		for (String _url : urls) {
 			String[] urlArr = _url.split(":");
-			// TODO 重新创建URL会导致上层URL信息丢失
 			URL directUrl = new URL(ProtocolEnum.Direct.getName(), urlArr[0], Integer.parseInt(urlArr[1]), classType.getName(), url);
-			DirectInvoker<T> invoker = new DirectInvoker<>(classType, directUrl);
+			Invoker<T> invoker = INVOKER_FACTORY.create(classType, directUrl);
 			clientMap.get(classType.getName()).put(_url, invoker);
 		}
 	}
@@ -72,9 +73,9 @@ public class ClusterInvoker<T> implements Invoker<T> {
 			String[] urlArr = url.split(":");
 			
 			// 3.select url
-			Map<String, DirectInvoker<T>> cmap = clientMap.get(classType.getName());
+			Map<String, Invoker<T>> cmap = clientMap.get(classType.getName());
 			if (cmap == null) {
-				clientMap.put(classType.getName(), new ConcurrentHashMap<String, DirectInvoker<T>>());
+				clientMap.put(classType.getName(), new ConcurrentHashMap<String, Invoker<T>>());
 			}
 			if (cmap != null && cmap.containsKey(url)) {
 				return cmap.get(url).invoke(invocation);
@@ -82,7 +83,7 @@ public class ClusterInvoker<T> implements Invoker<T> {
 
 			// 4.create client
 			URL directUrl = new URL(ProtocolEnum.Direct.getName(), urlArr[0], Integer.parseInt(urlArr[1]), classType.getName());
-			DirectInvoker<T> invoker = new DirectInvoker<>(classType, directUrl);
+			Invoker<T> invoker = INVOKER_FACTORY.create(classType, directUrl);
 			clientMap.get(classType.getName()).put(url, invoker);
 			return invoker.invoke(invocation);
 		} catch (Exception ce) {

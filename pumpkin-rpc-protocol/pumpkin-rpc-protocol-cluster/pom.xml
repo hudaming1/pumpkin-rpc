@@ -6,8 +6,8 @@
 		<artifactId>pumpkin-rpc-protocol</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>pumpkin-rpc-protocol-default</artifactId>
-	
+	<artifactId>pumpkin-rpc-protocol-cluster</artifactId>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.hum</groupId>
@@ -16,22 +16,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.hum</groupId>
-			<artifactId>pumpkin-rpc-threadpool-api</artifactId>
-			<version>${project.parent.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.hum</groupId>
-			<artifactId>pumpkin-rpc-proxy-api</artifactId>
-			<version>${project.parent.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.hum</groupId>
 			<artifactId>pumpkin-rpc-registry-api</artifactId>
-			<version>${project.parent.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.hum</groupId>
-			<artifactId>pumpkin-rpc-protocol-cluster</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
 	</dependencies>
