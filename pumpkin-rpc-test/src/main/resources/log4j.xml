@@ -9,11 +9,6 @@
 		</layout>
 	</appender>
 	
-	<logger name="org.hum.pumpkin" additivity="false">
-		<level value="info" />
-		<appender-ref ref="myConsole" />
-	</logger>
-	
 	<root>
 		<level value="debug" />
         <appender-ref ref="myConsole" />
