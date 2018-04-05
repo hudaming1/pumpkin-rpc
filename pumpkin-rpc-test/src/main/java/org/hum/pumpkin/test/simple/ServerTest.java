@@ -18,8 +18,6 @@ public class ServerTest {
 		serviceConfig.setRef(new HelloServiceImpl());
 		serviceConfig.export();
 		
-		System.out.println(11);
-		
 		ServiceConfig<IUserService> serviceConfig2 = new ServiceConfig<>();
 		serviceConfig2.setProtocols(Arrays.asList(new ProtocolConfig[]{new ProtocolConfig("pumpkin", 9080)}));
 		serviceConfig2.setInterfaceType(IUserService.class);

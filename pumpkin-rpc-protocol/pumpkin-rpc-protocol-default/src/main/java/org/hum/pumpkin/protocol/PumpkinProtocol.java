@@ -1,11 +1,15 @@
 package org.hum.pumpkin.protocol;
 
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hum.pumpkin.common.exception.PumpkinException;
 import org.hum.pumpkin.common.serviceloader.ExtensionLoader;
 import org.hum.pumpkin.common.url.URL;
 import org.hum.pumpkin.common.url.URLConstant;
+import org.hum.pumpkin.logger.Logger;
+import org.hum.pumpkin.logger.LoggerFactory;
 import org.hum.pumpkin.protocol.cluster.invoker.ClusterInvoker;
 import org.hum.pumpkin.protocol.exporter.DefaultExporter;
 import org.hum.pumpkin.protocol.exporter.Exporter;
@@ -25,6 +29,8 @@ import org.hum.pumpkin.util.InetUtils;
  */
 public class PumpkinProtocol implements Protocol {
 
+	private static final Logger logger = LoggerFactory.getLogger(PumpkinProtocol.class);
+	private static final List<Exporter<?>> EXPORTER_LIST = new ArrayList<>();
 	private volatile Registry registry = null;
 
 	// TODO 后期创建Exporter时，需要传Invoker（Dubbo中采用InJvmInvoker，在扩展Service层Filter时可以形成InvokerChain）
@@ -41,7 +47,12 @@ public class PumpkinProtocol implements Protocol {
 		// 如果服务需要对外暴露注册中心协议，则这里需要去连接注册中心注册服务
 		exportRegistry(classType, url);
 		
-		return new DefaultExporter<T>(classType, instances, url);
+		DefaultExporter<T> exporter = new DefaultExporter<T>(classType, instances, url);
+		EXPORTER_LIST.add(exporter);
+		
+		logger.info("export service[" + classType.getName() + "] successfully");
+		
+		return exporter;
 	}
 
 	private <T> void exportRegistry(Class<T> classType, URL url) {
