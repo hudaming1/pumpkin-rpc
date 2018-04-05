@@ -6,6 +6,13 @@ public class RegistryConfig {
 	private String address;
 	private int port;
 
+	public RegistryConfig(String registryString) {
+		// TODO 改用正则
+		name = registryString.split("://")[0];
+		address = registryString.split("://")[1].split(":")[0];
+		port = Integer.parseInt(registryString.split("://")[1].split(":")[1]);
+	}
+
 	public RegistryConfig(String name, String address, int port) {
 		super();
 		this.name = name;

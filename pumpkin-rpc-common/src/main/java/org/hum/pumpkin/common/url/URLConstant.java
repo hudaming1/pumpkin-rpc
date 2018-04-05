@@ -26,9 +26,7 @@ public class URLConstant {
 	public static final String AUTH_TYPE = "auth_type";
 	
 	// 注册中心
-	public static final String REGISTRY_NAME = "registryName";
-	public static final String REGISTRY_ADDRESS = "registry_address";
-	public static final String REGISTRY_PORT = "registry_port";
+	public static final String REGISTRY = "registry";
 	
 	// 序列化key
 	public static final String SERIALIZATION = "serialization";

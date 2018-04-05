@@ -16,8 +16,4 @@
 	<pumpkin:service interface="org.hum.pumpkin.test._service.IUserService" ref="userServiceImpl" />
 	<pumpkin:service interface="org.hum.pumpkin.test._service.IHelloService" ref="helloServiceImpl" />
 	
-	<!-- 
-	<pumpkin:reference id="validationService" url="pumpkin://172.16.219.129:9080/" interface="com.alibaba.dubbo.examples.validation.api.ValidationService"/>
-	 -->
-
 </beans>

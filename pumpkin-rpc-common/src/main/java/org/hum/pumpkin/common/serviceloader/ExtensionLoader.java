@@ -21,6 +21,7 @@ import org.hum.pumpkin.common.serviceloader.support.Adaptive;
 import org.hum.pumpkin.common.serviceloader.support.MetaData;
 import org.hum.pumpkin.common.serviceloader.support.SPI;
 import org.hum.pumpkin.common.url.URL;
+import org.hum.pumpkin.util.StringUtils;
 
 /**
  * 扩展加载器
@@ -303,7 +304,7 @@ public class ExtensionLoader<T> {
 			Adaptive adaptAnno = method.getAnnotation(Adaptive.class);
 			if (adaptAnno == null) {
 				return null;
-			} else if (adaptAnno.value() != null || adaptAnno.value().trim().length() > 0) {
+			} else if (StringUtils.isNotEmpty(adaptAnno.value())) {
 				return adaptAnno.value();
 			}
 			return null;

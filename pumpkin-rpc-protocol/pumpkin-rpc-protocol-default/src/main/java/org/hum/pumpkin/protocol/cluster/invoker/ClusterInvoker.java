@@ -24,7 +24,7 @@ public class ClusterInvoker<T> implements Invoker<T> {
 	// className -> ip:port -> Invoker
 	private Map<String, Map<String, DirectInvoker<T>>> clientMap = new HashMap<>();
 
-	// TODO registryConfig和Registry，作为2个参数传入，有点恶心
+	// Registry，作为2个参数传入，有点恶心
 	public ClusterInvoker(Registry registry, Class<T> classType, URL url) {
 		this.registry = registry;
 		this.classType = classType;

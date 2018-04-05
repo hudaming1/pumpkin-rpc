@@ -16,7 +16,9 @@ import org.hum.pumpkin.protocol.exporter.Exporter;
 import org.hum.pumpkin.protocol.invoker.Invoker;
 import org.hum.pumpkin.protocol.invoker.direct.DirectInvoker;
 import org.hum.pumpkin.registry.Registry;
+import org.hum.pumpkin.registry.RegistryConfig;
 import org.hum.pumpkin.util.InetUtils;
+import org.hum.pumpkin.util.StringUtils;
 
 /**
  * 南瓜协议：
@@ -40,9 +42,11 @@ public class PumpkinProtocol implements Protocol {
 		// TODO 进行必要的url.check
 
 		// pumpkin协议规定使用netty-transporter
-		url.buildParam(URLConstant.TRANSPORT_KEY, "netty");
+		if (url.getParam(URLConstant.TRANSPORT_KEY) == null)
+			url.buildParam(URLConstant.TRANSPORT_KEY, "netty");
 		// pumpkin协议规定使用kryo
-		url.buildParam(URLConstant.SERIALIZATION, "kryo");
+		if (url.getParam(URLConstant.SERIALIZATION) == null)
+			url.buildParam(URLConstant.SERIALIZATION, "kryo");
 		
 		// 如果服务需要对外暴露注册中心协议，则这里需要去连接注册中心注册服务
 		exportRegistry(classType, url);
@@ -56,17 +60,17 @@ public class PumpkinProtocol implements Protocol {
 	}
 
 	private <T> void exportRegistry(Class<T> classType, URL url) {
-		if (url.getParam(URLConstant.REGISTRY_NAME) != null) {
+		String registryString = url.getString(URLConstant.REGISTRY);
+		if (StringUtils.isNotEmpty(registryString)) {
 			try {
-				this.registry = ExtensionLoader.getExtensionLoader(Registry.class).get(url.getString(URLConstant.REGISTRY_NAME));
-				// TODO 为以后多注册中心做准备（但需要ServiceLoader支持）
-				// for (RegistryConfig registryConfig : registryConfigs) {
-				// Registry registry = ServiceLoaderHolder.getExtensionByName(registryConfig.getName());
-				registry.connect(url.getString(URLConstant.REGISTRY_ADDRESS), url.getInteger(URLConstant.REGISTRY_PORT));
-				registry.registry(classType, InetUtils.getLocalAddress(), url.getPort());
-				// }
+				for (String registryStr : registryString.split(";")) {
+					RegistryConfig registryConfig = new RegistryConfig(registryStr);
+					registry = ExtensionLoader.getExtensionLoader(Registry.class).get(registryConfig.getName());
+					registry.connect(registryConfig.getAddress(), registryConfig.getPort());
+					registry.registry(classType, InetUtils.getLocalAddress(), url.getPort());
+				}
 			} catch (UnknownHostException e) {
-				throw new PumpkinException("registry exception", e);
+				throw new PumpkinException("registry exception, registryString=" + registryString, e);
 			}
 		}
 	}
@@ -79,9 +83,11 @@ public class PumpkinProtocol implements Protocol {
 		url.buildParam(URLConstant.TRANSPORT_KEY, "netty");
 		// pumpkin协议规定使用kryo
 		url.buildParam(URLConstant.SERIALIZATION, "kryo");
-		if (url.getParam(URLConstant.REGISTRY_NAME) != null) {
-			registry = ExtensionLoader.getExtensionLoader(Registry.class).get(url.getString(URLConstant.REGISTRY_NAME));
-			registry.connect(url.getString(URLConstant.REGISTRY_ADDRESS), url.getInteger(URLConstant.REGISTRY_PORT));
+		String registryString = url.getString(URLConstant.REGISTRY);
+		if (StringUtils.isNotEmpty(registryString)) {
+			RegistryConfig registryConfig = new RegistryConfig(registryString);
+			registry = ExtensionLoader.getExtensionLoader(Registry.class).get(registryConfig.getName());
+			registry.connect(registryConfig.getAddress(), registryConfig.getPort());
 			return new ClusterInvoker<>(registry, classType, url);
 		} 
 		return new DirectInvoker<>(classType, url);
