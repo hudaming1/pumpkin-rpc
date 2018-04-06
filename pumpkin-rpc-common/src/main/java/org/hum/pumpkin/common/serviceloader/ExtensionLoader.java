@@ -110,7 +110,7 @@ public class ExtensionLoader<T> {
 	private MetaData metaData;
 	private Object adaptLock = new Object();
 	private final Map<String, T> instanceMap = new ConcurrentHashMap<>();
-	private final StringLocker segmentLocker = new StringLocker();
+	private final ConcurrentHashMap<String, Object> CREATE_EXTENSION_LOCK = new ConcurrentHashMap<>();
 	private volatile T adaptInstance;
 	private volatile T defaultInstance;
 	
@@ -162,7 +162,7 @@ public class ExtensionLoader<T> {
 			if (instanceMap.get(extensionName) != null) {
 				return instanceMap.get(extensionName);
 			}
-			synchronized (segmentLocker.getLockObject(extensionName)) {
+			synchronized (getCreateExtensionLock(extensionName)) {
 				if (instanceMap.get(extensionName) == null) {
 					String className = FileMap.get(interfaceType.getName(), extensionName);
 					if (className == null || className.trim().length() == 0) {
@@ -208,7 +208,7 @@ public class ExtensionLoader<T> {
 			if (instanceMap.containsKey(entry.getKey())) {
 				continue;
 			}
-			synchronized (segmentLocker.getLockObject(entry.getKey())) {
+			synchronized (getCreateExtensionLock(entry.getKey())) {
 				if (instanceMap.get(entry.getKey()) == null) {
 					T instance = createInstances(entry.getValue());
 					instanceMap.putIfAbsent(entry.getKey(), instance);
@@ -227,6 +227,14 @@ public class ExtensionLoader<T> {
 		} catch (Exception ce) {
 			throw new PumpkinException("instance classType[" + className + "] occured exception", ce);
 		}
+	}
+
+	private Object getCreateExtensionLock(String key) {
+		Object lock = CREATE_EXTENSION_LOCK.get(key);
+		if (lock == null) {
+			CREATE_EXTENSION_LOCK.putIfAbsent(key, new Object());
+		}
+		return CREATE_EXTENSION_LOCK.get(key);
 	}
 
 	/**
@@ -375,18 +383,6 @@ public class ExtensionLoader<T> {
 			public KeyDuplicateExistsException(String msg) {
 				super(msg);
 			}
-		}
-	}
-	
-	// 锁字符串的前提：保证字符串引用不可变。
-	private class StringLocker {
-		private final ConcurrentHashMap<String, Object> LOCK_MAP = new ConcurrentHashMap<>();
-		public Object getLockObject(String key) {
-			Object lock = LOCK_MAP.get(key);
-			if (lock == null) {
-				LOCK_MAP.putIfAbsent(key, new Object());
-			}
-			return LOCK_MAP.get(key);
 		}
 	}
 	

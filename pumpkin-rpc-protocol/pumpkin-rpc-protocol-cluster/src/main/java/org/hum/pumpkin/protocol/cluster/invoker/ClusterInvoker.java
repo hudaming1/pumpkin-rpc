@@ -7,7 +7,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.hum.pumpkin.common.exception.RpcException;
 import org.hum.pumpkin.common.serviceloader.ExtensionLoader;
 import org.hum.pumpkin.common.url.URL;
-import org.hum.pumpkin.protocol.ProtocolEnum;
 import org.hum.pumpkin.protocol.cluster.directory.Directory;
 import org.hum.pumpkin.protocol.cluster.directory.DirectoryFactory;
 import org.hum.pumpkin.protocol.invoker.Invoker;
@@ -21,12 +20,13 @@ public class ClusterInvoker<T> implements Invoker<T> {
 
 	private static final InvokerFactory INVOKER_FACTORY = ExtensionLoader.getExtensionLoader(InvokerFactory.class).getAdaptive();
 	private static final DirectoryFactory DIRECOTRY_FACTORY = ExtensionLoader.getExtensionLoader(DirectoryFactory.class).get();
+	// ip:port -> Invoker
+	private final Map<EndPoint, Invoker<T>> clientMap = new ConcurrentHashMap<>();
+	private final Map<EndPoint, Object> INVOKER_LOCK_MAP = new ConcurrentHashMap<>();
 	private Directory<T> directory;
 	private String registryString;
 	private Class<T> classType;
 	private URL url;
-	// className -> ip:port -> Invoker
-	private Map<EndPoint, Invoker<T>> clientMap = new ConcurrentHashMap<>();
 
 	public ClusterInvoker(String registryString, Class<T> classType, URL url) {
 		this.registryString = registryString;
@@ -57,8 +57,20 @@ public class ClusterInvoker<T> implements Invoker<T> {
 	 * @return
 	 */
 	private Invoker<T> createInvoker(EndPoint endPoint) {
-		URL directUrl = new URL(url.getProtocol(), endPoint.getAddress(), endPoint.getPort(), classType.getName(), url);
-		return INVOKER_FACTORY.create(classType, directUrl);
+		synchronized (getCreateInvokerLock(endPoint)) {
+			// 根据不同的协议，创建不同的Invoker
+			URL directUrl = new URL(url.getProtocol(), endPoint.getAddress(), endPoint.getPort(), classType.getName(), url);
+			return INVOKER_FACTORY.create(classType, directUrl);
+		}
+	}
+	
+	private Object getCreateInvokerLock(EndPoint endPoint) {
+		Object lock = INVOKER_LOCK_MAP.get(endPoint);
+		if (lock == null) {
+			INVOKER_LOCK_MAP.putIfAbsent(endPoint, new Object());
+			lock = INVOKER_LOCK_MAP.get(endPoint);
+		}
+		return lock;
 	}
 
 	@Override
