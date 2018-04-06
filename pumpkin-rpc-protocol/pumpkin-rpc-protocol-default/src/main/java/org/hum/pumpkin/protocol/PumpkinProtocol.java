@@ -15,6 +15,7 @@ import org.hum.pumpkin.protocol.exporter.DefaultExporter;
 import org.hum.pumpkin.protocol.exporter.Exporter;
 import org.hum.pumpkin.protocol.invoker.DirectInvoker;
 import org.hum.pumpkin.protocol.invoker.Invoker;
+import org.hum.pumpkin.registry.EndPoint;
 import org.hum.pumpkin.registry.Registry;
 import org.hum.pumpkin.registry.RegistryConfig;
 import org.hum.pumpkin.util.InetUtils;
@@ -66,8 +67,8 @@ public class PumpkinProtocol implements Protocol {
 				for (String registryStr : registryString.split(";")) {
 					RegistryConfig registryConfig = new RegistryConfig(registryStr);
 					registry = ExtensionLoader.getExtensionLoader(Registry.class).get(registryConfig.getName());
-					registry.connect(registryConfig.getAddress(), registryConfig.getPort());
-					registry.registry(classType, InetUtils.getLocalAddress(), url.getPort());
+					registry.connect(new EndPoint(registryConfig.getAddress(), registryConfig.getPort()));
+					registry.registry(classType,new EndPoint(InetUtils.getLocalAddress(), url.getPort()));
 				}
 			} catch (UnknownHostException e) {
 				throw new PumpkinException("registry exception, registryString=" + registryString, e);
@@ -85,10 +86,7 @@ public class PumpkinProtocol implements Protocol {
 		url.buildParam(URLConstant.SERIALIZATION, "kryo");
 		String registryString = url.getString(URLConstant.REGISTRY);
 		if (StringUtils.isNotEmpty(registryString)) {
-			RegistryConfig registryConfig = new RegistryConfig(registryString);
-			registry = ExtensionLoader.getExtensionLoader(Registry.class).get(registryConfig.getName());
-			registry.connect(registryConfig.getAddress(), registryConfig.getPort());
-			return new ClusterInvoker<>(registry, classType, url);
+			return new ClusterInvoker<>(registryString, classType, url);
 		} 
 		return new DirectInvoker<>(classType, url);
 	}

@@ -17,7 +17,7 @@ public class ClientTest {
 		referenceBean2.setRegistry("zookeeper://172.16.219.129:2181");
 		IUserService userService = referenceBean2.get();
 
-		Thread.sleep(2000);
+		Thread.sleep(3000);
 
 		for (int i = 0; i < 10; i++) {
 			System.out.println(helloService.sayHello("huming" + i));

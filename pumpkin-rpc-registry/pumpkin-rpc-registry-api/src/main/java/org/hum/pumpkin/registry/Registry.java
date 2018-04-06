@@ -7,9 +7,9 @@ import org.hum.pumpkin.common.serviceloader.support.SPI;
 @SPI
 public interface Registry {
 	
-	public void connect(String address, int port);
+	public void connect(EndPoint endPoint);
 
-	public void registry(Class<?> clazz, String ip, int port);
+	public void registry(Class<?> clazz, EndPoint endPoint);
 
-	public List<String> discover(String path);
+	public List<EndPoint> discover(String path);
 }

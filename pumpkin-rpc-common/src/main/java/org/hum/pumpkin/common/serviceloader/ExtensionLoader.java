@@ -21,6 +21,8 @@ import org.hum.pumpkin.common.serviceloader.support.Adaptive;
 import org.hum.pumpkin.common.serviceloader.support.MetaData;
 import org.hum.pumpkin.common.serviceloader.support.SPI;
 import org.hum.pumpkin.common.url.URL;
+import org.hum.pumpkin.logger.Logger;
+import org.hum.pumpkin.logger.LoggerFactory;
 import org.hum.pumpkin.util.StringUtils;
 
 /**
@@ -39,6 +41,7 @@ import org.hum.pumpkin.util.StringUtils;
  */
 public class ExtensionLoader<T> {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(ExtensionLoader.class);
 	// FileMap -> FileName, Key, ClassName
 	private static final MulitHashMap<String, String, String> FileMap = new MulitHashMap<>();
 	// LoadMap
@@ -62,6 +65,7 @@ public class ExtensionLoader<T> {
 			File directoryInst = new File(urls.nextElement().getFile());
 			for (File file : directoryInst.listFiles()) {
 				FileMap.append(file.getName(), parseProperties(file));
+				LOGGER.debug("load extension file [" + file.getName() + "]");
 			}
 		}
 	}
@@ -72,6 +76,7 @@ public class ExtensionLoader<T> {
 		props.load(new FileInputStream(file));
 		for (Entry<Object, Object> entry : props.entrySet()) {
 			content.put(entry.getKey().toString(), entry.getValue().toString());
+			LOGGER.debug("load extension [" + file.getName() + "] properties: {" + entry.getKey().toString() + ":" + entry.getValue().toString() + "}");
 		}
 		return content;
 	}
