@@ -57,7 +57,7 @@ public class ClusterInvoker<T> implements Invoker<T> {
 	 * @return
 	 */
 	private Invoker<T> createInvoker(EndPoint endPoint) {
-		URL directUrl = new URL(ProtocolEnum.Direct.getName(), endPoint.getAddress(), endPoint.getPort(), classType.getName(), url);
+		URL directUrl = new URL(url.getProtocol(), endPoint.getAddress(), endPoint.getPort(), classType.getName(), url);
 		return INVOKER_FACTORY.create(classType, directUrl);
 	}
 
