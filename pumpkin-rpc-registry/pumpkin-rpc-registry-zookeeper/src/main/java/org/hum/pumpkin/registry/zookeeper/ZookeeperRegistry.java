@@ -11,11 +11,7 @@ public class ZookeeperRegistry implements Registry {
 	private final String root = "/hm_rpc";
 	private ZkClient zkClient;
 
-	public ZookeeperRegistry() {
-	}
-
-	@Override
-	public void connect(EndPoint endPoint) {
+	public ZookeeperRegistry(EndPoint endPoint) {
 		zkClient = new ZkClient(endPoint.getAddress() + ":" + endPoint.getPort());
 		initDirectory();
 	}

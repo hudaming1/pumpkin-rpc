@@ -19,10 +19,8 @@ import org.hum.pumpkin.registry.EndPoint;
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class ClusterInvoker<T> implements Invoker<T> {
 
-	private static final InvokerFactory INVOKER_FACTORY = ExtensionLoader.getExtensionLoader(InvokerFactory.class)
-			.getAdaptive();
-	private static final DirectoryFactory DIRECOTRY_FACTORY = ExtensionLoader.getExtensionLoader(DirectoryFactory.class)
-			.get();
+	private static final InvokerFactory INVOKER_FACTORY = ExtensionLoader.getExtensionLoader(InvokerFactory.class).getAdaptive();
+	private static final DirectoryFactory DIRECOTRY_FACTORY = ExtensionLoader.getExtensionLoader(DirectoryFactory.class).get();
 	private Directory<T> directory;
 	private String registryString;
 	private Class<T> classType;

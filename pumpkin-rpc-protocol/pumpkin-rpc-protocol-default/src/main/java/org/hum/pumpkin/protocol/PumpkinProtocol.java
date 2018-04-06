@@ -18,6 +18,7 @@ import org.hum.pumpkin.protocol.invoker.Invoker;
 import org.hum.pumpkin.registry.EndPoint;
 import org.hum.pumpkin.registry.Registry;
 import org.hum.pumpkin.registry.RegistryConfig;
+import org.hum.pumpkin.registry.RegistryFactory;
 import org.hum.pumpkin.util.InetUtils;
 import org.hum.pumpkin.util.StringUtils;
 
@@ -32,9 +33,9 @@ import org.hum.pumpkin.util.StringUtils;
  */
 public class PumpkinProtocol implements Protocol {
 
+	private static final ExtensionLoader<RegistryFactory> REGISTRY_EXTENSIONL_LOADER = ExtensionLoader.getExtensionLoader(RegistryFactory.class);
 	private static final Logger logger = LoggerFactory.getLogger(PumpkinProtocol.class);
 	private static final List<Exporter<?>> EXPORTER_LIST = new ArrayList<>();
-	private volatile Registry registry = null;
 
 	// TODO 后期创建Exporter时，需要传Invoker（Dubbo中采用InJvmInvoker，在扩展Service层Filter时可以形成InvokerChain）
 	@Override
@@ -66,9 +67,9 @@ public class PumpkinProtocol implements Protocol {
 			try {
 				for (String registryStr : registryString.split(";")) {
 					RegistryConfig registryConfig = new RegistryConfig(registryStr);
-					registry = ExtensionLoader.getExtensionLoader(Registry.class).get(registryConfig.getName());
-					registry.connect(new EndPoint(registryConfig.getAddress(), registryConfig.getPort()));
-					registry.registry(classType,new EndPoint(InetUtils.getLocalAddress(), url.getPort()));
+					RegistryFactory registryFactory = REGISTRY_EXTENSIONL_LOADER.get(registryConfig.getName());
+					Registry registry = registryFactory.getOrCreate(new EndPoint(registryConfig.getAddress(), registryConfig.getPort()));
+					registry.registry(classType, new EndPoint(InetUtils.getLocalAddress(), url.getPort()));
 				}
 			} catch (UnknownHostException e) {
 				throw new PumpkinException("registry exception, registryString=" + registryString, e);

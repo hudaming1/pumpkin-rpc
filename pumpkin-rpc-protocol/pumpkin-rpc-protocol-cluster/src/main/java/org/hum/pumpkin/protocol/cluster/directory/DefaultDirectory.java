@@ -7,14 +7,15 @@ import org.hum.pumpkin.common.serviceloader.ExtensionLoader;
 import org.hum.pumpkin.registry.EndPoint;
 import org.hum.pumpkin.registry.Registry;
 import org.hum.pumpkin.registry.RegistryConfig;
+import org.hum.pumpkin.registry.RegistryFactory;
 
 public class DefaultDirectory<T> implements Directory<T> {
 
+	private static final ExtensionLoader<RegistryFactory> REGISTRY_EXTENSIONL_LOADER = ExtensionLoader.getExtensionLoader(RegistryFactory.class);
 	private Class<T> interfaceType;
 	private String registryString;
 	private List<Registry> registries = new ArrayList<>();
-	private static final ExtensionLoader<Registry> REGISTRY_EXTENSIONL_LOADER = ExtensionLoader.getExtensionLoader(Registry.class);
-
+	
 	public DefaultDirectory() {
 	}
 
@@ -27,9 +28,8 @@ public class DefaultDirectory<T> implements Directory<T> {
 	private void init() {
 		for (String _registryString : registryString.split(";")) {
 			RegistryConfig registryConfig = new RegistryConfig(_registryString);
-			Registry registry = REGISTRY_EXTENSIONL_LOADER.get(registryConfig.getName());
-			registry.connect(new EndPoint(registryConfig.getAddress(), registryConfig.getPort()));
-			registries.add(registry);
+			RegistryFactory registryFactory = REGISTRY_EXTENSIONL_LOADER.get(registryConfig.getName());
+			registries.add(registryFactory.getOrCreate(new EndPoint(registryConfig.getAddress(), registryConfig.getPort())));
 		}
 	}
 
