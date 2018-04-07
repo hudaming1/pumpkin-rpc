@@ -27,8 +27,8 @@ import org.hum.pumpkin.threadpool.ThreadPoolFactory;
  */
 public class DefaultExporter<T> implements Exporter<T>{
 
-	private final Exchanger EXCHANGER = ExtensionLoader.getExtensionLoader(Exchanger.class).get();
-	private static final ExecutorService EXECUTOR_SERVICE = ExtensionLoader.getExtensionLoader(ThreadPoolFactory.class).get().create();
+	private final Exchanger EXCHANGER = ExtensionLoader.getExtensionLoader(Exchanger.class).getDefault();
+	private static final ExecutorService EXECUTOR_SERVICE = ExtensionLoader.getExtensionLoader(ThreadPoolFactory.class).getDefault().create();
 	// TODO 这里应该存InvokerMap
 	private static final Map<Class<?>, Object> beanMap = new ConcurrentHashMap<>();
 	private T ref;

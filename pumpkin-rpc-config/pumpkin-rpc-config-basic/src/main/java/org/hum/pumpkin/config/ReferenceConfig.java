@@ -16,7 +16,7 @@ import org.hum.pumpkin.proxy.ProxyFactory;
 public class ReferenceConfig<T> {
 
 	private transient volatile Invoker<T> invoker;
-	private static final ProxyFactory PROXY_FACTORY = ExtensionLoader.getExtensionLoader(ProxyFactory.class).get();
+	private static final ProxyFactory PROXY_FACTORY = ExtensionLoader.getExtensionLoader(ProxyFactory.class).getDefault();
 	private static final Protocol PROTOCOL = ExtensionLoader.getExtensionLoader(Protocol.class).getAdaptive();
 	private static final Logger logger = LoggerFactory.getLogger(ReferenceConfig.class);
 	private String protocol;

@@ -142,7 +142,7 @@ public class ExtensionLoader<T> {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public T get() {
+	public T getDefault() {
 		if (defaultInstance != null) {
 			return defaultInstance;
 		}

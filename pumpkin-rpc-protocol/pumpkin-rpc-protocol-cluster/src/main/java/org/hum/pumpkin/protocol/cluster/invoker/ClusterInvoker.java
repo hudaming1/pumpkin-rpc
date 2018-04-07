@@ -19,7 +19,7 @@ import org.hum.pumpkin.registry.EndPoint;
 public class ClusterInvoker<T> implements Invoker<T> {
 
 	private static final InvokerFactory INVOKER_FACTORY = ExtensionLoader.getExtensionLoader(InvokerFactory.class).getAdaptive();
-	private static final DirectoryFactory DIRECOTRY_FACTORY = ExtensionLoader.getExtensionLoader(DirectoryFactory.class).get();
+	private static final DirectoryFactory DIRECOTRY_FACTORY = ExtensionLoader.getExtensionLoader(DirectoryFactory.class).getDefault();
 	// ip:port -> Invoker
 	private final Map<EndPoint, Invoker<T>> clientMap = new ConcurrentHashMap<>();
 	private final Map<EndPoint, Object> INVOKER_LOCK_MAP = new ConcurrentHashMap<>();
@@ -58,9 +58,12 @@ public class ClusterInvoker<T> implements Invoker<T> {
 	 */
 	private Invoker<T> createInvoker(EndPoint endPoint) {
 		synchronized (getCreateInvokerLock(endPoint)) {
-			// 根据不同的协议，创建不同的Invoker
-			URL directUrl = new URL(url.getProtocol(), endPoint.getAddress(), endPoint.getPort(), classType.getName(), url);
-			return INVOKER_FACTORY.create(classType, directUrl);
+			if (clientMap.get(endPoint) == null) {
+				// 根据不同的协议，创建不同的Invoker
+				URL _url = new URL(url.getProtocol(), endPoint.getAddress(), endPoint.getPort(), classType.getName(), url);
+				clientMap.putIfAbsent(endPoint, INVOKER_FACTORY.create(classType, _url));
+			}
+			return clientMap.get(endPoint);
 		}
 	}
 	
@@ -98,7 +101,6 @@ public class ClusterInvoker<T> implements Invoker<T> {
 
 			// 4.create client
 			Invoker<T> invoker = createInvoker(endPoint);
-			clientMap.put(endPoint, invoker);
 			return invoker.invoke(invocation);
 		} catch (Exception ce) {
 			throw new RpcException("invoke failed!", ce);

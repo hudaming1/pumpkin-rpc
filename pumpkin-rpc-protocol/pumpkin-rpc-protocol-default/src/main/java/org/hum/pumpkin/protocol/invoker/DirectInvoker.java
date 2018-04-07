@@ -11,7 +11,7 @@ import org.hum.pumpkin.protocol.invoker.RpcResult;
 
 public class DirectInvoker<T> extends AbstractDirectInvoker<T> {
 
-	private final Exchanger exchanger = ExtensionLoader.getExtensionLoader(Exchanger.class).get();
+	private final Exchanger exchanger = ExtensionLoader.getExtensionLoader(Exchanger.class).getDefault();
 	private ExchangeClient exchangeClient;
 	private Class<T> classType;
 	private URL url;
