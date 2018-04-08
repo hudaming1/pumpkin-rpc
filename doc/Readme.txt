@@ -1,8 +1,6 @@
 
 【架构层】
 抽象出AbstractProtocol：filter扩展、鉴权等实现都在该类中buildInvokerChain构建
-Maven管理jar包依赖（现在显然做的还不够，拆分的不够好，版本管理上也不够统一）
-
 Zookeeper现在实现是invoke前拉server_list，需要改成推送服务，然后更新Directory
 扩展出多协议
 
