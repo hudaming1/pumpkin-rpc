@@ -34,6 +34,7 @@ public class NettyServer extends AbstractServer {
 	private URL url;
 	private ServerHandler serverHandler;
 	private final Serialization serialization;
+	// TODO 这里的线程池数量肯定会和连接数成正比，需要改进
 	private EventLoopGroup bossGroup = null;
 	private EventLoopGroup workerGroup = null;
 	private ServerBootstrap bootstrap = null;
