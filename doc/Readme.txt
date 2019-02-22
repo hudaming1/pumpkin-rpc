@@ -31,4 +31,7 @@ timeout/retry_times：在exchange实现，因为属于一次业务通信。
 【bug】
 修改bug，启动后才能发起调用。
 
+【扩展】
+1.实现pumpkin注册中心
+2.实现pumpkin序列化协议
 

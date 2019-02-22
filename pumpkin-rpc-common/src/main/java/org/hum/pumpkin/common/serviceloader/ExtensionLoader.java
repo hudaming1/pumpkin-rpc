@@ -46,9 +46,9 @@ public class ExtensionLoader<T> {
 	private static final MulitHashMap<String, String, String> FileMap = new MulitHashMap<>();
 	// LoadMap
 	private static final Map<Class<?>, ExtensionLoader<?>> extensionLoaderMap = new ConcurrentHashMap<>();
-	// 
+	// 约定默认加载路径1
 	private static final String PUMPKIN_SERVICE_PATH = "META-INF/services/";
-	// 
+	// 约定默认加载路径2
 	private static final String PUMPKIN_CONFIG_PATH = "META-INF/pumpkin/";
 	
 	static {
@@ -59,6 +59,7 @@ public class ExtensionLoader<T> {
 			throw new PumpkinException("parse file exception", ce);
 		}
 	}
+	
 	private static void parseFile(String directory) throws IOException {
 		Enumeration<java.net.URL> urls = getClassLoader().getResources(directory);
 		while (urls.hasMoreElements()) {
