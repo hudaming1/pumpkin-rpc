@@ -2,26 +2,27 @@ package org.hum.pumpkin.test.serialization;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 
 import org.hum.pumpkin.test.serialization.AbstractSerializationTest.Result;
 
-public class JdkSerializationTest {
+import de.ruedigermoeller.serialization.FSTConfiguration;
+import de.ruedigermoeller.serialization.FSTObjectOutput;
 
+public class FstSerializationTest {
+	
+	static FSTConfiguration conf = FSTConfiguration.createDefaultConfiguration();
+	
 	public static void main(String[] args) throws IOException {
-		
 		Result result = AbstractSerializationTest.test(new AbstractSerializationTest() {
 			@Override
 			public byte[] serialize(Object object) {
 				try {
-					ByteArrayOutputStream bos = new ByteArrayOutputStream();
-					ObjectOutputStream oos = new ObjectOutputStream(bos);
-					oos.writeObject(object);
-					oos.flush();
-					oos.close();
+					final ByteArrayOutputStream bos = new ByteArrayOutputStream();
+					FSTObjectOutput out = conf.getObjectOutput(bos);
+					out.writeObject(object);
 					return bos.toByteArray();
-				} catch (Exception ce) {
-					ce.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
 					return null;
 				}
 			}

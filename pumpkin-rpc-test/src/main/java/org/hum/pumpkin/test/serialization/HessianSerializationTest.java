@@ -10,12 +10,12 @@ import com.caucho.hessian.io.HessianOutput;
 public class HessianSerializationTest {
 
 	public static void main(String[] args) throws IOException {
-		final ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		final HessianOutput ho = new HessianOutput(bos);
 		Result result = AbstractSerializationTest.test(new AbstractSerializationTest() {
 			@Override
 			public byte[] serialize(Object object) {
 				try {
+					final ByteArrayOutputStream bos = new ByteArrayOutputStream();
+					final HessianOutput ho = new HessianOutput(bos);
 					ho.writeObject(object);
 					return bos.toByteArray();
 				} catch (IOException e) {

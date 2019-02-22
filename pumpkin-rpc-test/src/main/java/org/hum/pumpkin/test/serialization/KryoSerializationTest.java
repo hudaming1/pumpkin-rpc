@@ -17,7 +17,6 @@ public class KryoSerializationTest {
 			return new Kryo();
 		}
 	}).build();
-	static final ByteArrayOutputStream bos = new ByteArrayOutputStream();
 	static final Kryo kryo = pool.borrow();
 
 	public static void main(String[] args) throws IOException {
@@ -25,6 +24,7 @@ public class KryoSerializationTest {
 			@Override
 			public byte[] serialize(Object object) {
 				try {
+					ByteArrayOutputStream bos = new ByteArrayOutputStream();
 					Output output = new Output(bos);
 					kryo.writeObject(output, object);
 					output.flush();
