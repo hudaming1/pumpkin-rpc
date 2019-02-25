@@ -6,7 +6,7 @@ import org.hum.pumpkin.test.serialization.model.EmployeeModel;
 
 public abstract class AbstractSerializationTest {
 
-	static final int loopCount = 100000;
+	static final int loopCount = 1;
 	private static final EmployeeModel emp = EmployeeModel.createSimple("zhangsan", false, 5000.00D);
 
 	public static Result test(AbstractSerializationTest testSerialization) throws IOException {

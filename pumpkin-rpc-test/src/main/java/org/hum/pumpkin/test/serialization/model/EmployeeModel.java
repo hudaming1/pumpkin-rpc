@@ -5,9 +5,10 @@ import java.util.List;
 public class EmployeeModel extends HumanModel {
 
 	private static final long serialVersionUID = -8623726285525707225L;
-	private String employeeNo;
 	private Double salary;
+	private String employeeNo;
 	private List<WorkTaskModel> tasks;
+	
 	public String getEmployeeNo() {
 		return employeeNo;
 	}
@@ -34,10 +35,10 @@ public class EmployeeModel extends HumanModel {
 
 	@Override
 	public String toString() {
-		return "EmployeeModel [employeeNo=" + employeeNo + ", salary=" + salary + ", tasks=" + tasks
-				+ "]";
+		return "EmployeeModel [employeeNo=" + employeeNo + ", salary=" + salary + ", tasks=" + tasks + ", toString()="
+				+ super.toString() + "]";
 	}
-	
+
 	public static EmployeeModel createSimple(String name, Boolean sex, Double salary) {
 		EmployeeModel employee = new EmployeeModel();
 		employee.setId(System.currentTimeMillis());
