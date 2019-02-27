@@ -19,6 +19,7 @@ public class JdkSerializationTest {
 					oos.writeObject(object);
 					oos.flush();
 					oos.close();
+					System.out.println(new String(bos.toByteArray()));
 					return bos.toByteArray();
 				} catch (Exception ce) {
 					ce.printStackTrace();

@@ -6,6 +6,10 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import org.hum.pumpkin.test.serialization.doublefish.implement.AbstractOutput;
 
@@ -27,15 +31,28 @@ public class DoubleFishSerializationOutput {
 		// 1.write magic_number
 		outputStream.writeInt(MAGIC_NUMBER);
 		
+		// 2.sort all field
+		Map<String, Field> sortedFieldMap = sortFeildByName(object.getClass().getDeclaredFields());
+		
 		// 2.write all fields
-		Field[] fields = object.getClass().getDeclaredFields();
-		for (Field field : fields) {
-			System.out.println(field.getName());
+		for (Entry<String, Field> fieldEntry : sortedFieldMap.entrySet()) {
+			Field field = fieldEntry.getValue();
 			if (Modifier.isTransient(field.getModifiers()) || Modifier.isStatic(field.getModifiers()) || Modifier.isFinal(field.getModifiers())) {
 				continue;
 			}
 			field.setAccessible(true);
 			AbstractOutput.get(field.getType()).write(outputStream, field.get(object));
 		}
+	}
+	
+	private Map<String, Field> sortFeildByName(Field[] fields) {
+		if (fields == null || fields.length == 0) {
+			return Collections.emptyMap();
+		}
+		Map<String, Field> fieldMap = new TreeMap<>();
+		for (Field field : fields) {
+			fieldMap.put(field.getName(), field);
+		}
+		return fieldMap;
 	}
 }

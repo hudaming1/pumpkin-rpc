@@ -41,10 +41,11 @@ public class EmployeeModel extends HumanModel {
 
 	public static EmployeeModel createSimple(String name, Boolean sex, Double salary) {
 		EmployeeModel employee = new EmployeeModel();
-		employee.setId(System.currentTimeMillis());
+		employee.setId(1551170588749L);
 		employee.setName(name);
 		employee.setSex(sex);
-		employee.setEmployeeNo("EMP" + System.currentTimeMillis() + "");
+		employee.setBirthday("2019-02-26");
+		employee.setEmployeeNo("EMP1551170588749");
 		employee.setSalary(salary);
 		return employee;
 	}

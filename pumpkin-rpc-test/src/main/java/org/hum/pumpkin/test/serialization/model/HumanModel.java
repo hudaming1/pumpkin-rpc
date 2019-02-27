@@ -7,6 +7,7 @@ public class HumanModel implements Serializable {
 	private static final long serialVersionUID = -5190711525249912395L;
 
 	private Long id;
+	private String birthday;
 	private String name;
 	private Boolean sex;
 
@@ -26,6 +27,14 @@ public class HumanModel implements Serializable {
 		this.name = name;
 	}
 
+	public String getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(String birthday) {
+		this.birthday = birthday;
+	}
+
 	public Boolean getSex() {
 		return sex;
 	}
@@ -36,7 +45,7 @@ public class HumanModel implements Serializable {
 
 	@Override
 	public String toString() {
-		return "HumanModel [id=" + id + ", name=" + name + ", sex=" + sex + "]";
+		return "HumanModel [id=" + id + ", name=" + name + ", birthday=" + birthday + ", sex=" + sex + "]";
 	}
 
 }
