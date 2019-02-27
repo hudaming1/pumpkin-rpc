@@ -11,12 +11,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
-import org.hum.pumpkin.test.serialization.doublefish.implement.AbstractOutput;
+import org.hum.pumpkin.test.serialization.doublefish.implement.AbstractSerialization;
 
 public class DoubleFishSerializationOutput {
 
 	private DataOutputStream outputStream;
-	private static final int MAGIC_NUMBER = 20190225;
 
 	public DoubleFishSerializationOutput(OutputStream outputStream) {
 		this.outputStream = new DataOutputStream(outputStream);
@@ -29,10 +28,10 @@ public class DoubleFishSerializationOutput {
 			throw new IllegalArgumentException("object must be implements class-type[java.io.Serializabe]");
 		}
 		// 1.write magic_number
-		outputStream.writeInt(MAGIC_NUMBER);
+		outputStream.writeInt(Const.MAGIC_NUMBER);
 		
 		// 2.sort all field
-		Map<String, Field> sortedFieldMap = sortFeildByName(object.getClass().getDeclaredFields());
+		Map<String, Field> sortedFieldMap = Utils.sortFeildByName(object.getClass().getDeclaredFields());
 		
 		// 2.write all fields
 		for (Entry<String, Field> fieldEntry : sortedFieldMap.entrySet()) {
@@ -41,18 +40,7 @@ public class DoubleFishSerializationOutput {
 				continue;
 			}
 			field.setAccessible(true);
-			AbstractOutput.get(field.getType()).write(outputStream, field.get(object));
+			AbstractSerialization.get(field.getType()).write(outputStream, field.get(object));
 		}
-	}
-	
-	private Map<String, Field> sortFeildByName(Field[] fields) {
-		if (fields == null || fields.length == 0) {
-			return Collections.emptyMap();
-		}
-		Map<String, Field> fieldMap = new TreeMap<>();
-		for (Field field : fields) {
-			fieldMap.put(field.getName(), field);
-		}
-		return fieldMap;
 	}
 }

@@ -44,7 +44,7 @@ public class EmployeeModel extends HumanModel {
 		employee.setId(1551170588749L);
 		employee.setName(name);
 		employee.setSex(sex);
-		employee.setBirthday("2019-02-26");
+//		employee.setBirthday("2019-02-26");
 		employee.setEmployeeNo("EMP1551170588749");
 		employee.setSalary(salary);
 		return employee;
