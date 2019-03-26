@@ -5,40 +5,25 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 
+import org.hum.doublefish.model.User;
 import org.hum.pumpkin.test.serialization.doublefish.DoubleFishSerializationOutput;
 import org.hum.pumpkin.test.serialization.doublefish.DoubleFishSerialzationInput;
 
 public class Test {
-
-	public static class A implements Serializable {
-		private static final long serialVersionUID = 1L;
-		
-		private Integer id;
-
-		public Integer getId() {
-			return id;
-		}
-
-		public void setId(Integer id) {
-			this.id = id;
-		}
-
-		@Override
-		public String toString() {
-			return "A [id=" + id + "]";
-		}
-	}
 	
 	public static void main(String[] args) throws IllegalArgumentException, IllegalAccessException, IOException, InstantiationException {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		DoubleFishSerializationOutput dfoutput = new DoubleFishSerializationOutput(outputStream);
-		A a = new A();
-		a.setId(1);
-		dfoutput.writeObject(a);
+		User user = new User();
+		user.setId(null);
+		user.setUid(1000000000000L);
+		dfoutput.writeObject(user);
+		
 		
 		byte[] byteArray = outputStream.toByteArray();
+		System.out.println("serialized size:" + byteArray.length);
 		DoubleFishSerialzationInput dfInput = new DoubleFishSerialzationInput(new ByteArrayInputStream(byteArray));
-		A obj = dfInput.readObject(A.class);
+		User obj = dfInput.readObject(User.class);
 		System.out.println(obj);
 	}
 }
