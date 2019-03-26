@@ -1,4 +1,4 @@
-package org.hum.pumpkin.test.serialization;
+package org.hum.pumpkin.test.serialization.test;
 
 import java.io.IOException;
 

@@ -1,10 +1,10 @@
-package org.hum.pumpkin.test.serialization;
+package org.hum.pumpkin.test.serialization.test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import org.hum.pumpkin.test.serialization.AbstractSerializationTest.Result;
 import org.hum.pumpkin.test.serialization.doublefish.DoubleFishSerializationOutput;
+import org.hum.pumpkin.test.serialization.test.AbstractSerializationTest.Result;
 
 public class DoubleFishSerializationTest {
 

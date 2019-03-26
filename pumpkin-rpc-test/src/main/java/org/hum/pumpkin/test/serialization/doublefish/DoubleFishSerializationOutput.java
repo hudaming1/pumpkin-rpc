@@ -6,10 +6,8 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.Collections;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.TreeMap;
 
 import org.hum.pumpkin.test.serialization.doublefish.implement.AbstractSerialization;
 
@@ -31,7 +29,7 @@ public class DoubleFishSerializationOutput {
 		outputStream.writeInt(Const.MAGIC_NUMBER);
 		
 		// 2.sort all field
-		Map<String, Field> sortedFieldMap = Utils.sortFeildByName(object.getClass().getDeclaredFields());
+		Map<String, Field> sortedFieldMap = FieldUtils.sortFeildByName(FieldUtils.filterSerializeFields(FieldUtils.convert(object.getClass().getDeclaredFields())));
 		
 		// 2.write all fields
 		for (Entry<String, Field> fieldEntry : sortedFieldMap.entrySet()) {
@@ -41,6 +39,10 @@ public class DoubleFishSerializationOutput {
 			}
 			field.setAccessible(true);
 			AbstractSerialization.get(field.getType()).write(outputStream, field.get(object));
+		}
+		
+		if (outputStream != null) {
+			outputStream.close();
 		}
 	}
 }

@@ -1,11 +1,11 @@
-package org.hum.pumpkin.test.serialization;
+package org.hum.pumpkin.test.serialization.test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 
-import org.hum.pumpkin.test.serialization.AbstractSerializationTest.Result;
 import org.hum.pumpkin.test.serialization.model.EmployeeModel;
+import org.hum.pumpkin.test.serialization.test.AbstractSerializationTest.Result;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;

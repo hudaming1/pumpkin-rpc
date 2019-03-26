@@ -4,6 +4,10 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+/**
+ * 8大基本数据类型
+ * @author huming
+ */
 public class BasicTypeSerialization {
 	
 	private static final byte NULL_VALUE = 0;
@@ -12,9 +16,11 @@ public class BasicTypeSerialization {
 	public static class IntegerOutput extends AbstractSerialization<Integer> {
 
 		@Override
-		public Integer read(DataInputStream dataInputStream, Class<Integer> classType) throws IOException {
-			// TODO Auto-generated method stub
-			return null;
+		public Integer read(DataInputStream dataInputStream, Class<?> classType) throws IOException {
+			if (dataInputStream.readByte() == NULL_VALUE) {
+				return null;
+			}
+			return dataInputStream.readInt();
 		}
 		
 		@Override
@@ -31,9 +37,11 @@ public class BasicTypeSerialization {
 	public static class LongOutput extends AbstractSerialization<Long> {
 
 		@Override
-		public Long read(DataInputStream dataInputStream, Class<Long> classType) throws IOException {
-			// TODO Auto-generated method stub
-			return null;
+		public Long read(DataInputStream dataInputStream, Class<?> classType) throws IOException {
+			if (dataInputStream.readByte() == NULL_VALUE) {
+				return null;
+			}
+			return dataInputStream.readLong();
 		}
 		
 		@Override
@@ -50,9 +58,11 @@ public class BasicTypeSerialization {
 	public static class StringOutput extends AbstractSerialization<String> {
 
 		@Override
-		public String read(DataInputStream dataInputStream, Class<String> classType) throws IOException {
-			// TODO Auto-generated method stub
-			return null;
+		public String read(DataInputStream dataInputStream, Class<?> classType) throws IOException {
+			if (dataInputStream.readByte() == NULL_VALUE) {
+				return null;
+			}
+			return dataInputStream.readUTF();
 		}
 		
 		@Override
@@ -69,9 +79,11 @@ public class BasicTypeSerialization {
 	public static class DoubleOutput extends AbstractSerialization<Double> {
 
 		@Override
-		public Double read(DataInputStream dataInputStream, Class<Double> classType) throws IOException {
-			// TODO Auto-generated method stub
-			return null;
+		public Double read(DataInputStream dataInputStream, Class<?> classType) throws IOException {
+			if (dataInputStream.readByte() == NULL_VALUE) {
+				return null;
+			}
+			return dataInputStream.readDouble();
 		}
 		
 		@Override

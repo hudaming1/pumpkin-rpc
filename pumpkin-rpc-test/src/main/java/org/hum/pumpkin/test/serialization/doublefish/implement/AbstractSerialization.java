@@ -5,8 +5,13 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 public abstract class AbstractSerialization<T> {
+	
+	private static final BasicTypeSerialization.IntegerOutput intOutput = new BasicTypeSerialization.IntegerOutput();
+	private static final BasicTypeSerialization.LongOutput longOutput = new BasicTypeSerialization.LongOutput();
+	private static final BasicTypeSerialization.StringOutput stringOutput = new BasicTypeSerialization.StringOutput();
+	private static final BasicTypeSerialization.DoubleOutput doubleOutput = new BasicTypeSerialization.DoubleOutput();
 
-	public abstract T read(DataInputStream dataInputStream, Class<T> classType) throws IOException;
+	public abstract T read(DataInputStream dataInputStream, Class<?> classType) throws IOException;
 	
 	public abstract void write(DataOutputStream outputStream, Object obj) throws IOException;
 	
@@ -15,13 +20,13 @@ public abstract class AbstractSerialization<T> {
 			throw new IllegalArgumentException("classType mustn't be null");
 		}
 		if (Integer.class.isAssignableFrom(classType)) {
-			return new BasicTypeSerialization.IntegerOutput();
+			return intOutput;
 		} else if (long.class.isAssignableFrom(classType)) {
-			return new BasicTypeSerialization.LongOutput();
+			return longOutput;
 		} else if (String.class.isAssignableFrom(classType)) {
-			return new BasicTypeSerialization.StringOutput();
+			return stringOutput;
 		} else if (Double.class.isAssignableFrom(classType)) {
-			return new BasicTypeSerialization.DoubleOutput();
+			return doubleOutput;
 		} else {
 			throw new IllegalArgumentException("unknown type[" + classType.getName() + "]");
 		}

@@ -7,6 +7,8 @@ import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.hum.pumpkin.test.serialization.doublefish.implement.AbstractSerialization;
+
 public class DoubleFishSerialzationInput {
 
 	private DataInputStream dis;
@@ -23,7 +25,7 @@ public class DoubleFishSerialzationInput {
 		}
 
 		// 2.sort all field
-		Map<String, Field> sortedFieldMap = Utils.sortFeildByName(classType.getDeclaredFields());
+		Map<String, Field> sortedFieldMap = FieldUtils.sortFeildByName(FieldUtils.filterSerializeFields(FieldUtils.convert(classType.getDeclaredFields())));
 		
 		// 3.new instances
 		T newInstance = classType.newInstance();
@@ -31,9 +33,13 @@ public class DoubleFishSerialzationInput {
 		// 4.set value
 		for (Entry<String, Field> entry : sortedFieldMap.entrySet()) {
 			Field field = entry.getValue();
-			field.getType();
+			field.setAccessible(true);
+			field.set(newInstance, AbstractSerialization.get(field.getType()).read(dis, field.getType()));
 		}
 		
+		if (dis != null) {
+			dis.close();
+		}
 		return newInstance;
 	}
 }

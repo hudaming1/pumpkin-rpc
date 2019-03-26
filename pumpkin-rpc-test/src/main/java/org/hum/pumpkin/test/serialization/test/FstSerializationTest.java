@@ -1,9 +1,9 @@
-package org.hum.pumpkin.test.serialization;
+package org.hum.pumpkin.test.serialization.test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import org.hum.pumpkin.test.serialization.AbstractSerializationTest.Result;
+import org.hum.pumpkin.test.serialization.test.AbstractSerializationTest.Result;
 
 import de.ruedigermoeller.serialization.FSTConfiguration;
 import de.ruedigermoeller.serialization.FSTObjectOutput;
