@@ -19,13 +19,13 @@ public abstract class AbstractSerialization<T> {
 		if (classType == null) {
 			throw new IllegalArgumentException("classType mustn't be null");
 		}
-		if (Integer.class.isAssignableFrom(classType)) {
+		if (Integer.class.isAssignableFrom(classType) || int.class.isAssignableFrom(classType)) {
 			return intOutput;
-		} else if (long.class.isAssignableFrom(classType)) {
+		} else if (Long.class.isAssignableFrom(classType) || long.class.isAssignableFrom(classType)) {
 			return longOutput;
 		} else if (String.class.isAssignableFrom(classType)) {
 			return stringOutput;
-		} else if (Double.class.isAssignableFrom(classType)) {
+		} else if (Double.class.isAssignableFrom(classType) || double.class.isAssignableFrom(classType)) {
 			return doubleOutput;
 		} else {
 			throw new IllegalArgumentException("unknown type[" + classType.getName() + "]");

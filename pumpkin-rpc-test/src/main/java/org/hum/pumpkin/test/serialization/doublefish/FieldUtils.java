@@ -11,6 +11,9 @@ import java.util.TreeMap;
 public class FieldUtils {
 	
 	public static List<Field> convert(Field[] fields) {
+		if (fields == null || fields.length == 0) {
+			return new ArrayList<>();
+		}
 		List<Field> list = new ArrayList<>();
 		for (Field field : fields) {
 			list.add(field);
