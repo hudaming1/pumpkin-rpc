@@ -162,6 +162,27 @@ public class BasicTypeSerialization {
 		}
 	}
 
+	public static class ByteSerialization extends AbstractSerialization<Byte> {
+
+		@Override
+		public Byte read(DataInputStream dataInputStream, Class<?> classType) throws IOException {
+			if (dataInputStream.readByte() == NULL_VALUE) {
+				return null;
+			}
+			return dataInputStream.readByte();
+		}
+
+		@Override
+		public void write(DataOutputStream outputStream, Object obj) throws IOException {
+			if (obj == null) {
+				outputStream.write(NULL_VALUE);
+				return;
+			}
+			outputStream.write(NOT_NULL_VALUE);
+			outputStream.writeByte((byte) obj);
+		}
+	}
+
 	public static class StringSerialization extends AbstractSerialization<String> {
 
 		@Override

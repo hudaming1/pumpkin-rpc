@@ -8,6 +8,8 @@ public class Data implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Boolean b1;
 	private boolean b2;
+	private byte by1;
+	private byte by2;
 	private Character c1;
 	private char c2;
 	private Short s1;
@@ -22,6 +24,20 @@ public class Data implements Serializable {
 	private double d2;
 	private Integer[] IntegerArr;
 	private int[] intArr;
+	private Short[] shortWrapArr;
+	private short[] shortArr;
+	private Long[] longWrapArr;
+	private long[] longArr;
+	private Float[] floatWrapArr;
+	private float[] floatArr;
+	private Double[] doubleWrapArr;
+	private double[] doubleArr;
+	private Byte[] byteWrapArr;
+	private byte[] byteArr;
+	private Boolean[] booleanWrapArr;
+	private boolean[] booleanArr;
+	private Character[] CharacterArr;
+	private char[] charArr;
 
 	public Boolean getB1() {
 		return b1;
@@ -37,6 +53,22 @@ public class Data implements Serializable {
 
 	public void setB2(boolean b2) {
 		this.b2 = b2;
+	}
+
+	public byte getBy1() {
+		return by1;
+	}
+
+	public void setBy1(byte by1) {
+		this.by1 = by1;
+	}
+
+	public byte getBy2() {
+		return by2;
+	}
+
+	public void setBy2(byte by2) {
+		this.by2 = by2;
 	}
 
 	public Character getC1() {
@@ -151,10 +183,130 @@ public class Data implements Serializable {
 		this.intArr = intArr;
 	}
 
+	public Short[] getShortWrapArr() {
+		return shortWrapArr;
+	}
+
+	public void setShortWrapArr(Short[] shortWrapArr) {
+		this.shortWrapArr = shortWrapArr;
+	}
+
+	public short[] getShortArr() {
+		return shortArr;
+	}
+
+	public void setShortArr(short[] shortArr) {
+		this.shortArr = shortArr;
+	}
+
+	public Long[] getLongWrapArr() {
+		return longWrapArr;
+	}
+
+	public void setLongWrapArr(Long[] longWrapArr) {
+		this.longWrapArr = longWrapArr;
+	}
+
+	public long[] getLongArr() {
+		return longArr;
+	}
+
+	public void setLongArr(long[] longArr) {
+		this.longArr = longArr;
+	}
+
+	public Float[] getFloatWrapArr() {
+		return floatWrapArr;
+	}
+
+	public void setFloatWrapArr(Float[] floatWrapArr) {
+		this.floatWrapArr = floatWrapArr;
+	}
+
+	public float[] getFloatArr() {
+		return floatArr;
+	}
+
+	public void setFloatArr(float[] floatArr) {
+		this.floatArr = floatArr;
+	}
+
+	public Double[] getDoubleWrapArr() {
+		return doubleWrapArr;
+	}
+
+	public void setDoubleWrapArr(Double[] doubleWrapArr) {
+		this.doubleWrapArr = doubleWrapArr;
+	}
+
+	public double[] getDoubleArr() {
+		return doubleArr;
+	}
+
+	public void setDoubleArr(double[] doubleArr) {
+		this.doubleArr = doubleArr;
+	}
+
+	public Byte[] getByteWrapArr() {
+		return byteWrapArr;
+	}
+
+	public void setByteWrapArr(Byte[] byteWrapArr) {
+		this.byteWrapArr = byteWrapArr;
+	}
+
+	public byte[] getByteArr() {
+		return byteArr;
+	}
+
+	public void setByteArr(byte[] byteArr) {
+		this.byteArr = byteArr;
+	}
+
+	public Boolean[] getBooleanWrapArr() {
+		return booleanWrapArr;
+	}
+
+	public void setBooleanWrapArr(Boolean[] booleanWrapArr) {
+		this.booleanWrapArr = booleanWrapArr;
+	}
+
+	public boolean[] getBooleanArr() {
+		return booleanArr;
+	}
+
+	public void setBooleanArr(boolean[] booleanArr) {
+		this.booleanArr = booleanArr;
+	}
+
+	public Character[] getCharacterArr() {
+		return CharacterArr;
+	}
+
+	public void setCharacterArr(Character[] characterArr) {
+		CharacterArr = characterArr;
+	}
+
+	public char[] getCharArr() {
+		return charArr;
+	}
+
+	public void setCharArr(char[] charArr) {
+		this.charArr = charArr;
+	}
+
 	@Override
 	public String toString() {
-		return "Data [b1=" + b1 + ", b2=" + b2 + ", c1=" + c1 + ", c2=" + c2 + ", s1=" + s1 + ", s2=" + s2 + ", i1="
-				+ i1 + ", i2=" + i2 + ", l1=" + l1 + ", l2=" + l2 + ", f1=" + f1 + ", f2=" + f2 + ", d1=" + d1 + ", d2="
-				+ d2 + ", IntegerArr=" + Arrays.toString(IntegerArr) + ", intArr=" + Arrays.toString(intArr) + "]";
+		return "Data [b1=" + b1 + ", b2=" + b2 + ", by1=" + by1 + ", by2=" + by2 + ", c1=" + c1 + ", c2=" + c2 + ", s1="
+				+ s1 + ", s2=" + s2 + ", i1=" + i1 + ", i2=" + i2 + ", l1=" + l1 + ", l2=" + l2 + ", f1=" + f1 + ", f2="
+				+ f2 + ", d1=" + d1 + ", d2=" + d2 + ", IntegerArr=" + Arrays.toString(IntegerArr) + ", intArr="
+				+ Arrays.toString(intArr) + ", shortWrapArr=" + Arrays.toString(shortWrapArr) + ", shortArr="
+				+ Arrays.toString(shortArr) + ", longWrapArr=" + Arrays.toString(longWrapArr) + ", longArr="
+				+ Arrays.toString(longArr) + ", floatWrapArr=" + Arrays.toString(floatWrapArr) + ", floatArr="
+				+ Arrays.toString(floatArr) + ", doubleWrapArr=" + Arrays.toString(doubleWrapArr) + ", doubleArr="
+				+ Arrays.toString(doubleArr) + ", byteWrapArr=" + Arrays.toString(byteWrapArr) + ", byteArr="
+				+ Arrays.toString(byteArr) + ", booleanWrapArr=" + Arrays.toString(booleanWrapArr) + ", booleanArr="
+				+ Arrays.toString(booleanArr) + ", CharacterArr=" + Arrays.toString(CharacterArr) + ", charArr="
+				+ Arrays.toString(charArr) + "]";
 	}
 }

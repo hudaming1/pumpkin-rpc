@@ -20,6 +20,7 @@ public abstract class AbstractSerialization<T> {
 	
 	private static final ObjectSerialization objectSerialization = new ObjectSerialization<>();
 	private static final BasicTypeSerialization.BooleanSerialization booleanSerialization = new BasicTypeSerialization.BooleanSerialization();
+	private static final BasicTypeSerialization.ByteSerialization byteSerialization = new BasicTypeSerialization.ByteSerialization();
 	private static final BasicTypeSerialization.CharSerialization charSerialization = new BasicTypeSerialization.CharSerialization();
 	private static final BasicTypeSerialization.ShortSerialization shortSerialization = new BasicTypeSerialization.ShortSerialization();
 	private static final BasicTypeSerialization.IntegerSerialization intSerialization = new BasicTypeSerialization.IntegerSerialization();
@@ -29,6 +30,20 @@ public abstract class AbstractSerialization<T> {
 	private static final BasicTypeSerialization.DoubleSerialization doubleSerialization = new BasicTypeSerialization.DoubleSerialization();
 	private static final ArraySerialization.IntArraySerialization intArraySerialization = new ArraySerialization.IntArraySerialization();
 	private static final ArraySerialization.IntegerArraySerialization integerArraySerialization = new ArraySerialization.IntegerArraySerialization();
+	private static final ArraySerialization.ShortArraySerialization shortArraySerialization = new ArraySerialization.ShortArraySerialization();
+	private static final ArraySerialization.ShortWrapArraySerialization shortWrapArraySerialization = new ArraySerialization.ShortWrapArraySerialization();
+	private static final ArraySerialization.LongArraySerialization longArraySerialization = new ArraySerialization.LongArraySerialization();
+	private static final ArraySerialization.LongWrapArraySerialization longWrapArraySerialization = new ArraySerialization.LongWrapArraySerialization();
+	private static final ArraySerialization.BooleanArraySerialization booleanArraySerialization = new ArraySerialization.BooleanArraySerialization();
+	private static final ArraySerialization.BooleanWrapArraySerialization booleanWrapArraySerialization = new ArraySerialization.BooleanWrapArraySerialization();
+	private static final ArraySerialization.CharArraySerialization charArraySerialization = new ArraySerialization.CharArraySerialization();
+	private static final ArraySerialization.CharacterArraySerialization characterArraySerialization = new ArraySerialization.CharacterArraySerialization();
+	private static final ArraySerialization.ByteArraySerialization byteArraySerialization = new ArraySerialization.ByteArraySerialization();
+	private static final ArraySerialization.ByteWrapArraySerialization byteWrapArraySerialization = new ArraySerialization.ByteWrapArraySerialization();
+	private static final ArraySerialization.FloatArraySerialization floatArraySerialization = new ArraySerialization.FloatArraySerialization();
+	private static final ArraySerialization.FloatWrapArraySerialization floatWrapArraySerialization = new ArraySerialization.FloatWrapArraySerialization();
+	private static final ArraySerialization.DoubleArraySerialization doubleArraySerialization = new ArraySerialization.DoubleArraySerialization();
+	private static final ArraySerialization.DoubleWrapArraySerialization doubleWrapArraySerialization = new ArraySerialization.DoubleWrapArraySerialization();
 
 	public abstract T read(DataInputStream dataInputStream, Class<?> classType) throws IOException;
 	
@@ -53,12 +68,42 @@ public abstract class AbstractSerialization<T> {
 			return floatSerialization;
 		} else if (Double.class.isAssignableFrom(classType) || double.class.isAssignableFrom(classType)) {
 			return doubleSerialization;
+		} else if (Byte.class.isAssignableFrom(classType) || byte.class.isAssignableFrom(classType)) {
+			return byteSerialization;
 		} else if (String.class.isAssignableFrom(classType)) {
 			return stringSerialization;
 		} else if (int[].class.isAssignableFrom(classType)) {
 			return intArraySerialization;
 		} else if (Integer[].class.isAssignableFrom(classType)) {
 			return integerArraySerialization;
+		} else if (short[].class.isAssignableFrom(classType)) {
+			return shortArraySerialization;
+		} else if (Short[].class.isAssignableFrom(classType)) {
+			return shortWrapArraySerialization;
+		} else if (long[].class.isAssignableFrom(classType)) {
+			return longArraySerialization;
+		} else if (Long[].class.isAssignableFrom(classType)) {
+			return longWrapArraySerialization;
+		} else if (float[].class.isAssignableFrom(classType)) {
+			return floatArraySerialization;
+		} else if (Float[].class.isAssignableFrom(classType)) {
+			return floatWrapArraySerialization;
+		} else if (double[].class.isAssignableFrom(classType)) {
+			return doubleArraySerialization;
+		} else if (Double[].class.isAssignableFrom(classType)) {
+			return doubleWrapArraySerialization;
+		} else if (byte[].class.isAssignableFrom(classType)) {
+			return byteArraySerialization;
+		} else if (Byte[].class.isAssignableFrom(classType)) {
+			return byteWrapArraySerialization;
+		} else if (boolean[].class.isAssignableFrom(classType)) {
+			return booleanArraySerialization;
+		} else if (Boolean[].class.isAssignableFrom(classType)) {
+			return booleanWrapArraySerialization;
+		} else if (char[].class.isAssignableFrom(classType)) {
+			return charArraySerialization;
+		} else if (Character[].class.isAssignableFrom(classType)) {
+			return characterArraySerialization;
 		} else if (List.class.isAssignableFrom(classType)) {
 			throw new UnsupportedOperationException();
 		} else if (Set.class.isAssignableFrom(classType)) {
