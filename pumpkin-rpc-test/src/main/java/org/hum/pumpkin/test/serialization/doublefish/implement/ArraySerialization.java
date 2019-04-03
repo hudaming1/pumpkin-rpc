@@ -9,7 +9,7 @@ public class ArraySerialization {
 	public static class IntegerArraySerialization extends AbstractSerialization<Integer[]> {
 
 		@Override
-		public Integer[] read(DataInputStream dataInputStream, Class<?> classType) throws IOException {
+		public Integer[] read(DataInputStream dataInputStream, Class<Integer[]> classType) throws IOException {
 			if (dataInputStream.readByte() == NULL_VALUE) {
 				return null;
 			}
@@ -22,7 +22,7 @@ public class ArraySerialization {
 		}
 
 		@Override
-		public void write(DataOutputStream outputStream, Object obj) throws IOException {
+		public void write(DataOutputStream outputStream, Integer[] obj) throws IOException {
 			if (obj == null) {
 				outputStream.write(NULL_VALUE);
 				return;
@@ -40,7 +40,7 @@ public class ArraySerialization {
 	public static class IntArraySerialization extends AbstractSerialization<int[]> {
 
 		@Override
-		public int[] read(DataInputStream dataInputStream, Class<?> classType) throws IOException {
+		public int[] read(DataInputStream dataInputStream, Class<int[]> classType) throws IOException {
 			if (dataInputStream.readByte() == NULL_VALUE) {
 				return null;
 			}
@@ -53,7 +53,7 @@ public class ArraySerialization {
 		}
 
 		@Override
-		public void write(DataOutputStream outputStream, Object obj) throws IOException {
+		public void write(DataOutputStream outputStream, int[] obj) throws IOException {
 			if (obj == null) {
 				outputStream.write(NULL_VALUE);
 				return;
@@ -71,7 +71,7 @@ public class ArraySerialization {
 	public static class ShortArraySerialization extends AbstractSerialization<short[]> {
 
 		@Override
-		public short[] read(DataInputStream dataInputStream, Class<?> classType) throws IOException {
+		public short[] read(DataInputStream dataInputStream, Class<short[]> classType) throws IOException {
 			if (dataInputStream.readByte() == NULL_VALUE) {
 				return null;
 			}
@@ -84,7 +84,7 @@ public class ArraySerialization {
 		}
 
 		@Override
-		public void write(DataOutputStream outputStream, Object obj) throws IOException {
+		public void write(DataOutputStream outputStream, short[] obj) throws IOException {
 			if (obj == null) {
 				outputStream.write(NULL_VALUE);
 				return;
@@ -102,7 +102,7 @@ public class ArraySerialization {
 	public static class ShortWrapArraySerialization extends AbstractSerialization<Short[]> {
 
 		@Override
-		public Short[] read(DataInputStream dataInputStream, Class<?> classType) throws IOException {
+		public Short[] read(DataInputStream dataInputStream, Class<Short[]> classType) throws IOException {
 			if (dataInputStream.readByte() == NULL_VALUE) {
 				return null;
 			}
@@ -115,7 +115,7 @@ public class ArraySerialization {
 		}
 
 		@Override
-		public void write(DataOutputStream outputStream, Object obj) throws IOException {
+		public void write(DataOutputStream outputStream, Short[] obj) throws IOException {
 			if (obj == null) {
 				outputStream.write(NULL_VALUE);
 				return;
@@ -133,7 +133,7 @@ public class ArraySerialization {
 	public static class LongArraySerialization extends AbstractSerialization<long[]> {
 
 		@Override
-		public long[] read(DataInputStream dataInputStream, Class<?> classType) throws IOException {
+		public long[] read(DataInputStream dataInputStream, Class<long[]> classType) throws IOException {
 			if (dataInputStream.readByte() == NULL_VALUE) {
 				return null;
 			}
@@ -146,7 +146,7 @@ public class ArraySerialization {
 		}
 
 		@Override
-		public void write(DataOutputStream outputStream, Object obj) throws IOException {
+		public void write(DataOutputStream outputStream, long[] obj) throws IOException {
 			if (obj == null) {
 				outputStream.write(NULL_VALUE);
 				return;
@@ -164,7 +164,7 @@ public class ArraySerialization {
 	public static class LongWrapArraySerialization extends AbstractSerialization<Long[]> {
 
 		@Override
-		public Long[] read(DataInputStream dataInputStream, Class<?> classType) throws IOException {
+		public Long[] read(DataInputStream dataInputStream, Class<Long[]> classType) throws IOException {
 			if (dataInputStream.readByte() == NULL_VALUE) {
 				return null;
 			}
@@ -177,7 +177,7 @@ public class ArraySerialization {
 		}
 
 		@Override
-		public void write(DataOutputStream outputStream, Object obj) throws IOException {
+		public void write(DataOutputStream outputStream, Long[] obj) throws IOException {
 			if (obj == null) {
 				outputStream.write(NULL_VALUE);
 				return;
@@ -195,7 +195,7 @@ public class ArraySerialization {
 	public static class BooleanArraySerialization extends AbstractSerialization<boolean[]> {
 
 		@Override
-		public boolean[] read(DataInputStream dataInputStream, Class<?> classType) throws IOException {
+		public boolean[] read(DataInputStream dataInputStream, Class<boolean[]> classType) throws IOException {
 			if (dataInputStream.readByte() == NULL_VALUE) {
 				return null;
 			}
@@ -208,7 +208,7 @@ public class ArraySerialization {
 		}
 
 		@Override
-		public void write(DataOutputStream outputStream, Object obj) throws IOException {
+		public void write(DataOutputStream outputStream, boolean[] obj) throws IOException {
 			if (obj == null) {
 				outputStream.write(NULL_VALUE);
 				return;
@@ -226,7 +226,7 @@ public class ArraySerialization {
 	public static class BooleanWrapArraySerialization extends AbstractSerialization<Boolean[]> {
 
 		@Override
-		public Boolean[] read(DataInputStream dataInputStream, Class<?> classType) throws IOException {
+		public Boolean[] read(DataInputStream dataInputStream, Class<Boolean[]> classType) throws IOException {
 			if (dataInputStream.readByte() == NULL_VALUE) {
 				return null;
 			}
@@ -239,7 +239,7 @@ public class ArraySerialization {
 		}
 
 		@Override
-		public void write(DataOutputStream outputStream, Object obj) throws IOException {
+		public void write(DataOutputStream outputStream, Boolean[] obj) throws IOException {
 			if (obj == null) {
 				outputStream.write(NULL_VALUE);
 				return;
@@ -257,7 +257,7 @@ public class ArraySerialization {
 	public static class CharArraySerialization extends AbstractSerialization<char[]> {
 
 		@Override
-		public char[] read(DataInputStream dataInputStream, Class<?> classType) throws IOException {
+		public char[] read(DataInputStream dataInputStream, Class<char[]> classType) throws IOException {
 			if (dataInputStream.readByte() == NULL_VALUE) {
 				return null;
 			}
@@ -270,7 +270,7 @@ public class ArraySerialization {
 		}
 
 		@Override
-		public void write(DataOutputStream outputStream, Object obj) throws IOException {
+		public void write(DataOutputStream outputStream, char[] obj) throws IOException {
 			if (obj == null) {
 				outputStream.write(NULL_VALUE);
 				return;
@@ -288,7 +288,7 @@ public class ArraySerialization {
 	public static class CharacterArraySerialization extends AbstractSerialization<Character[]> {
 
 		@Override
-		public Character[] read(DataInputStream dataInputStream, Class<?> classType) throws IOException {
+		public Character[] read(DataInputStream dataInputStream, Class<Character[]> classType) throws IOException {
 			if (dataInputStream.readByte() == NULL_VALUE) {
 				return null;
 			}
@@ -301,7 +301,7 @@ public class ArraySerialization {
 		}
 
 		@Override
-		public void write(DataOutputStream outputStream, Object obj) throws IOException {
+		public void write(DataOutputStream outputStream, Character[] obj) throws IOException {
 			if (obj == null) {
 				outputStream.write(NULL_VALUE);
 				return;
@@ -320,7 +320,7 @@ public class ArraySerialization {
 	public static class ByteArraySerialization extends AbstractSerialization<byte[]> {
 
 		@Override
-		public byte[] read(DataInputStream dataInputStream, Class<?> classType) throws IOException {
+		public byte[] read(DataInputStream dataInputStream, Class<byte[]> classType) throws IOException {
 			if (dataInputStream.readByte() == NULL_VALUE) {
 				return null;
 			}
@@ -331,7 +331,7 @@ public class ArraySerialization {
 		}
 
 		@Override
-		public void write(DataOutputStream outputStream, Object obj) throws IOException {
+		public void write(DataOutputStream outputStream, byte[] obj) throws IOException {
 			if (obj == null) {
 				outputStream.write(NULL_VALUE);
 				return;
@@ -347,7 +347,7 @@ public class ArraySerialization {
 	public static class ByteWrapArraySerialization extends AbstractSerialization<Byte[]> {
 
 		@Override
-		public Byte[] read(DataInputStream dataInputStream, Class<?> classType) throws IOException {
+		public Byte[] read(DataInputStream dataInputStream, Class<Byte[]> classType) throws IOException {
 			if (dataInputStream.readByte() == NULL_VALUE) {
 				return null;
 			}
@@ -360,7 +360,7 @@ public class ArraySerialization {
 		}
 
 		@Override
-		public void write(DataOutputStream outputStream, Object obj) throws IOException {
+		public void write(DataOutputStream outputStream, Byte[] obj) throws IOException {
 			if (obj == null) {
 				outputStream.write(NULL_VALUE);
 				return;
@@ -378,7 +378,7 @@ public class ArraySerialization {
 	public static class FloatArraySerialization extends AbstractSerialization<float[]> {
 
 		@Override
-		public float[] read(DataInputStream dataInputStream, Class<?> classType) throws IOException {
+		public float[] read(DataInputStream dataInputStream, Class<float[]> classType) throws IOException {
 			if (dataInputStream.readByte() == NULL_VALUE) {
 				return null;
 			}
@@ -391,7 +391,7 @@ public class ArraySerialization {
 		}
 
 		@Override
-		public void write(DataOutputStream outputStream, Object obj) throws IOException {
+		public void write(DataOutputStream outputStream, float[] obj) throws IOException {
 			if (obj == null) {
 				outputStream.write(NULL_VALUE);
 				return;
@@ -409,7 +409,7 @@ public class ArraySerialization {
 	public static class FloatWrapArraySerialization extends AbstractSerialization<Float[]> {
 
 		@Override
-		public Float[] read(DataInputStream dataInputStream, Class<?> classType) throws IOException {
+		public Float[] read(DataInputStream dataInputStream, Class<Float[]> classType) throws IOException {
 			if (dataInputStream.readByte() == NULL_VALUE) {
 				return null;
 			}
@@ -422,7 +422,7 @@ public class ArraySerialization {
 		}
 
 		@Override
-		public void write(DataOutputStream outputStream, Object obj) throws IOException {
+		public void write(DataOutputStream outputStream, Float[] obj) throws IOException {
 			if (obj == null) {
 				outputStream.write(NULL_VALUE);
 				return;
@@ -440,7 +440,7 @@ public class ArraySerialization {
 	public static class DoubleArraySerialization extends AbstractSerialization<double[]> {
 
 		@Override
-		public double[] read(DataInputStream dataInputStream, Class<?> classType) throws IOException {
+		public double[] read(DataInputStream dataInputStream, Class<double[]> classType) throws IOException {
 			if (dataInputStream.readByte() == NULL_VALUE) {
 				return null;
 			}
@@ -453,7 +453,7 @@ public class ArraySerialization {
 		}
 
 		@Override
-		public void write(DataOutputStream outputStream, Object obj) throws IOException {
+		public void write(DataOutputStream outputStream, double[] obj) throws IOException {
 			if (obj == null) {
 				outputStream.write(NULL_VALUE);
 				return;
@@ -471,7 +471,7 @@ public class ArraySerialization {
 	public static class DoubleWrapArraySerialization extends AbstractSerialization<Double[]> {
 
 		@Override
-		public Double[] read(DataInputStream dataInputStream, Class<?> classType) throws IOException {
+		public Double[] read(DataInputStream dataInputStream, Class<Double[]> classType) throws IOException {
 			if (dataInputStream.readByte() == NULL_VALUE) {
 				return null;
 			}
@@ -484,7 +484,7 @@ public class ArraySerialization {
 		}
 
 		@Override
-		public void write(DataOutputStream outputStream, Object obj) throws IOException {
+		public void write(DataOutputStream outputStream, Double[] obj) throws IOException {
 			if (obj == null) {
 				outputStream.write(NULL_VALUE);
 				return;

@@ -19,6 +19,7 @@ public class DoubleFishSerializationOutput {
 		this.outputStream = new DataOutputStream(outputStream);
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void writeObject(Object object) throws IllegalArgumentException, IllegalAccessException, IOException {
 		if (object == null) {
 			throw new IllegalArgumentException("object cannot be null.");
@@ -38,7 +39,8 @@ public class DoubleFishSerializationOutput {
 				continue;
 			}
 			field.setAccessible(true);
-			AbstractSerialization.get(field.getType()).write(outputStream, field.get(object));
+			AbstractSerialization abstractSerialization = AbstractSerialization.get(field.getType());
+			abstractSerialization.write(outputStream, field.get(object));
 		}
 		
 		if (outputStream != null) {

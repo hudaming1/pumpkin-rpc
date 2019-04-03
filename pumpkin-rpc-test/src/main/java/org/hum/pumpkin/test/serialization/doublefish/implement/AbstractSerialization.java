@@ -45,9 +45,9 @@ public abstract class AbstractSerialization<T> {
 	private static final ArraySerialization.DoubleArraySerialization doubleArraySerialization = new ArraySerialization.DoubleArraySerialization();
 	private static final ArraySerialization.DoubleWrapArraySerialization doubleWrapArraySerialization = new ArraySerialization.DoubleWrapArraySerialization();
 
-	public abstract T read(DataInputStream dataInputStream, Class<?> classType) throws IOException;
+	public abstract T read(DataInputStream dataInputStream, Class<T> classType) throws IOException;
 	
-	public abstract void write(DataOutputStream outputStream, Object obj) throws IOException;
+	public abstract void write(DataOutputStream outputStream, T obj) throws IOException;
 	
 	public static <T> AbstractSerialization<?> get(Class<T> classType) {
 		if (classType == null) {
@@ -111,7 +111,7 @@ public abstract class AbstractSerialization<T> {
 		} else if (Collection.class.isAssignableFrom(classType)) {
 			throw new UnsupportedOperationException();
 		} else if (Object.class.isAssignableFrom(classType)) {
-			return objectSerialization;
+			return objectSerialization; // 如果不是上面类型，则当做自定义对象序列化
 		} else {
 			throw new IllegalArgumentException("unknown type[" + classType.getName() + "]");
 		}

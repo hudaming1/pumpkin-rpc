@@ -17,6 +17,7 @@ public class DoubleFishSerialzationInput {
 		dis = new DataInputStream(is);
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public <T> T readObject(Class<T> classType) throws IOException, InstantiationException, IllegalAccessException {
 		if (classType == null) {
 			throw new IllegalArgumentException("classType mustn't be null");
@@ -34,7 +35,8 @@ public class DoubleFishSerialzationInput {
 		for (Entry<String, Field> entry : sortedFieldMap.entrySet()) {
 			Field field = entry.getValue();
 			field.setAccessible(true);
-			field.set(newInstance, AbstractSerialization.get(field.getType()).read(dis, field.getType()));
+			Class type = field.getType();
+			field.set(newInstance, AbstractSerialization.get(field.getType()).read(dis, type));
 		}
 		
 		if (dis != null) {

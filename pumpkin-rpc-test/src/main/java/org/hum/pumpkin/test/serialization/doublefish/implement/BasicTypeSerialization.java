@@ -14,7 +14,7 @@ public class BasicTypeSerialization {
 	public static class BooleanSerialization extends AbstractSerialization<Boolean> {
 
 		@Override
-		public Boolean read(DataInputStream dataInputStream, Class<?> classType) throws IOException {
+		public Boolean read(DataInputStream dataInputStream, Class<Boolean> classType) throws IOException {
 			if (dataInputStream.readByte() == NULL_VALUE) {
 				return null;
 			}
@@ -22,7 +22,7 @@ public class BasicTypeSerialization {
 		}
 
 		@Override
-		public void write(DataOutputStream outputStream, Object obj) throws IOException {
+		public void write(DataOutputStream outputStream, Boolean obj) throws IOException {
 			if (obj == null) {
 				outputStream.write(NULL_VALUE);
 				return;
@@ -36,7 +36,7 @@ public class BasicTypeSerialization {
 	public static class CharSerialization extends AbstractSerialization<Character> {
 
 		@Override
-		public Character read(DataInputStream dataInputStream, Class<?> classType) throws IOException {
+		public Character read(DataInputStream dataInputStream, Class<Character> classType) throws IOException {
 			if (dataInputStream.readByte() == NULL_VALUE) {
 				return null;
 			}
@@ -44,7 +44,7 @@ public class BasicTypeSerialization {
 		}
 
 		@Override
-		public void write(DataOutputStream outputStream, Object obj) throws IOException {
+		public void write(DataOutputStream outputStream, Character obj) throws IOException {
 			if (obj == null) {
 				outputStream.write(NULL_VALUE);
 				return;
@@ -58,7 +58,7 @@ public class BasicTypeSerialization {
 	public static class ShortSerialization extends AbstractSerialization<Short> {
 
 		@Override
-		public Short read(DataInputStream dataInputStream, Class<?> classType) throws IOException {
+		public Short read(DataInputStream dataInputStream, Class<Short> classType) throws IOException {
 			if (dataInputStream.readByte() == NULL_VALUE) {
 				return null;
 			}
@@ -66,7 +66,7 @@ public class BasicTypeSerialization {
 		}
 
 		@Override
-		public void write(DataOutputStream outputStream, Object obj) throws IOException {
+		public void write(DataOutputStream outputStream, Short obj) throws IOException {
 			if (obj == null) {
 				outputStream.write(NULL_VALUE);
 				return;
@@ -80,7 +80,7 @@ public class BasicTypeSerialization {
 	public static class IntegerSerialization extends AbstractSerialization<Integer> {
 
 		@Override
-		public Integer read(DataInputStream dataInputStream, Class<?> classType) throws IOException {
+		public Integer read(DataInputStream dataInputStream, Class<Integer> classType) throws IOException {
 			if (dataInputStream.readByte() == NULL_VALUE) {
 				return null;
 			}
@@ -88,7 +88,7 @@ public class BasicTypeSerialization {
 		}
 
 		@Override
-		public void write(DataOutputStream outputStream, Object obj) throws IOException {
+		public void write(DataOutputStream outputStream, Integer obj) throws IOException {
 			if (obj == null) {
 				outputStream.write(NULL_VALUE);
 				return;
@@ -101,7 +101,7 @@ public class BasicTypeSerialization {
 	public static class LongSerialization extends AbstractSerialization<Long> {
 
 		@Override
-		public Long read(DataInputStream dataInputStream, Class<?> classType) throws IOException {
+		public Long read(DataInputStream dataInputStream, Class<Long> classType) throws IOException {
 			if (dataInputStream.readByte() == NULL_VALUE) {
 				return null;
 			}
@@ -109,7 +109,7 @@ public class BasicTypeSerialization {
 		}
 
 		@Override
-		public void write(DataOutputStream outputStream, Object obj) throws IOException {
+		public void write(DataOutputStream outputStream, Long obj) throws IOException {
 			if (obj == null) {
 				outputStream.write(NULL_VALUE);
 				return;
@@ -122,7 +122,7 @@ public class BasicTypeSerialization {
 	public static class FloatSerialization extends AbstractSerialization<Float> {
 
 		@Override
-		public Float read(DataInputStream dataInputStream, Class<?> classType) throws IOException {
+		public Float read(DataInputStream dataInputStream, Class<Float> classType) throws IOException {
 			if (dataInputStream.readByte() == NULL_VALUE) {
 				return null;
 			}
@@ -130,7 +130,7 @@ public class BasicTypeSerialization {
 		}
 
 		@Override
-		public void write(DataOutputStream outputStream, Object obj) throws IOException {
+		public void write(DataOutputStream outputStream, Float obj) throws IOException {
 			if (obj == null) {
 				outputStream.write(NULL_VALUE);
 				return;
@@ -144,7 +144,7 @@ public class BasicTypeSerialization {
 	public static class DoubleSerialization extends AbstractSerialization<Double> {
 
 		@Override
-		public Double read(DataInputStream dataInputStream, Class<?> classType) throws IOException {
+		public Double read(DataInputStream dataInputStream, Class<Double> classType) throws IOException {
 			if (dataInputStream.readByte() == NULL_VALUE) {
 				return null;
 			}
@@ -152,7 +152,7 @@ public class BasicTypeSerialization {
 		}
 
 		@Override
-		public void write(DataOutputStream outputStream, Object obj) throws IOException {
+		public void write(DataOutputStream outputStream, Double obj) throws IOException {
 			if (obj == null) {
 				outputStream.write(NULL_VALUE);
 				return;
@@ -165,7 +165,7 @@ public class BasicTypeSerialization {
 	public static class ByteSerialization extends AbstractSerialization<Byte> {
 
 		@Override
-		public Byte read(DataInputStream dataInputStream, Class<?> classType) throws IOException {
+		public Byte read(DataInputStream dataInputStream, Class<Byte> classType) throws IOException {
 			if (dataInputStream.readByte() == NULL_VALUE) {
 				return null;
 			}
@@ -173,7 +173,7 @@ public class BasicTypeSerialization {
 		}
 
 		@Override
-		public void write(DataOutputStream outputStream, Object obj) throws IOException {
+		public void write(DataOutputStream outputStream, Byte obj) throws IOException {
 			if (obj == null) {
 				outputStream.write(NULL_VALUE);
 				return;
@@ -186,7 +186,7 @@ public class BasicTypeSerialization {
 	public static class StringSerialization extends AbstractSerialization<String> {
 
 		@Override
-		public String read(DataInputStream dataInputStream, Class<?> classType) throws IOException {
+		public String read(DataInputStream dataInputStream, Class<String> classType) throws IOException {
 			if (dataInputStream.readByte() == NULL_VALUE) {
 				return null;
 			}
@@ -194,7 +194,7 @@ public class BasicTypeSerialization {
 		}
 
 		@Override
-		public void write(DataOutputStream outputStream, Object obj) throws IOException {
+		public void write(DataOutputStream outputStream, String obj) throws IOException {
 			if (obj == null) {
 				outputStream.write(NULL_VALUE);
 				return;

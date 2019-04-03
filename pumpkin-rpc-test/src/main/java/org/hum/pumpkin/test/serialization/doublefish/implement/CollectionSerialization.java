@@ -3,17 +3,18 @@ package org.hum.pumpkin.test.serialization.doublefish.implement;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.*;
 
-public class CollectionSerialization<T> extends AbstractSerialization<T> {
+public class CollectionSerialization<T> extends AbstractSerialization<Collection<T>> {
 
 	@Override
-	public T read(DataInputStream dataInputStream, Class<?> classType) throws IOException {
+	public Collection<T> read(DataInputStream dataInputStream, Class<Collection<T>> classType) throws IOException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void write(DataOutputStream outputStream, Object obj) throws IOException {
+	public void write(DataOutputStream outputStream, Collection<T> obj) throws IOException {
 		// TODO Auto-generated method stub
 		
 	}

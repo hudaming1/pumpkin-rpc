@@ -7,7 +7,7 @@ import java.io.IOException;
 public class ObjectSerialization<T> extends AbstractSerialization<T> {
 
 	@Override
-	public T read(DataInputStream dataInputStream, Class<?> classType) throws IOException {
+	public T read(DataInputStream dataInputStream, Class<T> classType) throws IOException {
 		// TODO Auto-generated method stub
 		return null;
 	}
