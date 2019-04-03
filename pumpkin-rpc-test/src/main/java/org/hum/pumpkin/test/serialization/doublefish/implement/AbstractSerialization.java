@@ -5,15 +5,18 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
- * @author qudian
+ * @author huming
  *
  * @param <T>
  */
 public abstract class AbstractSerialization<T> {
+	
+
+	public static final byte NULL_VALUE = 0;
+	public static final byte NOT_NULL_VALUE = 1;
 	
 	private static final ObjectSerialization objectSerialization = new ObjectSerialization<>();
 	private static final BasicTypeSerialization.BooleanSerialization booleanSerialization = new BasicTypeSerialization.BooleanSerialization();
@@ -24,6 +27,8 @@ public abstract class AbstractSerialization<T> {
 	private static final BasicTypeSerialization.StringSerialization stringSerialization = new BasicTypeSerialization.StringSerialization();
 	private static final BasicTypeSerialization.FloatSerialization floatSerialization = new BasicTypeSerialization.FloatSerialization();
 	private static final BasicTypeSerialization.DoubleSerialization doubleSerialization = new BasicTypeSerialization.DoubleSerialization();
+	private static final ArraySerialization.IntArraySerialization intArraySerialization = new ArraySerialization.IntArraySerialization();
+	private static final ArraySerialization.IntegerArraySerialization integerArraySerialization = new ArraySerialization.IntegerArraySerialization();
 
 	public abstract T read(DataInputStream dataInputStream, Class<?> classType) throws IOException;
 	
@@ -50,8 +55,10 @@ public abstract class AbstractSerialization<T> {
 			return doubleSerialization;
 		} else if (String.class.isAssignableFrom(classType)) {
 			return stringSerialization;
-		} else if (Map.class.isAssignableFrom(classType)) {
-			throw new UnsupportedOperationException();
+		} else if (int[].class.isAssignableFrom(classType)) {
+			return intArraySerialization;
+		} else if (Integer[].class.isAssignableFrom(classType)) {
+			return integerArraySerialization;
 		} else if (List.class.isAssignableFrom(classType)) {
 			throw new UnsupportedOperationException();
 		} else if (Set.class.isAssignableFrom(classType)) {

@@ -11,21 +11,24 @@ import java.io.IOException;
  */
 public class BasicTypeSerialization {
 
-	private static final byte NULL_VALUE = 0;
-	private static final byte NOT_NULL_VALUE = 1;
-
 	public static class BooleanSerialization extends AbstractSerialization<Boolean> {
 
 		@Override
 		public Boolean read(DataInputStream dataInputStream, Class<?> classType) throws IOException {
-			// TODO Auto-generated method stub
-			return null;
+			if (dataInputStream.readByte() == NULL_VALUE) {
+				return null;
+			}
+			return dataInputStream.readBoolean();
 		}
 
 		@Override
 		public void write(DataOutputStream outputStream, Object obj) throws IOException {
-			// TODO Auto-generated method stub
-
+			if (obj == null) {
+				outputStream.write(NULL_VALUE);
+				return;
+			}
+			outputStream.write(NOT_NULL_VALUE);
+			outputStream.writeBoolean((boolean) obj);
 		}
 
 	}
@@ -34,14 +37,20 @@ public class BasicTypeSerialization {
 
 		@Override
 		public Character read(DataInputStream dataInputStream, Class<?> classType) throws IOException {
-			// TODO Auto-generated method stub
-			return null;
+			if (dataInputStream.readByte() == NULL_VALUE) {
+				return null;
+			}
+			return dataInputStream.readChar();
 		}
 
 		@Override
 		public void write(DataOutputStream outputStream, Object obj) throws IOException {
-			// TODO Auto-generated method stub
-
+			if (obj == null) {
+				outputStream.write(NULL_VALUE);
+				return;
+			}
+			outputStream.write(NOT_NULL_VALUE);
+			outputStream.writeChar((char) obj);
 		}
 
 	}
@@ -50,14 +59,20 @@ public class BasicTypeSerialization {
 
 		@Override
 		public Short read(DataInputStream dataInputStream, Class<?> classType) throws IOException {
-			// TODO Auto-generated method stub
-			return null;
+			if (dataInputStream.readByte() == NULL_VALUE) {
+				return null;
+			}
+			return dataInputStream.readShort();
 		}
 
 		@Override
 		public void write(DataOutputStream outputStream, Object obj) throws IOException {
-			// TODO Auto-generated method stub
-
+			if (obj == null) {
+				outputStream.write(NULL_VALUE);
+				return;
+			}
+			outputStream.write(NOT_NULL_VALUE);
+			outputStream.writeShort((short) obj);
 		}
 
 	}
@@ -108,14 +123,20 @@ public class BasicTypeSerialization {
 
 		@Override
 		public Float read(DataInputStream dataInputStream, Class<?> classType) throws IOException {
-			// TODO Auto-generated method stub
-			return null;
+			if (dataInputStream.readByte() == NULL_VALUE) {
+				return null;
+			}
+			return dataInputStream.readFloat();
 		}
 
 		@Override
 		public void write(DataOutputStream outputStream, Object obj) throws IOException {
-			// TODO Auto-generated method stub
-
+			if (obj == null) {
+				outputStream.write(NULL_VALUE);
+				return;
+			}
+			outputStream.write(NOT_NULL_VALUE);
+			outputStream.writeFloat((float) obj);
 		}
 
 	}

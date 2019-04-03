@@ -17,5 +17,4 @@ public class CollectionSerialization<T> extends AbstractSerialization<T> {
 		// TODO Auto-generated method stub
 		
 	}
-
 }
