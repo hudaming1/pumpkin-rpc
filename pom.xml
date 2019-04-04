@@ -42,6 +42,21 @@
 	            <artifactId>slf4j-api</artifactId>
 				<version>${slf4j_version}</version>
 	        </dependency>
+	        <dependency>
+				<groupId>io.netty</groupId>
+				<artifactId>netty-all</artifactId>
+				<version>${netty_version}</version>
+	        </dependency>
+			<dependency>
+				<groupId>com.esotericsoftware</groupId>
+				<artifactId>kryo</artifactId>
+				<version>${kryo_version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.101tec</groupId>
+				<artifactId>zkclient</artifactId>
+				<version>${zk_version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	
@@ -51,6 +66,9 @@
         <slf4j_version>1.7.25</slf4j_version>
         <junit_version>4.12</junit_version>
         <spring_version>4.3.14.RELEASE</spring_version>
+        <netty_version>4.1.2.Final</netty_version>
+        <kryo_version>3.0.3</kryo_version>
+        <zk_version>0.10</zk_version>
 	</properties>
 	
 	<build>

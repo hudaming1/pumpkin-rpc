@@ -37,34 +37,28 @@ public class NettyClient implements Client {
 	}
 	
 	private void initClient() {
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				group = new NioEventLoopGroup();
-				try {
-					Bootstrap bootstrap = new Bootstrap();
-					bootstrap.group(group);
-					bootstrap.channel(NioSocketChannel.class);
-					bootstrap.handler(new ChannelInitializer<Channel>() {
-						@Override
-						protected void initChannel(Channel ch) throws Exception {
-							ch.pipeline().addLast(new NettyEncoder(serialization));
-							ch.pipeline().addLast(new NettyDecoder<MessageBack>(MessageBack.class, serialization));
-//							ch.pipeline().addLast(heartBeatHandler);
-							ch.pipeline().addLast(nettyClientHandler);
-						}
-					});
-
-					ChannelFuture future = bootstrap.connect(url.getHost(), url.getPort()).sync();
-					future.channel().closeFuture().sync();
-				} catch (Exception ce) {
-					logger.error("NettyClient connect error", ce);
-				} finally {
-					close();
+		try {
+			group = new NioEventLoopGroup();
+			Bootstrap bootstrap = new Bootstrap();
+			bootstrap.channel(NioSocketChannel.class).group(group);
+			bootstrap.handler(new ChannelInitializer<Channel>() {
+				@Override
+				protected void initChannel(Channel ch) throws Exception {
+					ch.pipeline().addLast(new NettyEncoder(serialization));
+					ch.pipeline().addLast(new NettyDecoder<MessageBack>(MessageBack.class, serialization));
+					// ch.pipeline().addLast(heartBeatHandler);
+					ch.pipeline().addLast(nettyClientHandler);
 				}
-			}
-		}).start();
-//		heartBeatHandler.waitHandShake();
+			});
+
+			ChannelFuture future = bootstrap.connect(url.getHost(), url.getPort()).sync();
+//			future.channel().closeFuture().sync();
+		} catch (Exception ce) {
+			logger.error("NettyClient connect error", ce);
+		} finally {
+			close();
+		}
+		// heartBeatHandler.waitHandShake();
 	}
 
 	@Override

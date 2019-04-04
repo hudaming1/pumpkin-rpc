@@ -21,6 +21,9 @@ import org.hum.pumpkin.common.serviceloader.support.Adaptive;
 import org.hum.pumpkin.common.serviceloader.support.MetaData;
 import org.hum.pumpkin.common.serviceloader.support.SPI;
 import org.hum.pumpkin.common.url.URL;
+import org.hum.pumpkin.logger.Logger;
+import org.hum.pumpkin.logger.LoggerFactory;
+import org.hum.pumpkin.util.StringUtils;
 
 /**
  * 扩展加载器
@@ -38,13 +41,14 @@ import org.hum.pumpkin.common.url.URL;
  */
 public class ExtensionLoader<T> {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(ExtensionLoader.class);
 	// FileMap -> FileName, Key, ClassName
 	private static final MulitHashMap<String, String, String> FileMap = new MulitHashMap<>();
 	// LoadMap
 	private static final Map<Class<?>, ExtensionLoader<?>> extensionLoaderMap = new ConcurrentHashMap<>();
-	// 
+	// 约定默认加载路径1
 	private static final String PUMPKIN_SERVICE_PATH = "META-INF/services/";
-	// 
+	// 约定默认加载路径2
 	private static final String PUMPKIN_CONFIG_PATH = "META-INF/pumpkin/";
 	
 	static {
@@ -55,12 +59,14 @@ public class ExtensionLoader<T> {
 			throw new PumpkinException("parse file exception", ce);
 		}
 	}
+	
 	private static void parseFile(String directory) throws IOException {
 		Enumeration<java.net.URL> urls = getClassLoader().getResources(directory);
 		while (urls.hasMoreElements()) {
 			File directoryInst = new File(urls.nextElement().getFile());
 			for (File file : directoryInst.listFiles()) {
 				FileMap.append(file.getName(), parseProperties(file));
+				LOGGER.debug("load extension file [" + file.getName() + "]");
 			}
 		}
 	}
@@ -71,6 +77,7 @@ public class ExtensionLoader<T> {
 		props.load(new FileInputStream(file));
 		for (Entry<Object, Object> entry : props.entrySet()) {
 			content.put(entry.getKey().toString(), entry.getValue().toString());
+			LOGGER.debug("load extension [" + file.getName() + "] properties: {" + entry.getKey().toString() + ":" + entry.getValue().toString() + "}");
 		}
 		return content;
 	}
@@ -104,7 +111,7 @@ public class ExtensionLoader<T> {
 	private MetaData metaData;
 	private Object adaptLock = new Object();
 	private final Map<String, T> instanceMap = new ConcurrentHashMap<>();
-	private final StringLocker segmentLocker = new StringLocker();
+	private final ConcurrentHashMap<String, Object> CREATE_EXTENSION_LOCK = new ConcurrentHashMap<>();
 	private volatile T adaptInstance;
 	private volatile T defaultInstance;
 	
@@ -136,7 +143,7 @@ public class ExtensionLoader<T> {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public T get() {
+	public T getDefault() {
 		if (defaultInstance != null) {
 			return defaultInstance;
 		}
@@ -156,7 +163,7 @@ public class ExtensionLoader<T> {
 			if (instanceMap.get(extensionName) != null) {
 				return instanceMap.get(extensionName);
 			}
-			synchronized (segmentLocker.getLockObject(extensionName)) {
+			synchronized (getCreateExtensionLock(extensionName)) {
 				if (instanceMap.get(extensionName) == null) {
 					String className = FileMap.get(interfaceType.getName(), extensionName);
 					if (className == null || className.trim().length() == 0) {
@@ -202,7 +209,7 @@ public class ExtensionLoader<T> {
 			if (instanceMap.containsKey(entry.getKey())) {
 				continue;
 			}
-			synchronized (segmentLocker.getLockObject(entry.getKey())) {
+			synchronized (getCreateExtensionLock(entry.getKey())) {
 				if (instanceMap.get(entry.getKey()) == null) {
 					T instance = createInstances(entry.getValue());
 					instanceMap.putIfAbsent(entry.getKey(), instance);
@@ -221,6 +228,14 @@ public class ExtensionLoader<T> {
 		} catch (Exception ce) {
 			throw new PumpkinException("instance classType[" + className + "] occured exception", ce);
 		}
+	}
+
+	private Object getCreateExtensionLock(String key) {
+		Object lock = CREATE_EXTENSION_LOCK.get(key);
+		if (lock == null) {
+			CREATE_EXTENSION_LOCK.putIfAbsent(key, new Object());
+		}
+		return CREATE_EXTENSION_LOCK.get(key);
 	}
 
 	/**
@@ -303,7 +318,7 @@ public class ExtensionLoader<T> {
 			Adaptive adaptAnno = method.getAnnotation(Adaptive.class);
 			if (adaptAnno == null) {
 				return null;
-			} else if (adaptAnno.value() != null || adaptAnno.value().trim().length() > 0) {
+			} else if (StringUtils.isNotEmpty(adaptAnno.value())) {
 				return adaptAnno.value();
 			}
 			return null;
@@ -369,18 +384,6 @@ public class ExtensionLoader<T> {
 			public KeyDuplicateExistsException(String msg) {
 				super(msg);
 			}
-		}
-	}
-	
-	// 锁字符串的前提：保证字符串引用不可变。
-	private class StringLocker {
-		private final ConcurrentHashMap<String, Object> LOCK_MAP = new ConcurrentHashMap<>();
-		public Object getLockObject(String key) {
-			Object lock = LOCK_MAP.get(key);
-			if (lock == null) {
-				LOCK_MAP.putIfAbsent(key, new Object());
-			}
-			return LOCK_MAP.get(key);
 		}
 	}
 	

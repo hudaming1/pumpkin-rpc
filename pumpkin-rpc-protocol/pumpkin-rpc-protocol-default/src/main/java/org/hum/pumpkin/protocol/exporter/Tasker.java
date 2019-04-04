@@ -12,7 +12,7 @@ import org.hum.pumpkin.proxy.ProxyFactory;
  */
 public class Tasker implements Callable<RpcResult> {
 	
-	private final static ProxyFactory proxyFactory = ExtensionLoader.getExtensionLoader(ProxyFactory.class).get();
+	private final static ProxyFactory proxyFactory = ExtensionLoader.getExtensionLoader(ProxyFactory.class).getDefault();
 	private RpcInvocation invocation;
 	private Object ref;
 	

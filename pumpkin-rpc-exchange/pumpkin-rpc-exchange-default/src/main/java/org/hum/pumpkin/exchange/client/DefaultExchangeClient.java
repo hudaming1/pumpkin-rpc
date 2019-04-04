@@ -21,7 +21,7 @@ import org.hum.pumpkin.transport.message.MessageTypeEnum;
 public class DefaultExchangeClient implements ExchangeClient {
 
 	private Client client;
-	private static final ExecutorService executorService = ExtensionLoader.getExtensionLoader(ThreadPoolFactory.class).get().create();
+	private static final ExecutorService executorService = ExtensionLoader.getExtensionLoader(ThreadPoolFactory.class).getDefault().create();
 
 	public DefaultExchangeClient(Client client) {
 		this.client = client;

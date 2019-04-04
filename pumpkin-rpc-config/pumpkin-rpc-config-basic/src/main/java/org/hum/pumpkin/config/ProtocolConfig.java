@@ -7,7 +7,7 @@ public class ProtocolConfig {
 
 	public ProtocolConfig() {
 	}
-	
+
 	public ProtocolConfig(String name, int port) {
 		super();
 		this.name = name;
@@ -28,5 +28,10 @@ public class ProtocolConfig {
 
 	public void setPort(int port) {
 		this.port = port;
+	}
+
+	@Override
+	public String toString() {
+		return "ProtocolConfig [name=" + name + ", port=" + port + "]";
 	}
 }

@@ -1,12 +1,8 @@
 
 【架构层】
 抽象出AbstractProtocol：filter扩展、鉴权等实现都在该类中buildInvokerChain构建
-Maven管理jar包依赖（现在显然做的还不够，拆分的不够好，版本管理上也不够统一）
-MavenModule之间的相互依赖现在看起来比较乱
-
-引入Directory组件配合Registry进行路由
-重新设计ClusterInvoker和DirectInvoker，两者不是必然关系，需要解耦；ClusterInvoker仅仅是集成了目录服务、注册中心、路由策略等功能，期望可以和DirectInvoker集成，也可以直接和后面的HttpInvoker集成。
-扩展出多协议、多注册中心
+Zookeeper现在实现是invoke前拉server_list，需要改成推送服务，然后更新Directory
+扩展出多协议
 
 【插件化】
 引入spring支持 √
@@ -35,4 +31,7 @@ timeout/retry_times：在exchange实现，因为属于一次业务通信。
 【bug】
 修改bug，启动后才能发起调用。
 
+【扩展】
+1.实现pumpkin注册中心
+2.实现pumpkin序列化协议
 

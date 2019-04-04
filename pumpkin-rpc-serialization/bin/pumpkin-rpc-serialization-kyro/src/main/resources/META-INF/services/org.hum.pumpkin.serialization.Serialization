@@ -1,0 +1,1 @@
+kryo=org.hum.pumpkin.serialization.kryo.KryoSerialization

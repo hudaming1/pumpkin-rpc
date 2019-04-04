@@ -18,7 +18,7 @@ public class ClientTest {
 		referenceBean2.setUrl("127.0.0.1", 9080);
 		IUserService userService = referenceBean2.get();
 
-		Thread.sleep(2000);
+//		Thread.sleep(2000);
 
 		for (int i = 0; i < 10; i++) {
 			System.out.println(helloService.sayHello("huming" + i));

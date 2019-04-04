@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.hum.pumpkin.config.ProtocolConfig;
 import org.hum.pumpkin.config.ServiceConfig;
-import org.hum.pumpkin.registry.RegistryConfig;
 import org.hum.pumpkin.util.InetUtils;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -61,7 +60,7 @@ public class ServiceBean implements ApplicationListener<ContextRefreshedEvent> {
 				protocolList.add(config);
 			}
 			ServiceConfig serviceConfig = new ServiceConfig();
-			serviceConfig.setRegistryConfig(new RegistryConfig(registryConfig.getProtocolName(),registryConfig.getHost(), registryConfig.getPort()));
+			serviceConfig.setRegistry(registryConfig.getAddress());
 			serviceConfig.setProtocols(protocolList);
 			serviceConfig.setHost(InetUtils.getLocalAddress());
 			serviceConfig.setInterfaceType(Class.forName(interfaceType));
