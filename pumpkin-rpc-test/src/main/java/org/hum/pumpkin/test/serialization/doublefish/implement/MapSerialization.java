@@ -3,20 +3,22 @@ package org.hum.pumpkin.test.serialization.doublefish.implement;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.*;
+import java.util.Map;
 
-public class CollectionSerialization<T> extends AbstractSerialization<Collection<T>> {
+@SuppressWarnings("rawtypes")
+public class MapSerialization extends AbstractSerialization<Map> {
 
 	@Override
-	public Collection<T> read(DataInputStream dataInputStream, Class<Collection<T>> classType) throws IOException {
+	public Map read(DataInputStream dataInputStream, Class<Map> classType) throws IOException {
 		if (dataInputStream.readByte() == NULL_VALUE) {
 			return null;
 		}
+		
 		return null;
 	}
 
 	@Override
-	public void write(DataOutputStream outputStream, Collection<T> obj) throws IOException {
+	public void write(DataOutputStream outputStream, Map obj) throws IOException {
 		if (obj == null) {
 			outputStream.write(NULL_VALUE);
 			return;

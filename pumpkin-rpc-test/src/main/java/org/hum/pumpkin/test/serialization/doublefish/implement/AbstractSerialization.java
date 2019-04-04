@@ -4,7 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -18,7 +18,7 @@ public abstract class AbstractSerialization<T> {
 	public static final byte NULL_VALUE = 0;
 	public static final byte NOT_NULL_VALUE = 1;
 	
-	private static final ObjectSerialization objectSerialization = new ObjectSerialization<>();
+	private static final ObjectSerialization<?> objectSerialization = new ObjectSerialization<>();
 	private static final BasicTypeSerialization.BooleanSerialization booleanSerialization = new BasicTypeSerialization.BooleanSerialization();
 	private static final BasicTypeSerialization.ByteSerialization byteSerialization = new BasicTypeSerialization.ByteSerialization();
 	private static final BasicTypeSerialization.CharSerialization charSerialization = new BasicTypeSerialization.CharSerialization();
@@ -44,6 +44,7 @@ public abstract class AbstractSerialization<T> {
 	private static final ArraySerialization.FloatWrapArraySerialization floatWrapArraySerialization = new ArraySerialization.FloatWrapArraySerialization();
 	private static final ArraySerialization.DoubleArraySerialization doubleArraySerialization = new ArraySerialization.DoubleArraySerialization();
 	private static final ArraySerialization.DoubleWrapArraySerialization doubleWrapArraySerialization = new ArraySerialization.DoubleWrapArraySerialization();
+	private static final CollectionSerialization<?> COLLECTION_SERIALIZATION = new CollectionSerialization<>();
 
 	public abstract T read(DataInputStream dataInputStream, Class<T> classType) throws IOException;
 	
@@ -104,12 +105,12 @@ public abstract class AbstractSerialization<T> {
 			return charArraySerialization;
 		} else if (Character[].class.isAssignableFrom(classType)) {
 			return characterArraySerialization;
-		} else if (List.class.isAssignableFrom(classType)) {
-			throw new UnsupportedOperationException();
 		} else if (Set.class.isAssignableFrom(classType)) {
 			throw new UnsupportedOperationException();
-		} else if (Collection.class.isAssignableFrom(classType)) {
+		} else if (Map.class.isAssignableFrom(classType)) {
 			throw new UnsupportedOperationException();
+		} else if (Collection.class.isAssignableFrom(classType)) {
+			return COLLECTION_SERIALIZATION;
 		} else if (Object.class.isAssignableFrom(classType)) {
 			return objectSerialization; // 如果不是上面类型，则当做自定义对象序列化
 		} else {
